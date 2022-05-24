@@ -1,18 +1,18 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <left-navigation />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import leftNavigation from "../components/Home/leftNavigation.vue"
 export default {
-  name: "HomeView",
-  components: {
-    HelloWorld,
+  components: { leftNavigation },
+  mounted: function () {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
   },
 };
 </script>

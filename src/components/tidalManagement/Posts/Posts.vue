@@ -116,6 +116,7 @@
               'Sizes',
               'Total',
             ]"
+            @page-change="handlePageChangeActivity"
           ></vxe-pager>
         </div>
 
@@ -130,7 +131,97 @@
         </div>
       </div>
     </div>
-    <div class="bodyText" v-if="this.flag == 2">123</div>
+    <div class="bodyText" v-if="this.flag == 2">
+      <div class="bodyTextline">
+        <div class="bodyTextlineValue">
+          <el-input placeholder="请输入内容"
+          v-model="seatch2.keyword"
+          ></el-input>
+          <div class="IsSeatch" @click="seatchInput2">
+            <i class="el-icon-search"></i>
+            <span>搜索</span>
+          </div>
+          <div class="Refresh" @click="Refresh2">
+            <i class="el-icon-refresh-right"></i>
+            <span>刷新</span>
+          </div>
+        </div>
+      </div>
+      <div class="vxeList">
+        <div class="listRight">
+          <el-button @click="SetAsTopS">设为置顶</el-button>
+          <el-button @click="SetAsEssence">设为精华</el-button>
+          <el-button>删除帖子</el-button>
+        </div>
+        <vxe-table
+          :data="tableData1"
+          height="500"
+          @checkbox-change="checkboxChangeEvent"
+          @checkbox-all="checkboxChangeEvent"
+          style="margin-top: 40px"
+        >
+          <vxe-column align="center" type="checkbox" width="50"></vxe-column>
+          <vxe-column field="title">
+            <template v-slot="scoped">
+              <div class="topStyle">
+                <span v-if="scoped.row.is_top == 1" class="ToppingSpan"
+                  >置顶</span
+                >
+                <span class="EssenceSpan" v-if="scoped.row.is_ess == 1"
+                  >精华</span
+                >
+                <span class="details">{{ scoped.row.title }}</span>
+              </div>
+            </template>
+          </vxe-column>
+          <vxe-column>
+            <template v-slot="scoped">
+              <el-image
+                :src="imagesValue + scoped.row.thumb"
+                style="width: 32px; height: 32px"
+                class="imgStyle"
+              >
+              </el-image>
+            </template>
+          </vxe-column>
+          <vxe-column field="nickname" align="left" width="140"></vxe-column>
+          <vxe-column field="create_time" width="150">
+            <template v-slot="scoped">
+              <div>{{ timeer(scoped.row.create_time) }}</div>
+            </template>
+          </vxe-column>
+          <vxe-column align="center" class="xz">
+            <template v-slot="scoped">
+              <div class="swdz">
+                <el-button @click="SetAsTop(scoped.row)">设为置顶</el-button>
+              </div>
+              <div class="swdz">
+                <el-button @click="SetAsEssencer(scoped.row)"
+                  >设为精华</el-button
+                >
+              </div>
+              <div class="swdz">
+                <el-button @click="DeletePost(scoped.row)">删除帖子</el-button>
+              </div>
+            </template>
+          </vxe-column>
+        </vxe-table>
+        <vxe-pager
+            :current-page="page2.offset"
+            :page-size="page2.limit"
+            :total="page2.totalResult"
+            :layouts="[
+              'PrevPage',
+              'JumpNumber',
+              'NextPage',
+              'FullJump',
+              'Sizes',
+              'Total',
+            ]"
+            @page-change="handlePageChangeActivitys"
+          ></vxe-pager>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -147,6 +238,7 @@ import { timestampToTime } from "../../../assets/js/time.js";
 import HotList from "./postsList/HotList.vue";
 import NewestList from "./postsList/newestList.vue";
 import EssenceList from "./postsList/EssenceList.vue";
+import { CircleGetForumApi } from "./getForumUrl.js";
 export default {
   components: { HotList, NewestList, EssenceList },
   data() {
@@ -165,9 +257,17 @@ export default {
         limit: 10,
         totalResult: 0,
       },
+      page2: {
+        offset: 1,
+        limit: 10,
+        totalResult: 0,
+      },
       // 搜索
       seatch: {
         circle_id: "",
+        keyword: "",
+      },
+      seatch2: {
         keyword: "",
       },
       // 删除
@@ -199,11 +299,14 @@ export default {
         forum_id: "",
         is_ess: "1",
       },
+      // 我创建的圈子
+      tableData1: [],
     };
   },
   created() {
     this.paramsId.circle_id = this.$route.params.id;
     this.releaseValue();
+    this.getForumValue();
   },
   methods: {
     handleSelect() {
@@ -245,6 +348,7 @@ export default {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
             this.releaseValue();
+            this.getForumValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -281,6 +385,7 @@ export default {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
             this.releaseValue();
+            this.getForumValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -315,6 +420,7 @@ export default {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
             this.releaseValue();
+            this.getForumValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -347,6 +453,7 @@ export default {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
             this.releaseValue();
+            this.getForumValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -381,6 +488,7 @@ export default {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
             this.releaseValue();
+            this.getForumValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -411,6 +519,31 @@ export default {
       postD(CircleGetCircleForumApi(), this.page1).then((res) => {
         this.tableData = res.list;
         this.page1.totalResult = res.count;
+      });
+    },
+    // 我创建的圈子
+    getForumValue() {
+      postD(CircleGetForumApi()).then((res) => {
+        console.log(res);
+        this.tableData1 = res.list;
+        this.page2.totalResult = res.count;
+      });
+    },
+    Refresh2() {
+      this.getForumValue();
+    },
+    seatchInput2() {
+      postD(CircleGetForumApi(),this.seatch2).then(res=> {
+        this.tableData1 = res.list;
+        this.page2.totalResult = res.count;
+      })
+    },
+    handlePageChangeActivitys({ currentPage, pageSize }) {
+      this.page2.offset = currentPage;
+      this.page2.limit = pageSize;
+      postD(CircleGetForumApi(), this.page2).then((res) => {
+        this.tableData1 = res.list;
+        this.page2.totalResult = res.count;
       });
     },
   },

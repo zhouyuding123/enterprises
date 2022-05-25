@@ -24,23 +24,30 @@
           <el-form-item label="活动标题" prop="title">
             <el-input v-model="ruleForm.title"></el-input>
           </el-form-item>
-          <el-form-item label="活动开始时间" prop="start_time">
-            <el-date-picker
-              v-model="start_time"
-              type="datetime"
-              placeholder="选择报名时间"
-              @change="getTime"
-            >
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="活动结束时间" prop="end_time">
-            <el-date-picker
-              v-model="end_time"
-              type="datetime"
-              placeholder="选择展示时间"
-              @change="gitTime"
-            >
-            </el-date-picker>
+          <el-form-item label="活动时间" required>
+            <el-col :span="11">
+              <el-form-item prop="start_time">
+                <el-date-picker
+                  type="datetime"
+                  placeholder="选择报名时间"
+                  v-model="start_time"
+                  style="width: 100%"
+                  @change="getTime"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="end_time">
+                <el-date-picker
+                  type="datetime"
+                  placeholder="选择结束时间"
+                  v-model="end_time"
+                  style="width: 100%"
+                  @change="gitTime"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
           </el-form-item>
           <el-form-item label="发布对象" prop="style">
             <el-select v-model="ruleForm.style" placeholder="请选择">
@@ -81,11 +88,11 @@
           <el-form-item label="活动奖品:" style="width: 100%">
             <div v-for="(item, index) in ruleForm.prize" :key="index">
               <div class="prizesS">
-                  <el-input
-                    v-model="item.name"
-                    style="width: 350px"
-                    placeholder="名次"
-                  ></el-input>
+                <el-input
+                  v-model="item.name"
+                  style="width: 350px"
+                  placeholder="名次"
+                ></el-input>
 
                 <el-input
                   v-model="item.amount"
@@ -184,7 +191,7 @@ export default {
         ],
         poster: "",
         thumb: "",
-        circle_id:""
+        circle_id: "",
       },
       start_time: "",
       end_time: "",
@@ -314,8 +321,8 @@ export default {
     addOrdinary() {
       this.$refs.ruleFormRef.validate((valid) => {
         if (!valid) return;
-        if(this.ruleForm.circle_id == ""){
-             this.$delete(this.ruleForm,"circle_id")
+        if (this.ruleForm.circle_id == "") {
+          this.$delete(this.ruleForm, "circle_id");
         }
         postD(ActivityReleaseApi(), this.ruleForm).then((res) => {
           if (res.code == "200") {

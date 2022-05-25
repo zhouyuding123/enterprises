@@ -9,7 +9,7 @@
     </div>
     <div class="activityline2">
       <div class="activityline2Body">
-        <div class="inputButton">
+        <div class="inputButton" v-if="selectTab == 'tab1'">
           <el-input
             placeholder="请输入内容"
             v-model="seatch.keyword"
@@ -22,6 +22,23 @@
             <span>删除</span>
           </div>
           <div class="Refresh" @click="Refresh">
+            <i class="el-icon-refresh-right"></i>
+            <span>刷新</span>
+          </div>
+        </div>
+        <div class="inputButton" v-if="selectTab == 'tab2'">
+          <el-input
+            placeholder="请输入内容"
+            v-model="seatch.keyword"
+          ></el-input>
+          <div class="IsSeatch" @click="seatchInputSecond">
+            <i class="el-icon-search"></i>
+            <span>搜索</span>
+          </div>
+          <div class="delRomove">
+            <span>删除</span>
+          </div>
+          <div class="Refresh" @click="RefreshSecond">
             <i class="el-icon-refresh-right"></i>
             <span>刷新</span>
           </div>
@@ -55,16 +72,15 @@
           <vxe-column width="50" align="center">至</vxe-column>
           <vxe-column field="end_time" align="left" width="200"> </vxe-column>
           <vxe-column width="200">
-            <div class="operation">
-              <div class="operationdel">
-                <img src="../../../assets/imgers/删除.png" alt="" />
-                <p>删除</p>
+            <template v-slot="scoped">
+              <div class="operation">
+                <ord-operation :delOperationValue="scoped.row" />
+                <div class="operationEdit">
+                  <img src="../../../assets/imgers/编辑.png" alt="" />
+                  <p>编辑</p>
+                </div>
               </div>
-              <div class="operationEdit">
-                <img src="../../../assets/imgers/编辑.png" alt="" />
-                <p>编辑</p>
-              </div>
-            </div>
+            </template>
           </vxe-column>
         </vxe-table>
         <vxe-pager
@@ -85,13 +101,50 @@
       </div>
 
       <div v-show="selectTab === 'tab2'">
-        <vxe-table :data="tableData">
-          <vxe-column type="radio" width="60"></vxe-column>
-          <vxe-column field="role" title="Rolw"></vxe-column>
-          <vxe-column field="age" title="Age"></vxe-column>
-          <vxe-column field="num" title="Num"></vxe-column>
-          <vxe-column field="date12" title="Date"></vxe-column>
+        <vxe-table :data="tableData2">
+          <vxe-column align="center" type="checkbox" width="50"></vxe-column>
+          <vxe-column width="80">
+            <template v-slot="scoped">
+              <el-image
+                :src="imagesValue + scoped.row.poster"
+                style="width: 32px; height: 32px"
+                class="imgStyle"
+              >
+              </el-image>
+            </template>
+          </vxe-column>
+          <vxe-column field="title" align="left"> </vxe-column>
+          <vxe-column field="start_time" align="right" width="150">
+          </vxe-column>
+          <vxe-column width="50" align="center">至</vxe-column>
+          <vxe-column field="end_time" align="left" width="200"> </vxe-column>
+          <vxe-column width="200">
+            <template v-slot="scoped">
+              <div class="operation">
+                <sele-operation :delsele="scoped.row" />
+                <div class="operationEdit">
+                  <img src="../../../assets/imgers/编辑.png" alt="" />
+                  <p>编辑</p>
+                </div>
+              </div>
+            </template>
+          </vxe-column>
         </vxe-table>
+        <vxe-pager
+          :current-page="page2.offset"
+          :page-size="page2.limit"
+          :total="page2.totalResult"
+          :layouts="[
+            'PrevPage',
+            'JumpNumber',
+            'NextPage',
+            'FullJump',
+            'Sizes',
+            'Total',
+          ]"
+          @page-change="handlePageChangeActivitySecond"
+          align="center"
+        ></vxe-pager>
       </div>
     </div>
   </div>
@@ -99,23 +152,30 @@
 
 <script>
 import { postD } from "@/api";
-import { ActivityListActivityMFApi } from "./Activities.js";
+import {
+  ActivityListActivityMFApi,
+  ActivityDelActivityApi,
+} from "./Activities.js";
 import { imgUrl } from "@/assets/js/modifyStyle.js";
-import ordinary from './ReleaseActivities/ordinary.vue';
-import Selection from './ReleaseActivities/Selection.vue';
-import Luck from './ReleaseActivities/luck.vue';
+import ordinary from "./ReleaseActivities/ordinary.vue";
+import Selection from "./ReleaseActivities/Selection.vue";
+import Luck from "./ReleaseActivities/luck.vue";
+import OrdOperation from "./operation/ordOperation.vue";
+import SeleOperation from "./operation/seleOperation.vue";
 export default {
   provide() {
     return {
       listActivityMFValue: this.listActivityMFValue,
-    }
+      selectionListValue: this.selectionListValue,
+    };
   },
-  components: { ordinary, Selection, Luck },
+  components: { ordinary, Selection, Luck, OrdOperation, SeleOperation },
   data() {
     return {
       imagesValue: "",
       selectTab: "tab1",
       tableData: [],
+      tableData2: [],
       request: {
         category: "",
       },
@@ -125,14 +185,24 @@ export default {
         limit: 10,
         totalResult: 0,
       },
+      page2: {
+        category: "",
+        offset: 1,
+        limit: 10,
+        totalResult: 0,
+      },
       seatch: {
         category: "",
         keyword: "",
+      },
+      delSelectionIdValue: {
+        id: "",
       },
     };
   },
   created() {
     this.listActivityMFValue();
+    this.selectionListValue();
   },
   methods: {
     listActivityMFValue() {
@@ -141,6 +211,13 @@ export default {
         this.tableData = res.list;
         this.imagesValue = imgUrl();
         this.page1.totalResult = res.count;
+      });
+    },
+    selectionListValue() {
+      this.request.category = "2";
+      postD(ActivityListActivityMFApi(), this.request).then((res) => {
+        this.tableData2 = res.list;
+        this.page2.totalResult = res.count;
       });
     },
     handlePageChangeActivity({ currentPage, pageSize }) {
@@ -152,6 +229,15 @@ export default {
         this.page1.totalResult = res.count;
       });
     },
+    handlePageChangeActivitySecond({ currentPage, pageSize }) {
+      this.page2.offset = currentPage;
+      this.page2.limit = pageSize;
+      this.page2.category = "2";
+      postD(ActivityListActivityMFApi(), this.request).then((res) => {
+        this.tableData2 = res.list;
+        this.page2.totalResult = res.count;
+      });
+    },
     // 搜索
     seatchInput() {
       this.seatch.category = "1";
@@ -160,9 +246,19 @@ export default {
         this.page1.totalResult = res.count;
       });
     },
+    seatchInputSecond() {
+      this.seatch.category = "2";
+      postD(ActivityListActivityMFApi(), this.seatch).then((res) => {
+        this.tableData2 = res.list;
+        this.page2.totalResult = res.count;
+      });
+    },
     // 刷新
     Refresh() {
       this.listActivityMFValue();
+    },
+    RefreshSecond() {
+      this.selectionListValue();
     },
   },
 };
@@ -256,22 +352,7 @@ export default {
 .operation {
   display: flex;
   line-height: 10px;
-  .operationdel {
-    cursor: pointer;
-    display: flex;
-    position: relative;
-    img {
-      position: absolute;
-    }
-    p {
-      margin-left: 30px;
-      font-size: 14px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #ff2659;
-      line-height: 19px;
-    }
-  }
+
   .operationEdit {
     cursor: pointer;
     position: relative;

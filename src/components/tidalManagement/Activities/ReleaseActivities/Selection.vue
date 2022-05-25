@@ -28,23 +28,30 @@
           <el-form-item label="活动标题" prop="title">
             <el-input v-model="ruleForm.title"></el-input>
           </el-form-item>
-          <el-form-item label="活动报名时间" prop="start_time">
-            <el-date-picker
-              v-model="start_time"
-              type="datetime"
-              placeholder="选择报名时间"
-              @change="getTime"
-            >
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="活动结束时间" prop="end_time">
-            <el-date-picker
-              v-model="end_time"
-              type="datetime"
-              placeholder="选择展示时间"
-              @change="gitTime"
-            >
-            </el-date-picker>
+          <el-form-item label="活动时间" required>
+            <el-col :span="11">
+              <el-form-item prop="start_time">
+                <el-date-picker
+                  type="datetime"
+                  placeholder="选择报名时间"
+                  v-model="start_time"
+                  style="width: 100%"
+                  @change="getTime"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="end_time">
+                <el-date-picker
+                  type="datetime"
+                  placeholder="选择结束时间"
+                  v-model="end_time"
+                  style="width: 100%"
+                  @change="gitTime"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
           </el-form-item>
           <el-form-item label="活动展示时间" prop="exh_time">
             <el-date-picker
@@ -179,7 +186,7 @@ import { CircleListCircleApi } from "@/components/tidalManagement/tidalList/circ
 import { postD } from "@/api";
 import { ActivityReleaseApi } from "./ReleaseActivitiesUrl.js";
 export default {
-  inject: ["listActivityMFValue"],
+  inject: ["listActivityMFValue","selectionListValue"],
   data() {
     return {
       SelectionShow: false,
@@ -235,7 +242,7 @@ export default {
             tirgger: "blur",
           },
         ],
-        exh_time: [
+        end_time: [
           {
             required: true,
             message: "请输入展示时间",
@@ -291,7 +298,6 @@ export default {
       this.ruleForm.start_time = timestampToTime(this.start_time / 1000);
     },
     gotTime(date) {
-      console.log(date);
       this.exh_time = date;
       this.ruleForm.exh_time = timestampToTime(this.exh_time / 1000);
     },
@@ -345,6 +351,7 @@ export default {
           if (res.code == "200") {
             this.$message.success("活动创建成功");
             this.listActivityMFValue();
+            this.selectionListValue()
             this.SelectionShow = false;
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");

@@ -49,7 +49,7 @@
 
         <div v-show="selectTab === 'tab1'">
           <vxe-table
-            :sync-resize="selectTab"
+            
             :data="tableData"
             @checkbox-change="checkboxChangeEvent"
             @checkbox-all="checkboxChangeEvent"
@@ -117,6 +117,7 @@
               'Total',
             ]"
             @page-change="handlePageChangeActivity"
+            align="center"
           ></vxe-pager>
         </div>
 
@@ -219,6 +220,7 @@
               'Total',
             ]"
             @page-change="handlePageChangeActivitys"
+            align="center"
           ></vxe-pager>
       </div>
     </div>

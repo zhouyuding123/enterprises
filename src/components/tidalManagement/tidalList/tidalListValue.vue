@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="Release">
-      <p @click="goAddcreate">创建圈子</p>
-      <p>发布活动</p>
+      <p @click="goAddcreate" class="activities">创建圈子</p>
+      <p class="activities" @click="goActivities">发布活动</p>
     </div>
     <div>
       <div class="borderStyle"></div>
@@ -141,6 +141,9 @@ export default {
       this.CircleId.id = index;
       this.$router.push("/Circle/getCircleShow" + index);
     },
+    goActivities(){
+      this.$router.push("/Activity/release");
+    }
   },
 };
 </script>
@@ -241,5 +244,8 @@ export default {
   flex: 1;
   margin-left: auto;
   margin-top: 85px;
+}
+.activities {
+  cursor: pointer;
 }
 </style>

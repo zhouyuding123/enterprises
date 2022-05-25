@@ -128,7 +128,6 @@ const routes = [
               }
             ]
           },
-          
           {
             path: "/Circle/getCircleForum:id",
             name: "getCircleForum",
@@ -137,6 +136,14 @@ const routes = [
               title: "帖子管理"
             },
           },
+          {
+            path:"/Activity/release",
+            name:"Activity/release",
+            component:() => import("../components/tidalManagement/Activities/Activities.vue"),
+            meta: {
+              title:"发布活动"
+            }
+          }
         ]
       },
     ]

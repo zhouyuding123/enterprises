@@ -105,23 +105,23 @@ const routes = [
             meta: {
               title: "成员管理"
             },
-            children:[
+            children: [
               {
                 path: "/Circles:id",
-                redirect:"/Circles/invitation:id"
+                redirect: "/Circles/invitation:id"
               },
               {
-                path:"/Circles/invitation:id",
-                name:"invitation",
-                component:() =>import("../components/tidalManagement/management/managementChildren/managementRen/managementRen.vue"),
+                path: "/Circles/invitation:id",
+                name: "invitation",
+                component: () => import("../components/tidalManagement/management/managementChildren/managementRen/managementRen.vue"),
                 meta: {
                   title: "成员邀请"
                 },
               },
               {
-                path:"/Circles/del:id",
-                name:"invitationdel",
-                component:() =>import("../components/tidalManagement/management/managementChildren/managementRen/managementdel.vue"),
+                path: "/Circles/del:id",
+                name: "invitationdel",
+                component: () => import("../components/tidalManagement/management/managementChildren/managementRen/managementdel.vue"),
                 meta: {
                   title: "成员移除"
                 },
@@ -137,15 +137,37 @@ const routes = [
             },
           },
           {
-            path:"/Activity/release",
-            name:"Activity/release",
-            component:() => import("../components/tidalManagement/Activities/Activities.vue"),
+            path: "/Activity/release",
+            name: "Activity/release",
+            component: () => import("../components/tidalManagement/Activities/Activities.vue"),
             meta: {
-              title:"发布活动"
+              title: "发布活动"
             }
           }
         ]
       },
+      {
+        path: "/Business",
+        name: "Business",
+        component: () => import("../components/StoreManagement/listBusiness.vue"),
+        meta: {
+          title: "门店管理"
+        },
+        children: [
+          {
+            path: "/Business",
+            redirect: "/Business/listBusiness",
+          },
+          {
+            path: "/Business/listBusiness",
+            name: "listBusiness",
+            component: () => import("../components/StoreManagement/BusinessList/BusinessList.vue"),
+            meta: {
+              title: "门店列表"
+            },
+          }
+        ]
+      }
     ]
   }
 ];

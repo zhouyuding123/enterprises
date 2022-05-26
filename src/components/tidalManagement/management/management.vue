@@ -2,10 +2,9 @@
   <div>
     <div class="line1Div">
       <div class="line1Value">
-        <div class="textEdit"><span>修改圈子头像</span></div>
+        <div class="textEdit"><span>圈子头像</span></div>
         <div class="imageDiv">
           <el-image :src="imageValue + listValue.headimg"></el-image>
-          <i class="el-icon-caret-right"></i>
         </div>
       </div>
     </div>
@@ -19,7 +18,9 @@
         </div>
         <div class="linedetails2">
           <div class="mc"><span>圈子公告</span></div>
-          <div class="lineBorder"><span></span></div>
+          <div class="lineBorder" @click="Announcement">
+            <span>编辑公告</span>
+          </div>
         </div>
         <div class="linedetails3">
           <div class="mc"><span>圈子标签</span></div>
@@ -49,16 +50,38 @@
       </div>
     </div>
     <div class="line4Div">
-      <div class="bc"><span>保存</span></div>
-      <div class="qx"><span>取消</span></div>
+      <div class="qx" @click="cancel"><span>返回</span></div>
     </div>
+    <el-dialog title="提示" :visible.sync="AnnouncementShow" width="50%">
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleFormRef"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="公告标题" prop="title">
+          <el-input v-model="ruleForm.title"></el-input>
+        </el-form-item>
+        <el-form-item label="简单的描述" prop="description">
+          <el-input v-model="ruleForm.description"></el-input>
+        </el-form-item>
+        <el-form-item label="详细内容" prop="content">
+          <el-input v-model="ruleForm.content"></el-input>
+        </el-form-item>
+      </el-form>
+      <span>
+        <el-button @click="AnnouncementShow = false">取 消</el-button>
+        <el-button type="primary" @click="addRuleForm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { postD } from "../../../api";
 import { imgUrl } from "../../../assets/js/modifyStyle.js";
-import { CircleGetCircleShowApi } from "./myCircleUrl.js";
+import { CircleGetCircleShowApi, circle_noticeAddApi } from "./myCircleUrl.js";
 
 export default {
   data() {
@@ -70,6 +93,36 @@ export default {
       listValue: [],
       // 成员
       memberNum: "",
+      AnnouncementShow: false,
+      ruleForm: {
+        circle_id: "",
+        description: "",
+        title: "",
+        content: "",
+      },
+      rules: {
+        title: [
+          {
+            required: true,
+            message: "请输入公告标题",
+            tirgger: "blur",
+          },
+        ],
+        description: [
+          {
+            required: true,
+            message: "请输入公告描述",
+            tirgger: "blur",
+          },
+        ],
+        content: [
+          {
+            required: true,
+            message: "请输入公告详细内容",
+            tirgger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -84,8 +137,34 @@ export default {
         this.memberNum = res.data.member_count;
       });
     },
+    Announcement() {
+      this.AnnouncementShow = true;
+    },
+    addRuleForm() {
+      this.ruleForm.circle_id = this.paramsId.id;
+      this.$refs.ruleFormRef.validate((valid) => {
+        if (!valid) return;
+        postD(circle_noticeAddApi(), this.ruleForm).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("发布公告成功");
+            this.listCircleValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
+      });
+    },
     zxc() {
       this.$router.push("/getMember" + this.paramsId.id);
+    },
+    cancel() {
+      this.$router.go(-1);
     },
   },
 };
@@ -151,11 +230,13 @@ export default {
         }
       }
       .lineBorder {
+        cursor: pointer;
         width: 100%;
         height: 40px;
         background: #f5f5f5;
         border-radius: 6px 6px 6px 6px;
         span {
+          cursor: pointer;
           font-size: 14px;
           font-family: PingFang SC-Regular, PingFang SC;
           font-weight: 400;
@@ -166,6 +247,7 @@ export default {
       }
     }
     .linedetails2 {
+      cursor: pointer;
       padding: 0px 60px;
       display: flex;
       .mc {

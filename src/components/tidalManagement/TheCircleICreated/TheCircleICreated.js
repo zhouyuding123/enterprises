@@ -16,3 +16,7 @@ export const ForumSetTopApi = () => {
 export const ForumSetEssApi = () => {
     return "Forum/setEss"
 }
+// 公告列表
+export const circle_noticeGetListApi = () => {
+    return "circle_notice/getList"
+}

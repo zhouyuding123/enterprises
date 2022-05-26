@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="Release">
+    <div class="Release" @click="goactivities">
       <p>发布活动</p>
     </div>
     <div class="thumbBody">
@@ -33,10 +33,11 @@
     <div class="jjbody">
       <div>
         <span
-          ><strong>圈子公告:</strong>&nbsp;&nbsp;{{
-            CircleShowValue.description
-          }}</span
-        >
+          ><strong>圈子公告:</strong>&nbsp;&nbsp;
+          <span v-for="item in NoticeValue" :key="item.id">
+            {{ item.description }}
+          </span>
+        </span>
       </div>
     </div>
     <div class="seatchStyle">
@@ -179,6 +180,7 @@ import {
   ForumDelForumApi,
   ForumSetTopApi,
   ForumSetEssApi,
+  circle_noticeGetListApi,
 } from "./TheCircleICreated.js";
 import { timestampToTime } from "../../../assets/js/time.js";
 import circleList from "./CircleList/circleList.vue";
@@ -240,6 +242,11 @@ export default {
         forum_id: "",
         is_ess: "1",
       },
+      // gonggao
+      notId: {
+        circle_id: "",
+      },
+      NoticeValue: [],
     };
   },
   created() {
@@ -247,8 +254,16 @@ export default {
     this.circle.circle_id = this.$route.params.id;
     this.CircleShow();
     this.releaseValue();
+    this.notValue();
   },
   methods: {
+    // gonggao
+    notValue() {
+      this.notId.circle_id = this.paramsId.id;
+      postD(circle_noticeGetListApi(), this.notId).then((res) => {
+        this.NoticeValue = res.list;
+      });
+    },
     // 页面数据
     CircleShow() {
       postD(CircleGetCircleShowApi(), this.paramsId).then((res) => {
@@ -469,7 +484,10 @@ export default {
     },
     goPosts() {
       this.$router.push("/Circle/getCircleForum" + this.paramsId.id);
-    }
+    },
+    goactivities() {
+      this.$router.push("/Activity/release");
+    },
   },
 };
 </script>
@@ -595,9 +613,9 @@ export default {
       left: 30%;
     }
     .qzglSpans {
-      position: absolute;   
+      position: absolute;
       top: 9%;
-      left: 80%;     
+      left: 80%;
     }
   }
 }

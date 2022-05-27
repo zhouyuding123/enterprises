@@ -12,11 +12,11 @@
             <el-input v-model="seatch.keyword"></el-input></div
         ></el-col>
 
-        <div class="sx">
+        <div class="sx" @click="clickSeatch">
           <div class="seatchValue">
             <span>搜索</span>
           </div>
-          <div class="refresh">
+          <div class="refresh" @click="clickRefresh">
             <span><i class="el-icon-refresh-right"></i> 刷新</span>
           </div>
         </div>
@@ -26,14 +26,29 @@
 </template>
 
 <script>
+import { postD } from "@/api/index.js";
+import { BusinessListBusinessApi } from "../Businessurl.js";
 export default {
+  inject: ["BusinessListValue"],
   data() {
     return {
       seatch: {
-        keyword: null,
+        keyword: "",
       },
+      tableDatas: [],
     };
   },
+  methods:{
+    clickRefresh() {
+    this.clickRefresh();
+  },
+  clickSeatch() {
+    postD(BusinessListBusinessApi(), this.seatch).then((res) => {
+      this.tableDatas = res.list;
+      this.$emit("BusinseeSeatch", this.tableDatas);
+    });
+  },
+  }
 };
 </script>
 <style lang="less" scoped>

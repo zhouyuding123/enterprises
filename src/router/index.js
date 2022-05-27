@@ -167,6 +167,58 @@ const routes = [
             },
           }
         ]
+      },
+      {
+        path:"/match",
+        name:"match",
+        component: ()=> import("../components/EventManagement/listEvent.vue"),
+        meta: {
+          title: "赛事管理"
+        },
+        children:[
+          {
+            path: "/match",
+            redirect: "/match/listMacthMF",
+          },
+          {
+            path: "/match/listMacthMF",
+            name: "listMacthMF",
+            component: () => import("../components/EventManagement/EventList/EventList.vue"),
+            meta: {
+              title: "赛事列表"
+            },
+          }
+        ]
+      },
+      {
+        path: "/brand",
+        name: "brand",
+        component: () => import("../components/BrandManagement/listBrand.vue"),
+        meta: {
+          title:"品牌管理"
+        },
+        children:[
+          {
+            path: "/brand",
+            redirect: "/brand/getList",
+          },
+          {
+            path: "/brand/getList",
+            name: "getList",
+            component: () => import("../components/BrandManagement/BrandList/BrandList.vue"),
+            meta: {
+              title: "品牌列表"
+            },
+          },
+          {
+            path: "/brand/addOp",
+            name: "addOp",
+            component: () => import("../components/BrandManagement/BrandList/operation/addOp.vue"),
+            meta: {
+              title: "添加品牌"
+            },
+          }
+        ]
       }
     ]
   }

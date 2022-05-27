@@ -169,7 +169,6 @@
         </div>
       </el-form>
       <span>
-        <button @click="zxc">zxc</button>
         <el-button @click="SelectionShow = false">取 消</el-button>
         <el-button type="primary" @click="addSelection"
           >确 定</el-button
@@ -365,9 +364,6 @@ export default {
         })
       })
     },
-    zxc() {
-      console.log(this.ruleForm);
-    }
   },
 };
 </script>

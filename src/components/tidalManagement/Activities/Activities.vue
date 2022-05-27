@@ -154,7 +154,6 @@
 import { postD } from "@/api";
 import {
   ActivityListActivityMFApi,
-  ActivityDelActivityApi,
 } from "./Activities.js";
 import { imgUrl } from "@/assets/js/modifyStyle.js";
 import ordinary from "./ReleaseActivities/ordinary.vue";

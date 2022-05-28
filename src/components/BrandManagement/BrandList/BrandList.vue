@@ -4,7 +4,7 @@
       <div class="brandadd" @click="addBrand">
         <span>添加</span>
       </div>
-      <div class="brandRf">
+      <div class="brandRf" @click="brandRerresh">
         <span><i class="el-icon-refresh-right"></i>刷新</span>
       </div>
     </div>
@@ -60,30 +60,28 @@
         <vxe-column title="操作" align="center">
           <template v-slot="scoped">
             <div class="operation">
+              <detail-brand class="operationDetail" :OperationDetail="scoped.row" />
               <del-op :OperationDel="scoped.row" />
-              <div class="operationEdit">
-                <img src="../../../assets/imgers/编辑.png" alt="" />
-                <p>编辑</p>
-              </div>
+              <edit-op :OperationEdit="scoped.row" />
             </div>
           </template>
         </vxe-column>
       </vxe-table>
       <vxe-pager
-          :current-page="page1.offset"
-          :page-size="page1.limit"
-          :total="page1.totalResult"
-          :layouts="[
-            'PrevPage',
-            'JumpNumber',
-            'NextPage',
-            'FullJump',
-            'Sizes',
-            'Total',
-          ]"
-          @page-change="handlePageChangeActivity"
-          align="center"
-        ></vxe-pager>
+        :current-page="page1.offset"
+        :page-size="page1.limit"
+        :total="page1.totalResult"
+        :layouts="[
+          'PrevPage',
+          'JumpNumber',
+          'NextPage',
+          'FullJump',
+          'Sizes',
+          'Total',
+        ]"
+        @page-change="handlePageChangeActivity"
+        align="center"
+      ></vxe-pager>
     </div>
   </div>
 </template>
@@ -93,8 +91,15 @@ import { postD } from "@/api";
 import { styleModify, styleModifytwo, imgUrl } from "@/assets/js/modifyStyle";
 import { brandGetListApi } from "./brandUrl.js";
 import delOp from "./operation/delOp.vue";
+import DetailBrand from './operation/detailBrand.vue';
+import EditOp from './operation/editOp.vue';
 export default {
-  components: { delOp },
+  components: { delOp, DetailBrand, EditOp },
+  provide() {
+    return {
+      brandListValue: this.brandListValue,
+    };
+  },
   data() {
     return {
       tableData: [],
@@ -125,6 +130,9 @@ export default {
         this.page1.totalResult = res.count;
       });
     },
+    brandRerresh() {
+      this.brandListValue();
+    },
     filterStatus(val) {
       if (val == 0) {
         return "待审核";
@@ -135,7 +143,7 @@ export default {
       }
     },
     addBrand() {
-        this.$router.push("/brand/addOp");
+      this.$router.push("/brand/addOp");
     },
     handlePageChangeActivity({ currentPage, pageSize }) {
       this.page1.offset = currentPage;
@@ -154,6 +162,7 @@ export default {
   padding: 20px 30px;
   display: flex;
   .brandadd {
+    cursor: pointer;
     width: 80px;
     height: 40px;
     background: #ffffff;
@@ -169,6 +178,7 @@ export default {
     }
   }
   .brandRf {
+    cursor: pointer;
     margin-left: auto;
     width: 80px;
     height: 40px;
@@ -195,20 +205,9 @@ export default {
 .operation {
   display: flex;
   line-height: 10px;
-  .operationEdit {
-    cursor: pointer;
-    position: relative;
-    img {
-      position: absolute;
-    }
-    p {
-      margin-left: 90px;
-      font-size: 14px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #00b567;
-      line-height: 19px;
-    }
-  }
+ 
+}
+.operationDetail {
+  margin-right: 50px;
 }
 </style>

@@ -6,10 +6,10 @@
           <el-row :gutter="20">
             <el-col :span="1"
               ><div>
-                <div class="divText">时间范围:</div>
+                <div class="divText">报名时间范围:</div>
               </div></el-col
             >
-            <el-col :span="6"
+            <el-col :span="3"
               ><div>
                 <div>
                   <el-date-picker
@@ -21,20 +21,65 @@
                   </el-date-picker>
                 </div></div
             ></el-col>
+            <el-col :span="1"
+              ><div>
+                <div class="divText">开始时间范围:</div>
+              </div></el-col
+            >
+            <el-col :span="3"
+              ><div>
+                <div>
+                  <el-date-picker
+                    v-model="exh_time"
+                    type="datetime"
+                    placeholder="选择时间"
+                    @change="gitTime"
+                  >
+                  </el-date-picker>
+                </div></div
+            ></el-col>
+            <div class="seatcher">
+              <div class="seatchT"><span>查询</span></div>
+              <div class="seatchClear"><span>清空</span></div>
+              <div class="seatchRE">
+                <span><i class="el-icon-refresh-right"></i>刷新</span>
+              </div>
+            </div>
           </el-row>
         </div>
       </div>
+    </div>
+    <div class="paddingTable">
+      <vxe-table :data="tableData">
+        <vxe-column align="center" type="checkbox" width="50"></vxe-column>
+      </vxe-table>
     </div>
   </div>
 </template>
 
 <script>
+import { timestampToTime } from "@/assets/js/time.js";
 export default {
   data() {
     return {
       sign_time: "",
       exh_time: "",
+      seatch: {
+        sign_time: "",
+        exh_time: "",
+      },
+      tableData:[]
     };
+  },
+  methods: {
+    gatTime(date) {
+      this.sign_time = date;
+      this.seatch.sign_time = timestampToTime(this.sign_time / 1000);
+    },
+    gitTime(date) {
+      this.exh_time = date;
+      this.seatch.exh_time = timestampToTime(this.exh_time / 1000);
+    },
   },
 };
 </script>
@@ -43,10 +88,67 @@ export default {
 .matchBody {
   padding: 10px 30px;
   .matchframe {
-    height: 160px;
     background: #ffffff;
     .matchcontent {
+      margin: 20px;
     }
+  }
+}
+.divText {
+  width: 100px;
+}
+.el-col {
+  margin: 20px;
+}
+.seatcher {
+  display: flex;
+  margin-top: 20px;
+  justify-content: right;
+  margin-right: 30px;
+}
+.seatchT {
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  background: linear-gradient(180deg, #0c032e 0%, #5c5673 100%);
+  border-radius: 3px 3px 3px 3px;
+  margin-right: 20px;
+  span {
+    font-size: 16px;
+    font-family: PingFang SC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 40px;
+  }
+}
+.seatchClear {
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid #0c032e;
+  span {
+    font-size: 16px;
+    font-family: PingFang SC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    line-height: 40px;
+  }
+}
+.seatchRE {
+  cursor: pointer;
+  width: 80px;
+  height: 40px;
+  background: #00b567;
+  border-radius: 4px 4px 4px 4px;
+  margin-left: 20px;
+  span {
+    font-size: 14px;
+    font-family: PingFang SC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 40px;
   }
 }
 </style>

@@ -1,6 +1,10 @@
 <template>
-  <div class="addBody">
-    <div class="addsurface">
+  <div>
+    <div class="operationEdit" @click="EditShow">
+      <img src="../../../../assets/imgers/编辑.png" alt="" />
+      <p>编辑</p>
+    </div>
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="70%">
       <el-form
         :model="ruleForm"
         :rules="ruleFormrules"
@@ -54,26 +58,35 @@
           </el-upload>
         </el-form-item>
       </el-form>
-    </div>
-    <div class="buttonAdd">
-      <div class="addBrand" @click="zxc"><span>添加品牌</span></div>
-    </div>
+      <span>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addEdit"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { beforeAvatar } from "@/assets/js/modifyStyle.js";
 import { postD } from "@/api";
-import { brandAddApi } from "./addUrl";
+import { brandShowApi,brandEditApi } from "./addUrl.js";
 export default {
+  props: ["OperationEdit"],
+  inject:["brandListValue"],
   data() {
     return {
+      EditId: {
+        id: "",
+      },
       ruleForm: {
         title: "",
         content: "",
         thumb: "",
         qualification: "",
       },
+      dialogVisible: false,
       //   图片
       imageUrl: "",
       imageUrlqualification: "",
@@ -118,6 +131,13 @@ export default {
     };
   },
   methods: {
+    EditShow() {
+      this.dialogVisible = true;
+      this.EditId.id = this.OperationEdit.id;
+      postD(brandShowApi(), this.EditId).then((res) => {
+        this.ruleForm = res.data;
+      });
+    },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       this.ruleForm.thumb = res.url;
@@ -132,13 +152,14 @@ export default {
     beforeAvatarUploadqualification(file) {
       beforeAvatar(file);
     },
-    zxc() {
+    addEdit() {
+      this.dialogVisible = false;
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;
-        postD(brandAddApi(), this.ruleForm).then((res) => {
+        postD(brandEditApi(),this.ruleForm).then(res=> {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
-            this.$router.push("/brand/getList");
+            this.brandListValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -148,36 +169,27 @@ export default {
           } else {
             this.$message.error("注册失败，账号已存在");
           }
-        });
-      });
-    },
+        })
+      })
+    }
   },
 };
 </script>
 
 <style lang="less" scoped>
-.addBody {
-  padding: 20px 30px;
-  .addsurface {
-    background-color: white;
-  }
-}
-.buttonAdd {
+.operationEdit {
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-}
-.addBrand {
-  width: 300px;
-  height: 40px;
-  background: linear-gradient(180deg, #0c032e 0%, #5c5673 100%);
-  border-radius: 20px 20px 20px 20px;
-  span {
+  position: relative;
+  img {
+    position: absolute;
+  }
+  p {
+    margin-left: 80px;
     font-size: 14px;
     font-family: PingFang SC-Regular, PingFang SC;
     font-weight: 400;
-    color: #ffffff;
-    line-height: 40px;
+    color: #00b567;
+    line-height: 19px;
   }
 }
 </style>

@@ -219,7 +219,29 @@ const routes = [
             },
           }
         ]
-      }
+      },
+      {
+        path:"/company_product",
+        name:"company_product",
+        component: ()=> import("../components/commodity/listCommodity.vue"),
+        meta: {
+          title: "商品管理"
+        },
+        children:[
+          {
+            path: "/company_product",
+            redirect: "/company_product/getList",
+          },
+          {
+            path: "/company_product/getList",
+            name: "company_product/getList",
+            component: () => import("../components/commodity/commodityList/commodityList.vue"),
+            meta: {
+              title: "商品列表"
+            },
+          }
+        ]
+      },
     ]
   }
 ];

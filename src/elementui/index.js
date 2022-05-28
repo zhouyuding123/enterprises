@@ -37,9 +37,13 @@ import {
     CheckboxGroup,
     Checkbox,
     CheckboxButton,
+    Descriptions,
+    DescriptionsItem
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(Descriptions)
+        Vue.use(DescriptionsItem)
         Vue.use(CheckboxButton)
         Vue.use(Checkbox)
         Vue.use(CheckboxGroup)

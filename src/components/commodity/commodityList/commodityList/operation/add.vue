@@ -120,7 +120,11 @@
               v-model="video"
             ></ele-upload-video>
           </el-form-item>
-
+        </div>
+        <div>
+          <my-editor
+            @fwbHtml="change"
+          />
         </div>
       </el-form>
 
@@ -135,6 +139,7 @@
 </template>
 
 <script>
+import MyEditor from "./MyEditor.vue";
 import EleUploadVideo from "vue-ele-upload-video";
 import { brandGetListApi, custypeGetListApi } from "../../../commodityUrl.js";
 import { beforeAvatar } from "@/assets/js/modifyStyle.js";
@@ -142,9 +147,12 @@ import { postD } from "@/api";
 export default {
   components: {
     EleUploadVideo,
+    MyEditor,
   },
   data() {
     return {
+      Content:"",
+      isClear: false,
       dialogVisible: false,
       ruleForm: {
         thumb: "",
@@ -196,8 +204,8 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(this.imageUrl);
       this.ruleForm.thumb = res.url;
+      console.log(file);
     },
     beforeAvatarUpload(file) {
       return beforeAvatar(file);
@@ -221,6 +229,9 @@ export default {
     },
     dialogVisibleAdd() {
       console.log(this.ruleForm);
+    },
+    async change(val) {
+      this.ruleForm.content = val
     },
   },
 };

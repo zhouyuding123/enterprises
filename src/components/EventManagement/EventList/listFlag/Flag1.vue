@@ -38,6 +38,14 @@
                   </el-date-picker>
                 </div></div
             ></el-col>
+            <el-col :span="5"
+              ><div>
+                <el-input
+                  placeholder="关键字搜索"
+                  v-model="seatch.keyword"
+                ></el-input></div
+            ></el-col>
+
             <div class="seatcher">
               <div class="seatchT"><span>查询</span></div>
               <div class="seatchClear"><span>清空</span></div>
@@ -50,8 +58,15 @@
       </div>
     </div>
     <div class="paddingTable">
-      <vxe-table :data="tableData">
+      <vxe-table
+        :data="tableData"
+        :row-style="tableRowStyle"
+        :header-row-style="tableStyle"
+      >
         <vxe-column align="center" type="checkbox" width="50"></vxe-column>
+        <vxe-column>
+
+        </vxe-column>
       </vxe-table>
     </div>
   </div>
@@ -59,6 +74,13 @@
 
 <script>
 import { timestampToTime } from "@/assets/js/time.js";
+import {
+  styleModify,
+  styleModifytwo,
+  imgUrl,
+} from "@/assets/js/modifyStyle.js";
+import { postD } from '@/api';
+import {matchListMacthMFApi} from "./matchUrl.js"
 export default {
   data() {
     return {
@@ -67,9 +89,13 @@ export default {
       seatch: {
         sign_time: "",
         exh_time: "",
+        keyword: "",
       },
-      tableData:[]
+      tableData: [],
     };
+  },
+  created() {
+    this.matchValue()
   },
   methods: {
     gatTime(date) {
@@ -80,6 +106,17 @@ export default {
       this.exh_time = date;
       this.seatch.exh_time = timestampToTime(this.exh_time / 1000);
     },
+    tableRowStyle() {
+      return styleModify();
+    },
+    tableStyle() {
+      return styleModifytwo();
+    },
+    matchValue() {
+      postD(matchListMacthMFApi()).then(res=> {
+        this.tableData = res.list
+      })
+    }
   },
 };
 </script>
@@ -150,5 +187,8 @@ export default {
     color: #ffffff;
     line-height: 40px;
   }
+}
+.paddingTable {
+  padding: 10px 30px;
 }
 </style>

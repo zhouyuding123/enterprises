@@ -1,7 +1,7 @@
 <template>
   <div>
-      <div class="Release">
-      <p class="activities">发布赛事</p>
+    <div class="Release" @click="LaunchEvents">
+      <p>发布赛事</p>
     </div>
     <div>
       <div class="borderStyle"></div>
@@ -54,6 +54,9 @@ export default {
     HistoricalRelease() {
       this.flag = 3;
     },
+    LaunchEvents() {
+      this.$router.push("/match/release")
+    }
   },
 };
 </script>
@@ -63,6 +66,7 @@ export default {
   border: 1px solid #d9d9d9;
 }
 .Release {
+  cursor: pointer;
   position: absolute;
   top: 80px;
   right: 0;

@@ -187,6 +187,14 @@ const routes = [
             meta: {
               title: "赛事列表"
             },
+          },
+          {
+            path: "/match/release",
+            name: "match/release",
+            component: () => import("../components/EventManagement/EventList/addMatch.vue"),
+            meta: {
+              title: "添加赛事"
+            },
           }
         ]
       },

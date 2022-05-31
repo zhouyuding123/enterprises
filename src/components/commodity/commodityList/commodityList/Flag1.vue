@@ -11,20 +11,39 @@
       <div class="selectDel">
         <span>批量删除</span>
       </div>
+      <div class="plsj">
+        <span>批量上架</span>
+      </div>
+      <div class="plsj">
+        <span>批量下架</span>
+      </div>
+      <div class="selectStyle">
+        <el-select v-model="value" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      <div class="buttonxz">
+        <div><span>全部</span></div>
+        <div><span>上架</span></div>
+        <div><span>下架</span></div>
+      </div>
       <div class="Res">
         <span>刷新</span>
       </div>
     </div>
     <div class="table_list">
-      <el-table
-        :data="tableData"
-        border
-        style="width: 100%;"
-      >
-      <el-table-column prop="id" label="货号" width="120" align="center"> </el-table-column>
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="id" label="货号" width="120" align="center">
+        </el-table-column>
         <el-table-column prop="name" label="姓名" width="250">
           <template v-slot="">
-             <div class="marginOp">
+            <div class="marginOp">
               <el-image
                 :src="imagesValue + thumbS"
                 alt=""
@@ -40,44 +59,87 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="brand" label="品牌" align="center"> </el-table-column>
-        <el-table-column prop="custom_type" label="分类" align="center"> </el-table-column>
-        <el-table-column prop="status" label="状态" align="center"> 
+        <el-table-column prop="brand" label="品牌" align="center">
+        </el-table-column>
+        <el-table-column prop="custom_type" label="分类" align="center">
+        </el-table-column>
+        <el-table-column prop="status" label="状态" align="center">
           <template v-slot="scoped">
-            <div>{{fullStatus(scoped.row.status)}}</div>
+            <div>{{ fullStatus(scoped.row.status) }}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="amount1" label="颜色" class="colorStyle" align="center">
+        <el-table-column
+          prop="amount1"
+          label="颜色"
+          class="colorStyle"
+          align="center"
+        >
           <template v-slot="scoped">
-            <div v-for="item in scoped.row.spec" :key="item.id" class="colorDiv">
-                <span>{{item.color}}</span>
+            <div
+              v-for="item in scoped.row.spec"
+              :key="item.id"
+              class="colorDiv"
+            >
+              <span>{{ item.color }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="amount1" label="尺寸" class="colorStyle" align="center">
+        <el-table-column
+          prop="amount1"
+          label="尺寸"
+          class="colorStyle"
+          align="center"
+        >
           <template v-slot="scoped">
-            <div v-for="item in scoped.row.spec" :key="item.id" class="colorDiv">
-                <span>{{item.spec}}</span>
+            <div
+              v-for="item in scoped.row.spec"
+              :key="item.id"
+              class="colorDiv"
+            >
+              <span>{{ item.spec }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="price" label="价格" class="colorStyle" align="center">
+        <el-table-column
+          prop="price"
+          label="价格"
+          class="colorStyle"
+          align="center"
+        >
           <template v-slot="scoped">
-            <div v-for="item in scoped.row.spec" :key="item.id" class="colorDiv">
-                <span>{{item.price}}</span>
+            <div
+              v-for="item in scoped.row.spec"
+              :key="item.id"
+              class="colorDiv"
+            >
+              <span>{{ item.price }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="count" label="库存" class="colorStyle" align="center">
+        <el-table-column
+          prop="count"
+          label="库存"
+          class="colorStyle"
+          align="center"
+        >
           <template v-slot="scoped">
-            <div v-for="item in scoped.row.spec" :key="item.id" class="colorDiv">
-                <span>{{item.count}}</span>
+            <div
+              v-for="item in scoped.row.spec"
+              :key="item.id"
+              class="colorDiv"
+            >
+              <span>{{ item.count }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column  label="操作"  align="center">
-          <div>       </div>
-          
+        <el-table-column label="操作" align="center">
+          <div>
+            <div class="spanstyle"><span>编辑</span></div>
+            <div class="spanstyle"><span>预览</span></div>
+            <div class="spanstyle"><span>上架</span></div>
+            <div class="spanstyle"><span>下架</span></div>
+            <div class="spanstyle"><span>删除</span></div>
+          </div>
         </el-table-column>
       </el-table>
     </div>
@@ -85,9 +147,7 @@
 </template>
 
 <script>
-import {
-  company_productGetListApi,
-} from "../../commodityUrl.js";
+import { company_productGetListApi } from "../../commodityUrl.js";
 import {
   styleModify,
   styleModifytwo,
@@ -132,7 +192,7 @@ export default {
         ],
       },
       thumbS: [],
-      colors:[]
+      colors: [],
     };
   },
   created() {
@@ -159,12 +219,12 @@ export default {
       this.custom_type = data.title;
     },
     fullStatus(val) {
-      if(val === 0){
-        return "下架"
-      }else if(val ===1){
-        return "上架"
+      if (val === 0) {
+        return "下架";
+      } else if (val === 1) {
+        return "上架";
       }
-    }
+    },
   },
 };
 </script>
@@ -295,7 +355,7 @@ export default {
 /deep/.cell {
   padding: 0;
 }
-/deep/.el-table__cell{
+/deep/.el-table__cell {
   padding: 0;
 }
 .colorDiv {
@@ -306,7 +366,81 @@ export default {
     line-height: 70px;
   }
 }
-/deep/.el-table th.el-table__cell>.cell {
+/deep/.el-table th.el-table__cell > .cell {
   padding: 12px 0;
+}
+.spanstyle {
+  cursor: pointer;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #0177d5;
+  margin-top: 10px;
+}
+.plsj {
+  cursor: pointer;
+  margin-left: 10px;
+  width: 80px;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid #0c032e;
+  span {
+    font-size: 16px;
+    font-family: PingFang SC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    line-height: 40px;
+  }
+}
+.selectStyle {
+  margin-left: 100px;
+}
+.buttonxz {
+  display: flex;
+  margin-left: 10px;
+  div:nth-child(1) {
+    cursor: pointer;
+    width: 90px;
+    height: 40px;
+    background: #ff2659;
+    border-radius: 4px 0px 0px 4px;
+    span {
+      font-size: 14px;
+      font-family: PingFang SC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 40px;
+    }
+  }
+  div:nth-child(2) {
+    cursor: pointer;
+    width: 90px;
+    height: 40px;
+    background: #ffffff;
+    border: 1px solid #dfdfdf;
+    span {
+      font-size: 14px;
+      font-family: PingFang SC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #999999;
+      line-height: 40px;
+    }
+  }
+  div:nth-child(3) {
+    cursor: pointer;
+    width: 90px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 0px 4px 4px 0px;
+    border: 1px solid #dfdfdf;
+    span {
+      font-size: 14px;
+      font-family: PingFang SC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #999999;
+      line-height: 40px;
+    }
+  }
 }
 </style>

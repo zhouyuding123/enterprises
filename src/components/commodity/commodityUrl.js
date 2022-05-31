@@ -10,8 +10,10 @@ export const custypeAddApi = () => {
 export const custypeGetListApi = () => {
     return "custype/getList"
 }
-
-
+// 添加商品
+export const company_productAddProductApi = () => {
+    return "company_product/addProduct"
+}
 
 
 

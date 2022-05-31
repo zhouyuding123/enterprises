@@ -38,10 +38,14 @@ import {
     Checkbox,
     CheckboxButton,
     Descriptions,
-    DescriptionsItem
+    DescriptionsItem,
+    Table,
+    TableColumn
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(Table)
+        Vue.use(TableColumn)
         Vue.use(Descriptions)
         Vue.use(DescriptionsItem)
         Vue.use(CheckboxButton)

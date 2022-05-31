@@ -1,18 +1,5 @@
 <template>
   <div class="FlagBody">
-    <div class="line">
-      <div>
-        <div class="categoryer">类别</div>
-        <div class="lineValues">
-          <div v-for="(item, index) in custypeListValue" :key="index">
-            <span @click="searchOne(item)">{{ item.title }}&nbsp;|</span>
-          </div>
-        </div>
-      </div>
-      <div class="Category" @click="category">
-        <span>类目管理</span>
-      </div>
-    </div>
     <div class="operationBody">
       <div class="imputButton">
         <el-input placeholder="请输入内容"></el-input>
@@ -29,49 +16,77 @@
       </div>
     </div>
     <div class="table_list">
-      <vxe-table
-        round
-        border="true"
-        ref="xTable1"
-        :align="allAlign"
-        :row-config="{ isHover: true }"
+      <el-table
         :data="tableData"
-        row-id="id"
-        :row-style="tableRowStyle"
-        :header-row-style="tableStyle"
+        border
+        style="width: 100%;"
       >
-      </vxe-table>
+      <el-table-column prop="id" label="货号" width="120" align="center"> </el-table-column>
+        <el-table-column prop="name" label="姓名" width="250">
+          <template v-slot="">
+             <div class="marginOp">
+              <el-image
+                :src="imagesValue + thumbS"
+                alt=""
+                :preview-src-list="[imagesValue + thumbS]"
+                style="
+                  width: 100px;
+                  height: 100px;
+                  background: #ffffff;
+                  border-radius: 6px 6px 6px 6px;
+                "
+                class="thumbSStyle"
+              />
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="brand" label="品牌" align="center"> </el-table-column>
+        <el-table-column prop="custom_type" label="分类" align="center"> </el-table-column>
+        <el-table-column prop="status" label="状态" align="center"> 
+          <template v-slot="scoped">
+            <div>{{fullStatus(scoped.row.status)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="amount1" label="颜色" class="colorStyle" align="center">
+          <template v-slot="scoped">
+            <div v-for="item in scoped.row.spec" :key="item.id" class="colorDiv">
+                <span>{{item.color}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="amount1" label="尺寸" class="colorStyle" align="center">
+          <template v-slot="scoped">
+            <div v-for="item in scoped.row.spec" :key="item.id" class="colorDiv">
+                <span>{{item.spec}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="price" label="价格" class="colorStyle" align="center">
+          <template v-slot="scoped">
+            <div v-for="item in scoped.row.spec" :key="item.id" class="colorDiv">
+                <span>{{item.price}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="count" label="库存" class="colorStyle" align="center">
+          <template v-slot="scoped">
+            <div v-for="item in scoped.row.spec" :key="item.id" class="colorDiv">
+                <span>{{item.count}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column  label="操作"  align="center">
+          <div>       </div>
+          
+        </el-table-column>
+      </el-table>
     </div>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="70%">
-      <el-form
-        :model="ruleForm"
-        :rules="ruleFormRules"
-        ref="ruleFormRef"
-        label-width="110px"
-        hide-required-asterisk
-      >
-        <el-form-item label="自定义类型" prop="title">
-          <el-input v-model="ruleForm.title"></el-input>
-        </el-form-item>
-        <el-form-item label="简介描述" prop="description">
-          <el-input v-model="ruleForm.description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div style="padding-top: 15px">
-        <span>
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="custypeAdd">确 定</el-button>
-        </span>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import {
   company_productGetListApi,
-  custypeAddApi,
-  custypeGetListApi,
 } from "../../commodityUrl.js";
 import {
   styleModify,
@@ -81,11 +96,15 @@ import {
 import { postD } from "@/api";
 import add from "./operation/add.vue";
 export default {
+  provide() {
+    return {
+      commodityValue: this.commodityValue,
+    };
+  },
   components: { add },
   data() {
     return {
       imagesValue: "",
-      dialogVisible: false,
       allAlign: null,
       tableData: [],
       commodityList: {
@@ -112,17 +131,14 @@ export default {
           },
         ],
       },
-      custypeListValue: [],
+      thumbS: [],
+      colors:[]
     };
   },
   created() {
     this.commodityValue();
-    this.custypeList();
   },
   methods: {
-    category() {
-      this.dialogVisible = true;
-    },
     tableRowStyle() {
       return styleModify();
     },
@@ -130,40 +146,25 @@ export default {
       return styleModifytwo();
     },
     commodityValue() {
-      this.commodityList.status = "1";
-      postD(company_productGetListApi(), this.commodityList).then((res) => {
+      postD(company_productGetListApi()).then((res) => {
         this.tableData = res.list;
-        this.imagesValue = imgUrl();
-      });
-    },
-    custypeList() {
-      postD(custypeGetListApi()).then((res) => {
-        this.custypeListValue = res.list;
-      });
-    },
-    custypeAdd() {
-      this.$refs.ruleFormRef.validate((valid) => {
-        if (!valid) return;
-        postD(custypeAddApi(), this.ruleForm).then((res) => {
-          if (res.code == "200") {
-            this.$message.success("类别添加成功");
-            this.dialogVisible = false;
-            this.custypeList();
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("未登陆");
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
-          } else {
-            this.$message.error("已存在");
-          }
+        res.list.forEach((v) => {
+          let aser = JSON.parse(v.thumb);
+          this.thumbS = aser.shift();
         });
+        this.imagesValue = imgUrl();
       });
     },
     searchOne(data) {
       this.custom_type = data.title;
     },
+    fullStatus(val) {
+      if(val === 0){
+        return "下架"
+      }else if(val ===1){
+        return "上架"
+      }
+    }
   },
 };
 </script>
@@ -274,5 +275,38 @@ export default {
   font-weight: bold;
   color: #333333;
   line-height: 19px;
+}
+.marginOp {
+  width: 400px;
+  height: 140px;
+  background: #f5f5f5;
+  border-radius: 3px 3px 3px 3px;
+  .thumbSStyle {
+    margin-top: 5%;
+    margin-left: 5%;
+  }
+}
+.colorStyle {
+  display: flex;
+  justify-content: center;
+  padding: -20px;
+  margin: -20px;
+}
+/deep/.cell {
+  padding: 0;
+}
+/deep/.el-table__cell{
+  padding: 0;
+}
+.colorDiv {
+  text-align: center;
+  width: 100%;
+  border: 1px solid #dfdfdf;
+  span {
+    line-height: 70px;
+  }
+}
+/deep/.el-table th.el-table__cell>.cell {
+  padding: 12px 0;
 }
 </style>

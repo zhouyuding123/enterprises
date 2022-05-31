@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" label-width="150px">
+    <el-form ref="form" :model="form">
       <el-form-item prop="content" class="content">
         <div id="editor" ref="editor" />
       </el-form-item>
@@ -16,6 +16,7 @@ export default {
       editorContent: "",
       form: {},
       imageser: "",
+      moveser: "",
     };
   },
   mounted() {
@@ -26,19 +27,27 @@ export default {
     wangeditor() {
       const editor = new E(this.$refs.editor);
       // 删除上传视频功能
-      editor.config.menus.splice(18, 1);
+      // editor.config.menus.splice(18, 1);
       // 删除添加表情功能
-      editor.config.menus.splice(16, 1);
+      // editor.config.menus.splice(16, 1);
       // 隐藏全屏
       editor.config.showFullScreen = false;
       // 上传图片
-      editor.config.uploadImgShowBase64 = false; //如果为true，则不用配置下面的
+      editor.config.uploadImgShowBase64 = true; //如果为true，则不用配置下面的
       //-----
       editor.config.uploadImgServer = this.baseUrl; // 这是服务器端上传图片的接口路径
+      // 配置 server 接口地址
+      editor.config.uploadVideoServer = this.baseUrl;
+
       editor.config.uploadFileName = "file"; // 后端接受上传文件的参数名
       editor.config.uploadImgParams = {
         fileType: "images",
       };
+      editor.config.uploadVideoName = "file";
+      editor.config.uploadVideoParams = {
+        fileType: "moves",
+      };
+
       editor.config.uploadImgHooks = {
         customInsert: function (insertImg, result, editor) {
           this.imageser =
@@ -46,8 +55,14 @@ export default {
           insertImg(this.imageser);
         },
       };
+      editor.config.uploadVideoHooks={
+        customInsert:function(insertVideo, result, editor){
+          this.moveser = "https://weisoutc.oss-cn-shanghai.aliyuncs.com/" + result.url
+          insertVideo(this.moveser)
+        }
+      }
       //------
-      // 上传图片大小 5M
+      // 上传图片大小 5M文件类型  value=images||moves||3DModels
       editor.config.uploadImgMaxSize = 5 * 1024 * 1024;
       // // 隐藏插入网络图片的功能
       editor.config.showLinkImg = false;

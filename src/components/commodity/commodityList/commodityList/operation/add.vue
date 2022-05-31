@@ -23,10 +23,9 @@
             <el-upload
               action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
               list-type="picture-card"
-              :auto-upload="false"
               :data="{ fileType: this.fileType }"
               :limit="9"
-              :on-success="handleAvatarSuccess"
+              :on-success="handleAvatarSuccesser"
               :before-upload="beforeAvatarUpload"
             >
               <i slot="default" class="el-icon-plus"></i>
@@ -36,7 +35,7 @@
         </div>
         <div class="line2" style="margin-top: 15px">
           <el-form-item label="新增规格:" style="width: 100%">
-            <div v-for="(item, index) in ruleForm.spec" :key="index">
+            <div v-for="(item, index) in specs" :key="index">
               <div class="prizesS">
                 <el-input
                   v-model="item.color"
@@ -56,7 +55,7 @@
                 <el-input
                   v-model="item.count"
                   style="width: 350px"
-                  placeholder="价格-必填"
+                  placeholder="库存-必填"
                 ></el-input>
                 <div
                   class="addInput"
@@ -106,7 +105,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="视频介绍" prop="title">
+          <el-form-item label="视频介绍">
             <ele-upload-video
               :data="{
                 token: this.token,
@@ -122,9 +121,7 @@
           </el-form-item>
         </div>
         <div>
-          <my-editor
-            @fwbHtml="change"
-          />
+          <my-editor @fwbHtml="change" />
         </div>
       </el-form>
 
@@ -141,21 +138,26 @@
 <script>
 import MyEditor from "./MyEditor.vue";
 import EleUploadVideo from "vue-ele-upload-video";
-import { brandGetListApi, custypeGetListApi } from "../../../commodityUrl.js";
+import {
+  brandGetListApi,
+  custypeGetListApi,
+  company_productAddProductApi,
+} from "../../../commodityUrl.js";
 import { beforeAvatar } from "@/assets/js/modifyStyle.js";
 import { postD } from "@/api";
 export default {
+  inject: ["commodityValue"],
   components: {
     EleUploadVideo,
     MyEditor,
   },
   data() {
     return {
-      Content:"",
+      Content: "",
       isClear: false,
       dialogVisible: false,
       ruleForm: {
-        thumb: "",
+        thumb: [],
         title: "",
         spec: [
           {
@@ -170,10 +172,27 @@ export default {
         custom_type: "",
         content: "",
       },
-      ruleFormRules: {},
+      specs: [
+        {
+          color: "",
+          spec: "",
+          price: "",
+          count: "",
+        },
+      ],
+      ruleFormRules: {
+        title: [
+          {
+            required: true,
+            message: "请输入产品标题",
+            tirgger: "blur",
+          },
+        ],
+      },
       disabled: false,
       fileType: "images",
       imageUrl: "",
+      fileList: [],
       // 品牌id
       options: [],
       //选择平台设置的商品类别
@@ -202,19 +221,17 @@ export default {
         this.custom_typeOptions = res.list;
       });
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.ruleForm.thumb = res.url;
-      console.log(file);
+    handleAvatarSuccesser(res, file) {
+      this.ruleForm.thumb.push(res.url);
     },
     beforeAvatarUpload(file) {
       return beforeAvatar(file);
     },
     addInputHandle() {
-      this.ruleForm.spec.push({ color: "", spec: "", price: "" });
+      this.specs.push({ color: "", spec: "", price: "", count: "" });
     },
     delInputHandle(index) {
-      this.ruleForm.spec.splice(index, 1);
+      this.specs.splice(index, 1);
     },
     handleUploadError(error) {
       this.$notify.error({
@@ -228,10 +245,31 @@ export default {
       return URL.createObjectURL(file.raw);
     },
     dialogVisibleAdd() {
-      console.log(this.ruleForm);
+      let param = new FormData();
+      let Obj = JSON.stringify(this.specs);
+      param.append("specs", Obj);
+      this.ruleForm.spec = Obj;
+      this.$refs.ruleFormRef.validate((v) => {
+        if (!v) return;
+        postD(company_productAddProductApi(), this.ruleForm).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("添加成功");
+            this.dialogVisible = false;
+            this.commodityValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，已存在");
+          }
+        });
+      });
     },
     async change(val) {
-      this.ruleForm.content = val
+      this.ruleForm.content = val;
     },
   },
 };

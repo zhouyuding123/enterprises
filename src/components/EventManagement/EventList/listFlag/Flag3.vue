@@ -194,7 +194,7 @@ export default {
         this.imagesValue = imgUrl();
         
         this.CurrentTime = timestampToTime(new Date() / 1000);
-        let aser = res.list.filter((item)=> this.CurrentTime< item.exh_end_time && this.CurrentTime> item.sign_start_time)
+        let aser = res.list.filter((item)=> this.CurrentTime> item.exh_end_time)
         this.tableData =aser;
         this.page1.totalResult = aser.length;
       });
@@ -220,7 +220,7 @@ export default {
       postD(matchListMacthMFApi(),this.seatch).then(res=> {
         this.tableData = res.list;
         this.CurrentTime = timestampToTime(new Date() / 1000);
-        let aser = res.list.filter((item)=> this.CurrentTime< item.exh_end_time && this.CurrentTime> item.sign_start_time)
+        let aser = res.list.filter((item)=> this.CurrentTime> item.exh_end_time)
         this.tableData =aser;
         this.page1.totalResult = aser.length;
       })

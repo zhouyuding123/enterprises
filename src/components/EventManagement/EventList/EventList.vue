@@ -25,15 +25,18 @@
     <div v-if="this.flag == 2">
       <flag-2 />
     </div>
-    <div v-if="this.flag == 3">3</div>
+    <div v-if="this.flag == 3">
+      <flag-3 />
+    </div>
   </div>
 </template>
 
 <script>
 import Flag1 from "./listFlag/Flag1.vue";
 import Flag2 from './listFlag/Flag2.vue';
+import Flag3 from './listFlag/Flag3.vue';
 export default {
-  components: { Flag1, Flag2 },
+  components: { Flag1, Flag2, Flag3 },
   data() {
     return {
       activeIndex: "1",

@@ -10,3 +10,7 @@ export const matchReleaseApi = () => {
 export const matchShowMatchApi = () => {
     return "match/showMatch"
 }
+// 参赛作品列表（随机排序）
+export const MatchWorksApi = () => {
+    return "Match/works"
+}

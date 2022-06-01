@@ -51,7 +51,7 @@
                     class="have-in-hand"
                     v-if="
                       scoped.row.status == 1 &&
-                      CurrentTime < scoped.row.exh_end_time
+                      CurrentTime < scoped.row.exh_start_time
                     "
                   >
                     <span>进行中</span>
@@ -66,7 +66,7 @@
                     class="end"
                     v-if="
                       scoped.row.status == 1 &&
-                      CurrentTime > scoped.row.exh_end_time
+                      CurrentTime > scoped.row.exh_start_time
                     "
                   >
                     <span>已完结</span>
@@ -83,7 +83,7 @@
                   class="screenDiv"
                   v-if="
                     scoped.row.status == 1 &&
-                    CurrentTime < scoped.row.sign_end_time
+                    CurrentTime < scoped.row.voto_start_time
                   "
                   @click="ManuscriptScreening(scoped.row)"
                 >
@@ -100,7 +100,7 @@
                   class="overtDiv"
                   v-if="
                     scoped.row.status == 1 &&
-                    CurrentTime > scoped.row.sign_end_time
+                    CurrentTime > scoped.row.voto_start_time
                   "
                 >
                   <span>筛选结束</span>

@@ -191,9 +191,17 @@ const routes = [
           {
             path: "/match/release",
             name: "match/release",
-            component: () => import("../components/EventManagement/EventList/addMatch.vue"),
+            component: () => import("../components/EventManagement/EventList/listFlag/add/addMatch.vue"),
             meta: {
               title: "添加赛事"
+            },
+          },
+          {
+            path: "/Match/works:id",
+            name: "Match/works",
+            component: () => import("../components/EventManagement/EventList/listFlag/screening/screening.vue"),
+            meta: {
+              title: "稿件筛选"
             },
           }
         ]

@@ -113,14 +113,12 @@
       <vxe-pager
         :current-page="page1.offset"
         :page-size="page1.limit"
-        :total="page1.totalResult"
         :layouts="[
           'PrevPage',
           'JumpNumber',
           'NextPage',
           'FullJump',
           'Sizes',
-          'Total',
         ]"
         align="center"
         @page-change="handlePageChangeActivity"
@@ -165,7 +163,6 @@ export default {
       page1: {
         offset: 1,
         limit: 10,
-        totalResult: 0,
       },
       reasonValueShow:false,
       reasonValueId: {
@@ -193,9 +190,12 @@ export default {
     matchValue() {
       postD(matchListMacthMFApi()).then((res) => {
         this.imagesValue = imgUrl();
-        this.tableData = res.list;
         this.page1.totalResult = res.count;
         this.CurrentTime = timestampToTime(new Date() / 1000);
+        let aser = res.list.filter((item)=> this.CurrentTime< item.exh_end_time && this.CurrentTime> item.sign_start_time)
+        this.tableData =aser;
+        
+        
       });
     },
     // 分页
@@ -233,5 +233,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("./Flag1.less");
+@import url("./Flag2.less");
 </style>

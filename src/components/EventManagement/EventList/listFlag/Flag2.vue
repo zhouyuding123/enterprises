@@ -51,26 +51,12 @@
                     class="have-in-hand"
                     v-if="
                       scoped.row.status == 1 &&
-                      CurrentTime < scoped.row.exh_start_time
+                       CurrentTime < new Date(scoped.row.exh_start_time)/1
                     "
                   >
                     <span>进行中</span>
                   </div>
-                  <div class="wait" v-if="scoped.row.status == 0">
-                    <span>等待审核</span>
-                  </div>
-                  <div class="reject" v-if="scoped.row.status == 2">
-                    <span>赛事驳回</span>
-                  </div>
-                  <div
-                    class="end"
-                    v-if="
-                      scoped.row.status == 1 &&
-                      CurrentTime > scoped.row.exh_start_time
-                    "
-                  >
-                    <span>已完结</span>
-                  </div>
+
                 </div>
                 <div class="introduce">
                   <div class="introduceline">
@@ -83,7 +69,7 @@
                   class="screenDiv"
                   v-if="
                     scoped.row.status == 1 &&
-                    CurrentTime < scoped.row.voto_start_time
+                    CurrentTime < new Date(scoped.row.voto_end_time)/1
                   "
                   @click="ManuscriptScreening(scoped.row)"
                 >
@@ -100,7 +86,7 @@
                   class="overtDiv"
                   v-if="
                     scoped.row.status == 1 &&
-                    CurrentTime > scoped.row.voto_start_time
+                    CurrentTime > new Date(scoped.row.voto_end_time)/1
                   "
                 >
                   <span>筛选结束</span>
@@ -192,10 +178,10 @@ export default {
     matchValue() {
       postD(matchListMacthMFApi()).then((res) => {
         this.imagesValue = imgUrl();
-        
-        this.CurrentTime = timestampToTime(new Date() / 1000);
-        let aser = res.list.filter((item)=> this.CurrentTime< item.exh_end_time && this.CurrentTime> item.sign_start_time)
-        this.tableData =aser;
+        this.CurrentTime = new Date() / 1
+        let aser = res.list.filter((item)=> this.CurrentTime< new Date(item.exh_start_time)/1)
+        let asers = aser.filter((item)=> item.status == 1)
+        this.tableData =asers;
         this.page1.totalResult = aser.length;
       });
     },

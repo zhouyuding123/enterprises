@@ -51,7 +51,7 @@
                     class="have-in-hand"
                     v-if="
                       scoped.row.status == 1 &&
-                      CurrentTime < scoped.row.exh_start_time
+                      CurrentTime < new Date(scoped.row.exh_start_time)/1
                     "
                   >
                     <span>进行中</span>
@@ -66,7 +66,7 @@
                     class="end"
                     v-if="
                       scoped.row.status == 1 &&
-                      CurrentTime > scoped.row.exh_start_time
+                      CurrentTime >  new Date(scoped.row.exh_start_time)/1
                     "
                   >
                     <span>已完结</span>
@@ -83,7 +83,7 @@
                   class="screenDiv"
                   v-if="
                     scoped.row.status == 1 &&
-                    CurrentTime < scoped.row.voto_start_time
+                    CurrentTime < new Date(scoped.row.voto_end_time)/1
                   "
                   @click="ManuscriptScreening(scoped.row)"
                 >
@@ -100,7 +100,7 @@
                   class="overtDiv"
                   v-if="
                     scoped.row.status == 1 &&
-                    CurrentTime > scoped.row.voto_start_time
+                    CurrentTime > new Date(scoped.row.voto_end_time)/1
                   "
                 >
                   <span>筛选结束</span>
@@ -149,7 +149,6 @@ import {
 } from "@/assets/js/modifyStyle.js";
 import { postD } from "@/api";
 import { matchListMacthMFApi, matchShowMatchApi } from "./matchUrl.js";
-import { timestampToTime } from "@/assets/js/time";
 export default {
   data() {
     return {
@@ -195,7 +194,7 @@ export default {
         this.imagesValue = imgUrl();
         this.tableData = res.list;
         this.page1.totalResult = res.count;
-        this.CurrentTime = timestampToTime(new Date() / 1000);
+        this.CurrentTime = new Date()/1
       });
     },
     // 分页

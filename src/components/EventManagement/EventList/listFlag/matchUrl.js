@@ -14,3 +14,7 @@ export const matchShowMatchApi = () => {
 export const MatchWorksApi = () => {
     return "Match/works"
 }
+// 详情
+export const MatchWorksShowApi = () => {
+    return "Match/worksShow"
+}

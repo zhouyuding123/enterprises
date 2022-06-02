@@ -203,6 +203,14 @@ const routes = [
             meta: {
               title: "稿件筛选"
             },
+          },
+          {
+            path: "/worksShow/:works_id/:id/:paramsId",
+            name: "worksShow",
+            component: () => import("../components/EventManagement/EventList/listFlag/screening/screeningDetial/screeningDetial.vue"),
+            meta: {
+              title: "稿件详情"
+            },
           }
         ]
       },

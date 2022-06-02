@@ -293,6 +293,7 @@ export default {
         notice: "",
         thumb: "",
         poster: "",
+        condition:"1"
       },
       // 图片
       imageUrl: "",

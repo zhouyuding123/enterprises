@@ -48,25 +48,10 @@
                     <span>{{ scoped.row.title }}</span>
                   </div>
                   <div
-                    class="have-in-hand"
-                    v-if="
-                      scoped.row.status == 1 &&
-                      CurrentTime < scoped.row.exh_start_time
-                    "
-                  >
-                    <span>进行中</span>
-                  </div>
-                  <div class="wait" v-if="scoped.row.status == 0">
-                    <span>等待审核</span>
-                  </div>
-                  <div class="reject" v-if="scoped.row.status == 2">
-                    <span>赛事驳回</span>
-                  </div>
-                  <div
                     class="end"
                     v-if="
                       scoped.row.status == 1 &&
-                      CurrentTime > scoped.row.exh_start_time
+                      CurrentTime >  new Date(scoped.row.exh_start_time)/1
                     "
                   >
                     <span>已完结</span>
@@ -80,27 +65,10 @@
               </div>
               <div class="screenBody">
                 <div
-                  class="screenDiv"
-                  v-if="
-                    scoped.row.status == 1 &&
-                    CurrentTime < scoped.row.voto_start_time
-                  "
-                  @click="ManuscriptScreening(scoped.row)"
-                >
-                  <span>稿件筛选</span>
-                </div>
-                <div
-                  class="rejectDiv"
-                  v-if="scoped.row.status == 2"
-                  @click="reasonValue(scoped.row)"
-                >
-                  <span>查看驳回理由</span>
-                </div>
-                <div
                   class="overtDiv"
                   v-if="
                     scoped.row.status == 1 &&
-                    CurrentTime > scoped.row.voto_start_time
+                    CurrentTime > new Date(scoped.row.voto_end_time)/1
                   "
                 >
                   <span>筛选结束</span>
@@ -190,11 +158,10 @@ export default {
       this.$router.push("/match/release");
     },
     matchValue() {
-      postD(matchListMacthMFApi()).then((res) => {
+       postD(matchListMacthMFApi()).then((res) => {
         this.imagesValue = imgUrl();
-        
-        this.CurrentTime = timestampToTime(new Date() / 1000);
-        let aser = res.list.filter((item)=> this.CurrentTime> item.exh_end_time)
+        this.CurrentTime = new Date() / 1
+        let aser = res.list.filter((item)=> this.CurrentTime> new Date(item.exh_start_time)/1)
         this.tableData =aser;
         this.page1.totalResult = aser.length;
       });

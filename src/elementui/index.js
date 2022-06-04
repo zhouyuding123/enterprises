@@ -41,10 +41,12 @@ import {
     DescriptionsItem,
     Table,
     TableColumn,
-    ButtonGroup
+    ButtonGroup,
+    Tag
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(Tag)
         Vue.use(ButtonGroup)
         Vue.use(Table)
         Vue.use(TableColumn)

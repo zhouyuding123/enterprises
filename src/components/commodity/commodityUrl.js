@@ -14,9 +14,14 @@ export const custypeGetListApi = () => {
 export const company_productAddProductApi = () => {
     return "company_product/addProduct"
 }
-
-
-
+// 批量删除
+export const company_productSelectDelApi = () => {
+    return "company_product/selectDel"
+}
+// 删除
+export const company_productDelProductApi = () => {
+    return "company_product/delProduct"
+}
 
 
 

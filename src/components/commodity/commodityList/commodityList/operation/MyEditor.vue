@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="form">
+    <el-form ref="form" :model="form" >
       <el-form-item prop="content" class="content">
         <div id="editor" ref="editor" />
       </el-form-item>

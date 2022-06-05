@@ -8,7 +8,7 @@
         </div>
       </div>
       <add />
-      <div class="selectDel">
+      <div class="selectDel" @click="delsValue">
         <span>批量删除</span>
       </div>
       <div class="plsj">
@@ -18,6 +18,7 @@
         <span>批量下架</span>
       </div>
       <div class="selectStyle">
+        <div>品牌</div>
         <el-select v-model="value" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -38,16 +39,23 @@
       </div>
     </div>
     <div class="table_list">
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table
+        :data="tableData"
+        border
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="75" align="center">
+        </el-table-column>
         <el-table-column prop="id" label="货号" width="120" align="center">
         </el-table-column>
         <el-table-column prop="name" label="姓名" width="250">
-          <template v-slot="">
+          <template v-slot="scoped">
             <div class="marginOp">
               <el-image
-                :src="imagesValue + thumbS"
+                :src="imagesValue + fulthumb(scoped.row.thumb)"
                 alt=""
-                :preview-src-list="[imagesValue + thumbS]"
+                :preview-src-list="[imagesValue + fulthumb(scoped.row.thumb)]"
                 style="
                   width: 100px;
                   height: 100px;
@@ -133,13 +141,15 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
+          <template v-slot="scoped">
           <div>
             <div class="spanstyle"><span>编辑</span></div>
             <div class="spanstyle"><span>预览</span></div>
             <div class="spanstyle"><span>上架</span></div>
             <div class="spanstyle"><span>下架</span></div>
-            <div class="spanstyle"><span>删除</span></div>
+            <onedel :deloneDle="scoped.row" class="spanstyle" />
           </div>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -147,7 +157,10 @@
 </template>
 
 <script>
-import { company_productGetListApi } from "../../commodityUrl.js";
+import {
+  company_productGetListApi,
+  company_productSelectDelApi,
+} from "../../commodityUrl.js";
 import {
   styleModify,
   styleModifytwo,
@@ -155,13 +168,14 @@ import {
 } from "@/assets/js/modifyStyle.js";
 import { postD } from "@/api";
 import add from "./operation/add.vue";
+import Onedel from './operation/onedel.vue';
 export default {
   provide() {
     return {
       commodityValue: this.commodityValue,
     };
   },
-  components: { add },
+  components: { add, Onedel },
   data() {
     return {
       imagesValue: "",
@@ -191,8 +205,16 @@ export default {
           },
         ],
       },
-      thumbS: [],
       colors: [],
+      // 批量删除
+      ids: [],
+      //选中时将对象保存到arrs中
+      arrs: [],
+      comDelsValues: {
+        id: "",
+      },
+      value: "",
+      options: "",
     };
   },
   created() {
@@ -208,13 +230,13 @@ export default {
     commodityValue() {
       postD(company_productGetListApi()).then((res) => {
         this.tableData = res.list;
-        res.list.forEach((v) => {
-          let aser = JSON.parse(v.thumb);
-          this.thumbS = aser.shift();
-        });
         this.imagesValue = imgUrl();
       });
     },
+    fulthumb(val) {
+      return JSON.parse(val)
+    },
+
     searchOne(data) {
       this.custom_type = data.title;
     },
@@ -223,6 +245,43 @@ export default {
         return "下架";
       } else if (val === 1) {
         return "上架";
+      }
+    },
+    handleSelectionChange(val) {
+      this.arrs = val;
+    },
+    async delsValue() {
+      const delsValues = await this.$confirm(
+        "此操作将永久删除管理, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (delsValues !== "confirm") {
+        return this.$message.info("取消删除");
+      }
+      if (delsValues === "confirm") {
+        this.arrs.forEach((v) => {
+          this.ids.push(v.id);
+        });
+        this.comDelsValues.id = this.ids.toString();
+        postD(company_productSelectDelApi(), this.comDelsValues).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("已成功删除");
+            this.commodityValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
       }
     },
   },
@@ -395,6 +454,7 @@ export default {
 }
 .selectStyle {
   margin-left: 100px;
+  display: flex;
 }
 .buttonxz {
   display: flex;

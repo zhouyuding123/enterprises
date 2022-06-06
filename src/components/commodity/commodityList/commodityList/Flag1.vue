@@ -56,27 +56,22 @@
         <el-table-column prop="id" label="货号" width="120" align="center">
         </el-table-column>
 
-     
-          <el-table-column
-          prop="thumbS"
-          label="姓名"
-          width="250"
-        >
+        <el-table-column prop="thumbS" label="姓名" width="250">
           <template v-slot="scoped">
-          <div class="marginOp" >
-            <el-image
-              :src="imagesValue + fulthumb(scoped.row.thumb)"
-              alt=""
-              :preview-src-list="[imagesValue + fulthumb(scoped.row.thumb)]"
-              style="
-                width: 100px;
-                height: 100px;
-                background: #ffffff;
-                border-radius: 6px 6px 6px 6px;
-              "
-              class="thumbSStyle"
-            />
-         </div>
+            <div class="marginOp">
+              <el-image
+                :src="imagesValue + fulthumb(scoped.row.thumb)"
+                alt=""
+                :preview-src-list="[imagesValue + fulthumb(scoped.row.thumb)]"
+                style="
+                  width: 100px;
+                  height: 100px;
+                  background: #ffffff;
+                  border-radius: 6px 6px 6px 6px;
+                "
+                class="thumbSStyle"
+              />
+            </div>
           </template>
         </el-table-column>
 
@@ -156,7 +151,7 @@
         <el-table-column label="操作" align="center">
           <template v-slot="scoped">
             <div>
-              <div class="spanstyle"><span>编辑</span></div>
+              <edit :editIdValue="scoped.row" class="spanstyle" />
               <preview :previewValue="scoped.row" class="spanstyle" />
               <put-batch :putBatch="scoped.row" class="spanstyle" />
               <off-batch :offBatcj="scoped.row" class="spanstyle" />
@@ -186,13 +181,14 @@ import Onedel from "./operation/onedel.vue";
 import PutBatch from "./operation/putBatch.vue";
 import OffBatch from "./operation/offBatch.vue";
 import Preview from "./operation/preview.vue";
+import Edit from "./operation/Edit.vue";
 export default {
   provide() {
     return {
       commodityValue: this.commodityValue,
     };
   },
-  components: { add, Onedel, PutBatch, OffBatch, Preview },
+  components: { add, Onedel, PutBatch, OffBatch, Preview, Edit },
   data() {
     return {
       imagesValue: "",
@@ -250,7 +246,7 @@ export default {
       },
       thumbS: [],
       thumbs: [],
-      thumbValue:"",
+      thumbValue: "",
       value: "",
       options: "",
     };
@@ -309,8 +305,9 @@ export default {
         this.$refs.allWholes.style.color = "#999999";
       });
     },
-    fulthumb(v) {
-      return JSON.parse(v).shift();
+    fulthumb(val) {
+      let ser = JSON.parse(val)
+      return ser.shift();
     },
     searchOne(data) {
       this.custom_type = data.title;

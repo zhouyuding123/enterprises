@@ -15,15 +15,38 @@
         </el-carousel>
         <div class="line1">
           <div class="line1Value">
-            <div v-for="item in this.previewValueList.spec" :key="item.id" class="line1one">
-              <div class="priceValue"> ¥{{ item.price }}</div>
+            <div
+              v-for="item in this.previewValueList.spec"
+              :key="item.id"
+              class="line1one"
+            >
+              <div class="priceValue">¥{{ item.price }}</div>
               <div class="Sold">已售123</div>
             </div>
             <div class="line1two">
-              <span>{{previewValueList.title}}</span>
+              <span>{{ previewValueList.title }}</span>
             </div>
-            <div></div>
-            <div></div>
+            <div class="line1treen">
+              <div><span>满400减50</span></div>
+              <div><span>满200减20</span></div>
+            </div>
+            <div class="line1four">
+              <div class="line1fourValue">
+                <div>
+                  <img src="@/assets/imgers/正品.png" alt="" /><span>
+                    100%正品
+                  </span>
+                </div>
+                <div><img src="@/assets/imgers/七天.png" alt="" /><span>7天无理由退换</span></div>
+                <div><img src="@/assets/imgers/正品.png" alt="" /><span>包邮</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line2">
+          <div class="details"><span>商品详情</span></div>
+          <div class="htmlValue">
+            <div v-html="previewValueList.content" ></div>
           </div>
         </div>
       </div>
@@ -61,7 +84,6 @@ export default {
         this.previewValueList = res.data;
         this.thumbs = JSON.parse(res.data.thumb);
         this.imagesValue = imgUrl();
-        console.log(this.previewValueList.spec);
       });
     },
   },

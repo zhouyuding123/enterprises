@@ -143,7 +143,7 @@ import {
   custypeGetListApi,
   company_productAddProductApi,
 } from "../../../commodityUrl.js";
-import { beforeAvatar } from "@/assets/js/modifyStyle.js";
+import { beforeAvatar, imgUrl } from "@/assets/js/modifyStyle.js";
 import { postD } from "@/api";
 export default {
   inject: ["commodityValue"],
@@ -153,6 +153,7 @@ export default {
   },
   data() {
     return {
+      imageValue:"",
       Content: "",
       isClear: false,
       dialogVisible: false,
@@ -211,6 +212,7 @@ export default {
       this.dialogVisible = true;
       postD(brandGetListApi()).then((res) => {
         this.options = res.list;
+        this.imageValue =imgUrl()
       });
       postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
         (res) => {

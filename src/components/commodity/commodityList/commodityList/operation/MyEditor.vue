@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" >
+    <el-form ref="form" :model="form">
       <el-form-item prop="content" class="content">
         <div id="editor" ref="editor" />
       </el-form-item>
@@ -10,21 +10,26 @@
 <script>
 import E from "wangeditor";
 export default {
+  props: ["server"],
   data() {
     return {
       baseUrl: "http://weisou.chengduziyi.com/admin/Uploads/uploadFile",
       editorContent: "",
-      form: {},
+      form: {
+        content: "",
+      },
       imageser: "",
       moveser: "",
     };
   },
+  created() {},
   mounted() {
     this.wangeditor();
   },
   methods: {
     // 富文本配置
     wangeditor() {
+      this.form.content = this.server;
       const editor = new E(this.$refs.editor);
       // 删除上传视频功能
       // editor.config.menus.splice(18, 1);
@@ -55,12 +60,13 @@ export default {
           insertImg(this.imageser);
         },
       };
-      editor.config.uploadVideoHooks={
-        customInsert:function(insertVideo, result, editor){
-          this.moveser = "https://weisoutc.oss-cn-shanghai.aliyuncs.com/" + result.url
-          insertVideo(this.moveser)
-        }
-      }
+      editor.config.uploadVideoHooks = {
+        customInsert: function (insertVideo, result, editor) {
+          this.moveser =
+            "https://weisoutc.oss-cn-shanghai.aliyuncs.com/" + result.url;
+          insertVideo(this.moveser);
+        },
+      };
       //------
       // 上传图片大小 5M文件类型  value=images||moves||3DModels
       editor.config.uploadImgMaxSize = 5 * 1024 * 1024;
@@ -72,7 +78,12 @@ export default {
       editor.config.onchangeTimeout = 500; // 修改为 500ms
       editor.create();
       // 回显已有内容
-      editor.txt.html(this.editorContent);
+      if (this.form.content !== "") {
+        this.editorContent = this.form.content;
+        editor.txt.html(this.editorContent);
+      } else {
+        editor.txt.html(this.editorContent);
+      }
     },
     // wangeditor回调函数
     editorCallBack(newHtml) {

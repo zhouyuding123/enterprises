@@ -30,6 +30,10 @@ export const company_productSetStatusApi = () => {
 export const company_productShowProductApi = () => {
     return "company_product/showProduct"
 }
+// 修改
+export const company_productEditProductApi = () => {
+    return "company_product/editProduct"
+}
 
 
 

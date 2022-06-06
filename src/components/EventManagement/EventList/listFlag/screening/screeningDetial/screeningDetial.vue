@@ -136,6 +136,7 @@ export default {
   methods: {
     WorkDetailsList() {
       this.routeId = this.$route.params;
+      console.log(this.$route.params);
       postD(MatchWorksShowApi(), this.routeId).then((res) => {
         console.log(res.data);
         this.WorksShowData = res.data;

@@ -24,7 +24,6 @@
             </div>
           </div>
           <div class="votosome">
-            <div><span>投票</span></div>
             <div class="appropriate"><span>合适</span></div>
             <div class="appropriate"><span>不合适</span></div>
           </div>
@@ -74,13 +73,11 @@ export default {
     WorkDetails(val) {
       this.valser.paramsId = this.$route.params.id;
       this.paramsId.works_id = val.works_id;
-      this.paramsId.id = val.id;
       this.$router.push({
         name: "worksShow",
         params: {
           works_id: this.paramsId.works_id,
-          id: this.paramsId.id,
-          paramsId: this.valser.paramsId,
+          id: this.valser.paramsId,
         },
       });
     },

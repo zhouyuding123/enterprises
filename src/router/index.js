@@ -205,7 +205,7 @@ const routes = [
             },
           },
           {
-            path: "/worksShow/:works_id/:id/:paramsId",
+            path: "/worksShow/:works_id/:id",
             name: "worksShow",
             component: () => import("../components/EventManagement/EventList/listFlag/screening/screeningDetial/screeningDetial.vue"),
             meta: {

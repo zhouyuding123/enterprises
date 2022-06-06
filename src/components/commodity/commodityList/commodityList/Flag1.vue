@@ -11,10 +11,10 @@
       <div class="selectDel" @click="delsValue">
         <span>批量删除</span>
       </div>
-      <div class="plsj">
+      <div class="plsj" @click="BatchLaunchValue">
         <span>批量上架</span>
       </div>
-      <div class="plsj">
+      <div class="plsj" @click="offBatchValue">
         <span>批量下架</span>
       </div>
       <div class="selectStyle">
@@ -30,11 +30,17 @@
         </el-select>
       </div>
       <div class="buttonxz">
-        <div><span>全部</span></div>
-        <div><span>上架</span></div>
-        <div><span>下架</span></div>
+        <div @click="whole()" ref="wholes">
+          <span ref="allWholes">全部</span>
+        </div>
+        <div @click="onTheShelf()" ref="PutOn">
+          <span ref="allPutOn">上架</span>
+        </div>
+        <div @click="underShelfx()" ref="Offtheshelf">
+          <span ref="allOfftheshelf">下架</span>
+        </div>
       </div>
-      <div class="Res">
+      <div class="Res" @click="Refresh">
         <span>刷新</span>
       </div>
     </div>
@@ -49,24 +55,31 @@
         </el-table-column>
         <el-table-column prop="id" label="货号" width="120" align="center">
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="250">
+
+     
+          <el-table-column
+          prop="thumbS"
+          label="姓名"
+          width="250"
+        >
           <template v-slot="scoped">
-            <div class="marginOp">
-              <el-image
-                :src="imagesValue + fulthumb(scoped.row.thumb)"
-                alt=""
-                :preview-src-list="[imagesValue + fulthumb(scoped.row.thumb)]"
-                style="
-                  width: 100px;
-                  height: 100px;
-                  background: #ffffff;
-                  border-radius: 6px 6px 6px 6px;
-                "
-                class="thumbSStyle"
-              />
-            </div>
+          <div class="marginOp" >
+            <el-image
+              :src="imagesValue + fulthumb(scoped.row.thumb)"
+              alt=""
+              :preview-src-list="[imagesValue + fulthumb(scoped.row.thumb)]"
+              style="
+                width: 100px;
+                height: 100px;
+                background: #ffffff;
+                border-radius: 6px 6px 6px 6px;
+              "
+              class="thumbSStyle"
+            />
+         </div>
           </template>
         </el-table-column>
+
         <el-table-column prop="brand" label="品牌" align="center">
         </el-table-column>
         <el-table-column prop="custom_type" label="分类" align="center">
@@ -142,13 +155,13 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template v-slot="scoped">
-          <div>
-            <div class="spanstyle"><span>编辑</span></div>
-            <div class="spanstyle"><span>预览</span></div>
-            <div class="spanstyle"><span>上架</span></div>
-            <div class="spanstyle"><span>下架</span></div>
-            <onedel :deloneDle="scoped.row" class="spanstyle" />
-          </div>
+            <div>
+              <div class="spanstyle"><span>编辑</span></div>
+              <preview :previewValue="scoped.row" class="spanstyle" />
+              <put-batch :putBatch="scoped.row" class="spanstyle" />
+              <off-batch :offBatcj="scoped.row" class="spanstyle" />
+              <onedel :deloneDle="scoped.row" class="spanstyle" />
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -160,6 +173,7 @@
 import {
   company_productGetListApi,
   company_productSelectDelApi,
+  company_productSetStatusApi,
 } from "../../commodityUrl.js";
 import {
   styleModify,
@@ -168,14 +182,17 @@ import {
 } from "@/assets/js/modifyStyle.js";
 import { postD } from "@/api";
 import add from "./operation/add.vue";
-import Onedel from './operation/onedel.vue';
+import Onedel from "./operation/onedel.vue";
+import PutBatch from "./operation/putBatch.vue";
+import OffBatch from "./operation/offBatch.vue";
+import Preview from "./operation/preview.vue";
 export default {
   provide() {
     return {
       commodityValue: this.commodityValue,
     };
   },
-  components: { add, Onedel },
+  components: { add, Onedel, PutBatch, OffBatch, Preview },
   data() {
     return {
       imagesValue: "",
@@ -205,6 +222,14 @@ export default {
           },
         ],
       },
+      // 上架中
+      onTheShelfValue: {
+        status: "1",
+      },
+      // 下架中
+      underShelf: {
+        status: "0",
+      },
       colors: [],
       // 批量删除
       ids: [],
@@ -213,6 +238,19 @@ export default {
       comDelsValues: {
         id: "",
       },
+      // 批量上架
+      Put: {
+        id: "",
+        status: "1",
+      },
+      // 批量下架
+      Off: {
+        id: "",
+        status: "0",
+      },
+      thumbS: [],
+      thumbs: [],
+      thumbValue:"",
       value: "",
       options: "",
     };
@@ -233,10 +271,47 @@ export default {
         this.imagesValue = imgUrl();
       });
     },
-    fulthumb(val) {
-      return JSON.parse(val)
+    // 全部
+    whole() {
+      postD(company_productGetListApi()).then((res) => {
+        if (res.code == "200") {
+          this.tableData = res.list;
+          this.$refs.wholes.style.backgroundColor = "#FF2659";
+          this.$refs.allWholes.style.color = "#ffffff";
+          this.$refs.PutOn.style.backgroundColor = "#FFFFFF";
+          this.$refs.allPutOn.style.color = "#999999";
+          this.$refs.Offtheshelf.style.backgroundColor = "#FFFFFF";
+          this.$refs.allOfftheshelf.style.color = "#999999";
+        }
+      });
     },
-
+    // 上架中
+    onTheShelf() {
+      postD(company_productGetListApi(), this.onTheShelfValue).then((res) => {
+        this.tableData = res.list;
+        this.$refs.PutOn.style.backgroundColor = "#FF2659";
+        this.$refs.allPutOn.style.color = "#ffffff";
+        this.$refs.wholes.style.backgroundColor = "#FFFFFF";
+        this.$refs.allWholes.style.color = "#999999";
+        this.$refs.Offtheshelf.style.backgroundColor = "#FFFFFF";
+        this.$refs.allOfftheshelf.style.color = "#999999";
+      });
+    },
+    // 下架中
+    underShelfx() {
+      postD(company_productGetListApi(), this.underShelf).then((res) => {
+        this.tableData = res.list;
+        this.$refs.Offtheshelf.style.backgroundColor = "#FF2659";
+        this.$refs.allOfftheshelf.style.color = "#ffffff";
+        this.$refs.PutOn.style.backgroundColor = "#FFFFFF";
+        this.$refs.allPutOn.style.color = "#999999";
+        this.$refs.wholes.style.backgroundColor = "#FFFFFF";
+        this.$refs.allWholes.style.color = "#999999";
+      });
+    },
+    fulthumb(v) {
+      return JSON.parse(v).shift();
+    },
     searchOne(data) {
       this.custom_type = data.title;
     },
@@ -250,6 +325,7 @@ export default {
     handleSelectionChange(val) {
       this.arrs = val;
     },
+    // 批量删除
     async delsValue() {
       const delsValues = await this.$confirm(
         "此操作将永久删除管理, 是否继续?",
@@ -284,223 +360,84 @@ export default {
         });
       }
     },
+    // 刷新
+    Refresh() {
+      this.commodityValue();
+    },
+    // 批量上架
+    async BatchLaunchValue() {
+      const BatchList = await this.$confirm(
+        "此操作将批量上架产品, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (BatchList !== "confirm") {
+        return this.$message.info("取消上架");
+      }
+      if (BatchList === "confirm") {
+        this.arrs.forEach((v) => {
+          this.ids.push(v.id);
+        });
+        this.Put.id = this.ids.toString();
+        postD(company_productSetStatusApi(), this.Put).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("已成功上架");
+            this.commodityValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
+      }
+    },
+    // 批量下架
+    async offBatchValue() {
+      const offBatchValueList = await this.$confirm(
+        "此操作将批量下架产品, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (offBatchValueList !== "confirm") {
+        return this.$message.info("取消下架");
+      }
+      if (offBatchValueList === "confirm") {
+        this.arrs.forEach((v) => {
+          this.ids.push(v.id);
+        });
+        this.Off.id = this.ids.toString();
+        postD(company_productSetStatusApi(), this.Off).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("已成功下架");
+            this.commodityValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
+      }
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.FlagBody {
-  padding: 20px 30px;
-  .line {
-    height: 180px;
-    background: #ffffff;
-    position: relative;
-    .Category {
-      cursor: pointer;
-      position: absolute;
-      top: 85%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120px;
-      height: 40px;
-      background: linear-gradient(180deg, #0c032e 0%, #5c5673 100%);
-      border-radius: 3px 3px 3px 3px;
-      span {
-        font-size: 16px;
-        font-family: PingFang SC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #ffffff;
-        line-height: 40px;
-      }
-    }
-  }
-}
-.table_list {
-  padding-top: 15px;
-}
-.operationBody {
-  padding-top: 15px;
-  display: flex;
-  .imputButton {
-    display: flex;
-    margin-left: -5px;
-    /deep/.el-input__inner {
-      width: 400px;
-    }
-    .imputButtonAnNiu {
-      cursor: pointer;
-      width: 80px;
-      height: 40px;
-      background: #dfdfdf;
-      border-radius: 4px 4px 4px 4px;
-      span {
-        font-size: 14px;
-        font-family: PingFang SC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #ffffff;
-        line-height: 40px;
-      }
-    }
-  }
-}
-
-.selectDel {
-  cursor: pointer;
-  margin-left: 10px;
-  width: 80px;
-  height: 40px;
-  background: #ff2659;
-  border-radius: 4px 4px 4px 4px;
-  span {
-    font-size: 14px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #ffffff;
-    line-height: 40px;
-  }
-}
-.Res {
-  margin-left: auto;
-  cursor: pointer;
-  width: 80px;
-  height: 40px;
-  background: #00b567;
-  border-radius: 4px 4px 4px 4px;
-  span {
-    font-size: 14px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #ffffff;
-    line-height: 40px;
-  }
-}
-.lineValues {
-  margin: 20px;
-  display: flex;
-  div {
-    margin-left: 10px;
-    span {
-      font-size: 20px;
-      font-family: PingFang SC-Bold, PingFang SC;
-      font-weight: bold;
-      color: #333333;
-      line-height: 19px;
-    }
-  }
-}
-.categoryer {
-  font-size: 20px;
-  font-family: PingFang SC-Bold, PingFang SC;
-  font-weight: bold;
-  color: #333333;
-  line-height: 19px;
-}
-.marginOp {
-  width: 400px;
-  height: 140px;
-  background: #f5f5f5;
-  border-radius: 3px 3px 3px 3px;
-  .thumbSStyle {
-    margin-top: 5%;
-    margin-left: 5%;
-  }
-}
-.colorStyle {
-  display: flex;
-  justify-content: center;
-  padding: -20px;
-  margin: -20px;
-}
-/deep/.cell {
-  padding: 0;
-}
-/deep/.el-table__cell {
-  padding: 0;
-}
-.colorDiv {
-  text-align: center;
-  width: 100%;
-  border: 1px solid #dfdfdf;
-  span {
-    line-height: 70px;
-  }
-}
-/deep/.el-table th.el-table__cell > .cell {
-  padding: 12px 0;
-}
-.spanstyle {
-  cursor: pointer;
-  font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #0177d5;
-  margin-top: 10px;
-}
-.plsj {
-  cursor: pointer;
-  margin-left: 10px;
-  width: 80px;
-  height: 40px;
-  background: #ffffff;
-  border-radius: 3px 3px 3px 3px;
-  border: 1px solid #0c032e;
-  span {
-    font-size: 16px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #333333;
-    line-height: 40px;
-  }
-}
-.selectStyle {
-  margin-left: 100px;
-  display: flex;
-}
-.buttonxz {
-  display: flex;
-  margin-left: 10px;
-  div:nth-child(1) {
-    cursor: pointer;
-    width: 90px;
-    height: 40px;
-    background: #ff2659;
-    border-radius: 4px 0px 0px 4px;
-    span {
-      font-size: 14px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #ffffff;
-      line-height: 40px;
-    }
-  }
-  div:nth-child(2) {
-    cursor: pointer;
-    width: 90px;
-    height: 40px;
-    background: #ffffff;
-    border: 1px solid #dfdfdf;
-    span {
-      font-size: 14px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #999999;
-      line-height: 40px;
-    }
-  }
-  div:nth-child(3) {
-    cursor: pointer;
-    width: 90px;
-    height: 40px;
-    background: #ffffff;
-    border-radius: 0px 4px 4px 0px;
-    border: 1px solid #dfdfdf;
-    span {
-      font-size: 14px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #999999;
-      line-height: 40px;
-    }
-  }
-}
+@import url("./Flag1.less");
 </style>

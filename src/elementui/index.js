@@ -42,10 +42,14 @@ import {
     Table,
     TableColumn,
     ButtonGroup,
-    Tag
+    Tag,
+    Carousel,
+    CarouselItem
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(CarouselItem)
+        Vue.use(Carousel)
         Vue.use(Tag)
         Vue.use(ButtonGroup)
         Vue.use(Table)

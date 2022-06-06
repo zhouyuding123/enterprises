@@ -22,7 +22,14 @@ export const company_productSelectDelApi = () => {
 export const company_productDelProductApi = () => {
     return "company_product/delProduct"
 }
-
+// 批量上架
+export const company_productSetStatusApi = () => {
+    return "company_product/setStatus"
+}
+// 详情
+export const company_productShowProductApi = () => {
+    return "company_product/showProduct"
+}
 
 
 

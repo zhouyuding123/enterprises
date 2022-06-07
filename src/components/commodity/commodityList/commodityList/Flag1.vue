@@ -1,23 +1,60 @@
 <template>
   <div>
-    <div class="filterValue">
-      <el-checkbox-group
-        v-model="checkboxGroup"
-        fill="#5C5673"
-        @change="checkoxId"
-      >
-        <el-checkbox-button border> 全部 </el-checkbox-button>
-        <el-checkbox-button border :label="0"> 未分类 </el-checkbox-button>
-        <el-checkbox-button
-          border
-          v-for="item in cusOptions"
-          :label="item.id"
-          :key="item.id"
-          >{{ item.title }}</el-checkbox-button
-        >
-      </el-checkbox-group>
-    </div>
     <div class="FlagBody">
+      <div class="filterValue">
+        <div class="filterValueline1">
+          <div class="cpfl">产品分类</div>
+          <el-radio-group
+            v-model="checkboxGroup1.custom_type"
+            fill="#5C5673"
+            @change="checkoxId"
+          >
+            <el-radio-button border> 不限 </el-radio-button>
+            <el-radio-button border :label="0"> 未分类 </el-radio-button>
+            <el-radio-button
+              border
+              v-for="item in cusOptions"
+              :label="item.id"
+              :key="item.id"
+              >{{ item.title }}</el-radio-button
+            >
+          </el-radio-group>
+        </div>
+        <div class="filterValueline2">
+          <div class="ptfl">平台分类</div>
+          <el-radio-group
+            v-model="PTcheckboxGroup1.type"
+            fill="#5C5673"
+            @change="PTcheckoxId"
+          >
+            <el-radio-button border> 不限 </el-radio-button>
+            <el-radio-button
+              border
+              v-for="item in typeOptions"
+              :label="item.id"
+              :key="item.id"
+              >{{ item.title }}</el-radio-button
+            >
+          </el-radio-group>
+        </div>
+        <div class="filterValueline3">
+          <div class="ppfl">品牌分类</div>
+          <el-radio-group
+            v-model="OptionsValue.brand_id"
+            fill="#5C5673"
+            @change="selectOptions"
+          >
+            <el-radio-button border> 不限 </el-radio-button>
+            <el-radio-button
+              border
+              v-for="item in options"
+              :label="item.id"
+              :key="item.id"
+              >{{ item.title }}</el-radio-button
+            >
+          </el-radio-group>
+        </div>
+      </div>
       <div class="operationBody">
         <div class="imputButton">
           <el-input
@@ -37,23 +74,6 @@
         </div>
         <div class="plsj" @click="offBatchValue">
           <span>批量下架</span>
-        </div>
-        <div class="selectStyle">
-          <div class="pp">品牌</div>
-          <el-select
-            v-model="OptionsValue.brand_id"
-            placeholder="请选择"
-            @change="selectOptions"
-            clearable
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.id"
-              :label="item.title"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
         </div>
         <div class="buttonxz">
           <div @click="whole()" ref="wholes">
@@ -301,11 +321,6 @@ export default {
       thumbS: [],
       thumbs: [],
       thumbValue: "",
-      options: "",
-      OptionsValue: {
-        brand_id: "",
-        is_del: "0",
-      },
       seatch: {
         keyword: "",
         is_del: "0",
@@ -317,13 +332,31 @@ export default {
         totalResult: 0,
         is_del: "0",
       },
+      // 产品分类
       cusOptions: [],
-      checkboxGroup: [],
       checkboxGroup1: {
         custom_type: "",
         is_del: "0",
       },
       checkboxGroup2: {
+        is_del: "0",
+      },
+      // 平台
+      typeOptions: [],
+      PTcheckboxGroup1: {
+        type:"",
+        is_del: "0",
+      },
+      PTcheckboxGroup2: {
+        is_del: "0",
+      },
+      // 品牌
+      options: "",
+      OptionsValue: {
+        brand_id: "",
+        is_del: "0",
+      },
+      OptionsValue2:{
         is_del: "0",
       }
     };
@@ -331,9 +364,18 @@ export default {
   created() {
     this.commodityValue();
     this.custypeGetListValue();
+    this.product_typeListValue();
   },
   methods: {
-    // 分类
+    // 平台分类
+    product_typeListValue() {
+      postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
+        (res) => {
+          this.typeOptions = res.list;
+        }
+      );
+    },
+    // 产品分类
     custypeGetListValue() {
       postD(custypeGetListApi()).then((res) => {
         this.cusOptions = res.list;
@@ -358,12 +400,6 @@ export default {
     },
     keywordValue() {
       postD(company_productGetListApi(), this.seatch).then((res) => {
-        this.tableData = res.list;
-        this.page1.totalResult = res.count;
-      });
-    },
-    selectOptions() {
-      postD(company_productGetListApi(), this.OptionsValue).then((res) => {
         this.tableData = res.list;
         this.page1.totalResult = res.count;
       });
@@ -545,18 +581,40 @@ export default {
       });
     },
     checkoxId(val) {
-      if (this.checkboxGroup1.custom_type == "") {
+      if (val == undefined) {
         postD(company_productGetListApi(), this.checkboxGroup2).then((res) => {
           this.tableData = res.list;
           this.page1.totalResult = res.count;
         });
       } else {
-        this.checkboxGroup1.custom_type = val.toString();
         postD(company_productGetListApi(), this.checkboxGroup1).then((res) => {
           this.tableData = res.list;
           this.page1.totalResult = res.count;
         });
       }
+    },
+    PTcheckoxId(val) {
+      if (val == undefined) {
+        postD(company_productGetListApi(), this.PTcheckboxGroup2).then(
+          (res) => {
+            this.tableData = res.list;
+            this.page1.totalResult = res.count;
+          }
+        );
+      } else {
+        postD(company_productGetListApi(), this.PTcheckboxGroup1).then(
+          (res) => {
+            this.tableData = res.list;
+            this.page1.totalResult = res.count;
+          }
+        );
+      }
+    },
+    selectOptions() {
+      postD(company_productGetListApi(), this.OptionsValue).then((res) => {
+        this.tableData = res.list;
+        this.page1.totalResult = res.count;
+      });
     },
   },
 };

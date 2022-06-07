@@ -1,5 +1,59 @@
 <template>
   <div class="FlagBody">
+    <div class="filterValue">
+        <div class="filterValueline1">
+          <div class="cpfl">产品分类</div>
+          <el-radio-group
+            v-model="checkboxGroup1.custom_type"
+            fill="#5C5673"
+            @change="checkoxId"
+          >
+            <el-radio-button border> 不限 </el-radio-button>
+            <el-radio-button border :label="0"> 未分类 </el-radio-button>
+            <el-radio-button
+              border
+              v-for="item in cusOptions"
+              :label="item.id"
+              :key="item.id"
+              >{{ item.title }}</el-radio-button
+            >
+          </el-radio-group>
+        </div>
+        <div class="filterValueline2">
+          <div class="ptfl">平台分类</div>
+          <el-radio-group
+            v-model="PTcheckboxGroup1.type"
+            fill="#5C5673"
+            @change="PTcheckoxId"
+          >
+            <el-radio-button border> 不限 </el-radio-button>
+            <el-radio-button
+              border
+              v-for="item in typeOptions"
+              :label="item.id"
+              :key="item.id"
+              >{{ item.title }}</el-radio-button
+            >
+          </el-radio-group>
+        </div>
+        <div class="filterValueline3">
+          <div class="ppfl">品牌分类</div>
+          <el-radio-group
+            v-model="OptionsValue.brand_id"
+            fill="#5C5673"
+            @change="selectOptions"
+          >
+            <el-radio-button border> 不限 </el-radio-button>
+            <el-radio-button
+              border
+              v-for="item in options"
+              :label="item.id"
+              :key="item.id"
+              >{{ item.title }}</el-radio-button
+            >
+          </el-radio-group>
+        </div>
+      </div>
     <div class="operationBody">
       <div class="imputButton">
         <el-input placeholder="请输入内容" v-model="seatch.keyword"></el-input>
@@ -13,23 +67,6 @@
       <div class="selectDel" @click="delsValue">
         <span>批量删除</span>
       </div>
-      <div class="selectStyle">
-        <div class="pp">品牌</div>
-        <el-select
-          v-model="OptionsValue.brand_id"
-          placeholder="请选择"
-          @change="selectOptions"
-          clearable
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.id"
-            :label="item.title"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
-      </div>
       <div class="Res" @click="Refresh">
         <span>刷新</span>
       </div>
@@ -40,7 +77,7 @@
         border
         style="width: 100%"
         @selection-change="handleSelectionChange"
-        height="550"
+        height="450"
       >
         <el-table-column type="selection" width="75" align="center">
         </el-table-column>
@@ -176,6 +213,7 @@ import {
   brandGetListApi,
   company_productSelectSetDelApi,
   company_productSelectDelApi,
+  custypeGetListApi 
 } from "../../commodityUrl.js";
 import { imgUrl } from "@/assets/js/modifyStyle.js";
 import Reduction from "./recycle/reduction.vue";
@@ -221,6 +259,33 @@ export default {
         id: "",
         is_del: "0",
       },
+      // 产品分类
+      cusOptions: [],
+      checkboxGroup1: {
+        custom_type: "",
+        is_del: "1",
+      },
+      checkboxGroup2: {
+        is_del: "1",
+      },
+      // 平台
+      typeOptions: [],
+      PTcheckboxGroup1: {
+        type:"",
+        is_del: "1",
+      },
+      PTcheckboxGroup2: {
+        is_del: "1",
+      },
+      // 品牌
+      options: "",
+      OptionsValue: {
+        brand_id: "",
+        is_del: "1",
+      },
+      OptionsValue2:{
+        is_del: "1",
+      }
     };
   },
   created() {
@@ -234,6 +299,18 @@ export default {
         this.page1.totalResult = res.count;
       });
       postD(brandGetListApi()).then((res) => {
+        this.options = res.list;
+        this.page1.totalResult = res.count;
+      });
+      postD(custypeGetListApi()).then((res) => {
+        this.cusOptions = res.list;
+      });
+       postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
+        (res) => {
+          this.typeOptions = res.list;
+        }
+      );
+       postD(brandGetListApi()).then((res) => {
         this.options = res.list;
         this.page1.totalResult = res.count;
       });
@@ -345,6 +422,42 @@ export default {
           }
         });
       }
+    },
+    checkoxId(val) {
+      if (val == undefined) {
+        postD(company_productGetListApi(), this.checkboxGroup2).then((res) => {
+          this.tableData = res.list;
+          this.page1.totalResult = res.count;
+        });
+      } else {
+        postD(company_productGetListApi(), this.checkboxGroup1).then((res) => {
+          this.tableData = res.list;
+          this.page1.totalResult = res.count;
+        });
+      }
+    },
+    PTcheckoxId(val) {
+      if (val == undefined) {
+        postD(company_productGetListApi(), this.PTcheckboxGroup2).then(
+          (res) => {
+            this.tableData = res.list;
+            this.page1.totalResult = res.count;
+          }
+        );
+      } else {
+        postD(company_productGetListApi(), this.PTcheckboxGroup1).then(
+          (res) => {
+            this.tableData = res.list;
+            this.page1.totalResult = res.count;
+          }
+        );
+      }
+    },
+    selectOptions() {
+      postD(company_productGetListApi(), this.OptionsValue).then((res) => {
+        this.tableData = res.list;
+        this.page1.totalResult = res.count;
+      });
     },
   },
 };

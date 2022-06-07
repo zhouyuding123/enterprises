@@ -44,10 +44,12 @@ import {
     ButtonGroup,
     Tag,
     Carousel,
-    CarouselItem
+    CarouselItem,
+    RadioButton
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(RadioButton)
         Vue.use(CarouselItem)
         Vue.use(Carousel)
         Vue.use(Tag)

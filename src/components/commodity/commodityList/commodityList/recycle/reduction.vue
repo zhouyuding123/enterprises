@@ -1,43 +1,43 @@
 <template>
   <div>
-    <div class="spanstyle" @click="oneDle()"><span>回收</span></div>
+    <div class="spanstyle" @click="oneReduction()"><span>还原</span></div>
   </div>
 </template>
 
 <script>
+import { postD } from '@/api';
 import { company_productSetDelApi } from "../../../commodityUrl.js";
-import { postD } from "@/api";
 export default {
-  props: ["deloneDle"],
-  inject: ["commodityValue"],
+  props: ["reductionOne"],
+  inject: ["recycleBinValue"],
   data() {
     return {
-      comDelId: {
+      reductionId: {
         id: "",
-        is_del:"1"
+        is_del: "0",
       },
     };
   },
   methods: {
-    async oneDle() {
-      this.comDelId.id = this.deloneDle.id;
-      const onecomDelList = await this.$confirm(
-        "此操作将放商品入回收站, 是否继续?",
+    async oneReduction() {
+        this.reductionId.id = this.reductionOne.id
+      const reductionIdOne = await this.$confirm(
+        "此操作将放商品将移出回收站至产品列表, 是否继续?",
         "提示",
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
         }
-      ).catch((err) => err);
-      if (onecomDelList !== "confirm") {
-        return this.$message.info("取消放入回收站");
+      ).catch(err=> err);
+      if (reductionIdOne !== "confirm") {
+        return this.$message.info("取消删除");
       }
-      if (onecomDelList === "confirm") {
-        postD(company_productSetDelApi(), this.comDelId).then((res) => {
-          if (res.code == "200") {
-            this.$message.success("成功放入回收站");
-            this.commodityValue();
+      if (reductionIdOne === "confirm") {
+        postD(company_productSetDelApi(),this.reductionId).then(res=> {
+            if (res.code == "200") {
+            this.$message.success("成功移出");
+            this.recycleBinValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -47,8 +47,9 @@ export default {
           } else {
             this.$message.error("注册失败，账号已存在");
           }
-        });
+        })
       }
+
     },
   },
 };

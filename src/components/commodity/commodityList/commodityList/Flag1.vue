@@ -1,165 +1,211 @@
 <template>
-  <div class="FlagBody">
-    <div class="operationBody">
-      <div class="imputButton">
-        <el-input placeholder="请输入内容"></el-input>
-        <div class="imputButtonAnNiu">
-          <span>搜索</span>
-        </div>
-      </div>
-      <add />
-      <div class="selectDel" @click="delsValue">
-        <span>批量删除</span>
-      </div>
-      <div class="plsj" @click="BatchLaunchValue">
-        <span>批量上架</span>
-      </div>
-      <div class="plsj" @click="offBatchValue">
-        <span>批量下架</span>
-      </div>
-      <div class="selectStyle">
-        <div>品牌</div>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </div>
-      <div class="buttonxz">
-        <div @click="whole()" ref="wholes">
-          <span ref="allWholes">全部</span>
-        </div>
-        <div @click="onTheShelf()" ref="PutOn">
-          <span ref="allPutOn">上架</span>
-        </div>
-        <div @click="underShelfx()" ref="Offtheshelf">
-          <span ref="allOfftheshelf">下架</span>
-        </div>
-      </div>
-      <div class="Res" @click="Refresh">
-        <span>刷新</span>
-      </div>
-    </div>
-    <div class="table_list">
-      <el-table
-        :data="tableData"
-        border
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
+  <div>
+    <div class="filterValue">
+      <el-checkbox-group
+        v-model="checkboxGroup"
+        fill="#5C5673"
+        @change="checkoxId"
       >
-        <el-table-column type="selection" width="75" align="center">
-        </el-table-column>
-        <el-table-column prop="id" label="货号" width="120" align="center">
-        </el-table-column>
+        <el-checkbox-button border> 全部 </el-checkbox-button>
+        <el-checkbox-button border :label="0"> 未分类 </el-checkbox-button>
+        <el-checkbox-button
+          border
+          v-for="item in cusOptions"
+          :label="item.id"
+          :key="item.id"
+          >{{ item.title }}</el-checkbox-button
+        >
+      </el-checkbox-group>
+    </div>
+    <div class="FlagBody">
+      <div class="operationBody">
+        <div class="imputButton">
+          <el-input
+            placeholder="请输入内容"
+            v-model="seatch.keyword"
+          ></el-input>
+          <div class="imputButtonAnNiu" @click="keywordValue">
+            <span>搜索</span>
+          </div>
+        </div>
+        <add />
+        <div class="selectDel" @click="delsValue">
+          <span>批量回收</span>
+        </div>
+        <div class="plsj" @click="BatchLaunchValue">
+          <span>批量上架</span>
+        </div>
+        <div class="plsj" @click="offBatchValue">
+          <span>批量下架</span>
+        </div>
+        <div class="selectStyle">
+          <div class="pp">品牌</div>
+          <el-select
+            v-model="OptionsValue.brand_id"
+            placeholder="请选择"
+            @change="selectOptions"
+            clearable
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div class="buttonxz">
+          <div @click="whole()" ref="wholes">
+            <span ref="allWholes">全部</span>
+          </div>
+          <div @click="onTheShelf()" ref="PutOn">
+            <span ref="allPutOn">上架</span>
+          </div>
+          <div @click="underShelfx()" ref="Offtheshelf">
+            <span ref="allOfftheshelf">下架</span>
+          </div>
+        </div>
+        <div class="Res" @click="Refresh">
+          <span>刷新</span>
+        </div>
+      </div>
+      <div class="table_list">
+        <el-table
+          :data="tableData"
+          border
+          style="width: 100%"
+          @selection-change="handleSelectionChange"
+          height="450"
+        >
+          <el-table-column type="selection" width="75" align="center">
+          </el-table-column>
+          <el-table-column prop="id" label="货号" width="120" align="center">
+          </el-table-column>
 
-        <el-table-column prop="thumbS" label="姓名" width="250">
-          <template v-slot="scoped">
-            <div class="marginOp">
-              <el-image
-                :src="imagesValue + fulthumb(scoped.row.thumb)"
-                alt=""
-                :preview-src-list="[imagesValue + fulthumb(scoped.row.thumb)]"
-                style="
-                  width: 100px;
-                  height: 100px;
-                  background: #ffffff;
-                  border-radius: 6px 6px 6px 6px;
-                "
-                class="thumbSStyle"
-              />
-            </div>
-          </template>
-        </el-table-column>
+          <el-table-column prop="thumbS" label="商品" width="480">
+            <template v-slot="scoped">
+              <div class="marginOp">
+                <el-image
+                  :src="imagesValue + fulthumb(scoped.row.thumb)"
+                  alt=""
+                  :preview-src-list="[imagesValue + fulthumb(scoped.row.thumb)]"
+                  style="
+                    width: 100px;
+                    height: 100px;
+                    background: #ffffff;
+                    border-radius: 6px 6px 6px 6px;
+                  "
+                  class="thumbSStyle"
+                />
+                <div class="valueTitle">
+                  <span>{{ scoped.row.title }}</span>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
 
-        <el-table-column prop="brand" label="品牌" align="center">
-        </el-table-column>
-        <el-table-column prop="custom_type" label="分类" align="center">
-        </el-table-column>
-        <el-table-column prop="status" label="状态" align="center">
-          <template v-slot="scoped">
-            <div>{{ fullStatus(scoped.row.status) }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="amount1"
-          label="颜色"
-          class="colorStyle"
+          <el-table-column prop="brand" label="品牌" align="center">
+          </el-table-column>
+          <el-table-column prop="custom_type" label="分类" align="center">
+          </el-table-column>
+          <el-table-column prop="status" label="状态" align="center">
+            <template v-slot="scoped">
+              <div>{{ fullStatus(scoped.row.status) }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="amount1"
+            label="颜色"
+            class="colorStyle"
+            align="center"
+          >
+            <template v-slot="scoped">
+              <div
+                v-for="item in scoped.row.spec"
+                :key="item.id"
+                class="colorDiv"
+              >
+                <span>{{ item.color }}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="amount1"
+            label="尺寸"
+            class="colorStyle"
+            align="center"
+          >
+            <template v-slot="scoped">
+              <div
+                v-for="item in scoped.row.spec"
+                :key="item.id"
+                class="colorDiv"
+              >
+                <span>{{ item.spec }}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="price"
+            label="价格"
+            class="colorStyle"
+            align="center"
+          >
+            <template v-slot="scoped">
+              <div
+                v-for="item in scoped.row.spec"
+                :key="item.id"
+                class="colorDiv"
+              >
+                <span>{{ item.price }}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="count"
+            label="库存"
+            class="colorStyle"
+            align="center"
+          >
+            <template v-slot="scoped">
+              <div
+                v-for="item in scoped.row.spec"
+                :key="item.id"
+                class="colorDiv"
+              >
+                <span>{{ item.count }}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template v-slot="scoped">
+              <div>
+                <edit :editIdValue="scoped.row" class="spanstyle" />
+                <preview :previewValue="scoped.row" class="spanstyle" />
+                <put-batch :putBatch="scoped.row" class="spanstyle" />
+                <off-batch :offBatcj="scoped.row" class="spanstyle" />
+                <onedel :deloneDle="scoped.row" class="spanstyle" />
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <vxe-pager
+          :current-page="page1.offset"
+          :page-size="page1.limit"
+          :total="page1.totalResult"
+          :layouts="[
+            'PrevPage',
+            'JumpNumber',
+            'NextPage',
+            'FullJump',
+            'Sizes',
+            'Total',
+          ]"
+          @page-change="handlePageChangeActivity"
           align="center"
-        >
-          <template v-slot="scoped">
-            <div
-              v-for="item in scoped.row.spec"
-              :key="item.id"
-              class="colorDiv"
-            >
-              <span>{{ item.color }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="amount1"
-          label="尺寸"
-          class="colorStyle"
-          align="center"
-        >
-          <template v-slot="scoped">
-            <div
-              v-for="item in scoped.row.spec"
-              :key="item.id"
-              class="colorDiv"
-            >
-              <span>{{ item.spec }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="price"
-          label="价格"
-          class="colorStyle"
-          align="center"
-        >
-          <template v-slot="scoped">
-            <div
-              v-for="item in scoped.row.spec"
-              :key="item.id"
-              class="colorDiv"
-            >
-              <span>{{ item.price }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="count"
-          label="库存"
-          class="colorStyle"
-          align="center"
-        >
-          <template v-slot="scoped">
-            <div
-              v-for="item in scoped.row.spec"
-              :key="item.id"
-              class="colorDiv"
-            >
-              <span>{{ item.count }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template v-slot="scoped">
-            <div>
-              <edit :editIdValue="scoped.row" class="spanstyle" />
-              <preview :previewValue="scoped.row" class="spanstyle" />
-              <put-batch :putBatch="scoped.row" class="spanstyle" />
-              <off-batch :offBatcj="scoped.row" class="spanstyle" />
-              <onedel :deloneDle="scoped.row" class="spanstyle" />
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+        ></vxe-pager>
+      </div>
     </div>
   </div>
 </template>
@@ -167,9 +213,11 @@
 <script>
 import {
   company_productGetListApi,
-  company_productSelectDelApi,
+  company_productSelectSetDelApi,
   company_productSetStatusApi,
+  brandGetListApi,
 } from "../../commodityUrl.js";
+import { custypeGetListApi } from "../../classificationUrl.js";
 import {
   styleModify,
   styleModifytwo,
@@ -198,6 +246,9 @@ export default {
         status: "",
         custom_type: "",
       },
+      isRecycleBin: {
+        is_del: "0",
+      },
       ruleForm: {
         title: "",
         description: "",
@@ -221,10 +272,12 @@ export default {
       // 上架中
       onTheShelfValue: {
         status: "1",
+        is_del: "0",
       },
       // 下架中
       underShelf: {
         status: "0",
+        is_del: "0",
       },
       colors: [],
       // 批量删除
@@ -233,6 +286,7 @@ export default {
       arrs: [],
       comDelsValues: {
         id: "",
+        is_del: "1",
       },
       // 批量上架
       Put: {
@@ -247,14 +301,44 @@ export default {
       thumbS: [],
       thumbs: [],
       thumbValue: "",
-      value: "",
       options: "",
+      OptionsValue: {
+        brand_id: "",
+        is_del: "0",
+      },
+      seatch: {
+        keyword: "",
+        is_del: "0",
+      },
+      // 分页
+      page1: {
+        offset: 1,
+        limit: 10,
+        totalResult: 0,
+        is_del: "0",
+      },
+      cusOptions: [],
+      checkboxGroup: [],
+      checkboxGroup1: {
+        custom_type: "",
+        is_del: "0",
+      },
+      checkboxGroup2: {
+        is_del: "0",
+      }
     };
   },
   created() {
     this.commodityValue();
+    this.custypeGetListValue();
   },
   methods: {
+    // 分类
+    custypeGetListValue() {
+      postD(custypeGetListApi()).then((res) => {
+        this.cusOptions = res.list;
+      });
+    },
     tableRowStyle() {
       return styleModify();
     },
@@ -262,16 +346,34 @@ export default {
       return styleModifytwo();
     },
     commodityValue() {
-      postD(company_productGetListApi()).then((res) => {
+      postD(company_productGetListApi(), this.isRecycleBin).then((res) => {
         this.tableData = res.list;
         this.imagesValue = imgUrl();
+        this.page1.totalResult = res.count;
+      });
+      postD(brandGetListApi()).then((res) => {
+        this.options = res.list;
+        this.page1.totalResult = res.count;
+      });
+    },
+    keywordValue() {
+      postD(company_productGetListApi(), this.seatch).then((res) => {
+        this.tableData = res.list;
+        this.page1.totalResult = res.count;
+      });
+    },
+    selectOptions() {
+      postD(company_productGetListApi(), this.OptionsValue).then((res) => {
+        this.tableData = res.list;
+        this.page1.totalResult = res.count;
       });
     },
     // 全部
     whole() {
-      postD(company_productGetListApi()).then((res) => {
+      postD(company_productGetListApi(), this.isRecycleBin).then((res) => {
         if (res.code == "200") {
           this.tableData = res.list;
+          this.page1.totalResult = res.count;
           this.$refs.wholes.style.backgroundColor = "#FF2659";
           this.$refs.allWholes.style.color = "#ffffff";
           this.$refs.PutOn.style.backgroundColor = "#FFFFFF";
@@ -285,6 +387,7 @@ export default {
     onTheShelf() {
       postD(company_productGetListApi(), this.onTheShelfValue).then((res) => {
         this.tableData = res.list;
+        this.page1.totalResult = res.count;
         this.$refs.PutOn.style.backgroundColor = "#FF2659";
         this.$refs.allPutOn.style.color = "#ffffff";
         this.$refs.wholes.style.backgroundColor = "#FFFFFF";
@@ -297,6 +400,7 @@ export default {
     underShelfx() {
       postD(company_productGetListApi(), this.underShelf).then((res) => {
         this.tableData = res.list;
+        this.page1.totalResult = res.count;
         this.$refs.Offtheshelf.style.backgroundColor = "#FF2659";
         this.$refs.allOfftheshelf.style.color = "#ffffff";
         this.$refs.PutOn.style.backgroundColor = "#FFFFFF";
@@ -306,8 +410,7 @@ export default {
       });
     },
     fulthumb(val) {
-      let ser = JSON.parse(val)
-      return ser.shift();
+      return val.split(",")[0];
     },
     searchOne(data) {
       this.custom_type = data.title;
@@ -325,7 +428,7 @@ export default {
     // 批量删除
     async delsValue() {
       const delsValues = await this.$confirm(
-        "此操作将永久删除管理, 是否继续?",
+        "此操作将放入回收站, 是否继续?",
         "提示",
         {
           confirmButtonText: "确定",
@@ -334,27 +437,29 @@ export default {
         }
       ).catch((err) => err);
       if (delsValues !== "confirm") {
-        return this.$message.info("取消删除");
+        return this.$message.info("取消操作");
       }
       if (delsValues === "confirm") {
         this.arrs.forEach((v) => {
           this.ids.push(v.id);
         });
         this.comDelsValues.id = this.ids.toString();
-        postD(company_productSelectDelApi(), this.comDelsValues).then((res) => {
-          if (res.code == "200") {
-            this.$message.success("已成功删除");
-            this.commodityValue();
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("未登陆");
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
-          } else {
-            this.$message.error("注册失败，账号已存在");
+        postD(company_productSelectSetDelApi(), this.comDelsValues).then(
+          (res) => {
+            if (res.code == "200") {
+              this.$message.success("已成功放入回收站");
+              this.commodityValue();
+            } else if (res.code == "-200") {
+              this.$message.error("参数错误，或暂无数据");
+            } else if (res.code == "-201") {
+              this.$message.error("未登陆");
+            } else if (res.code == "-203") {
+              this.$message.error("对不起，你没有此操作权限");
+            } else {
+              this.$message.error("注册失败，账号已存在");
+            }
           }
-        });
+        );
       }
     },
     // 刷新
@@ -428,6 +533,28 @@ export default {
           } else {
             this.$message.error("注册失败，账号已存在");
           }
+        });
+      }
+    },
+    handlePageChangeActivity({ currentPage, pageSize }) {
+      this.page1.offset = currentPage;
+      this.page1.limit = pageSize;
+      postD(company_productGetListApi(), this.page1).then((res) => {
+        this.tableData = res.list;
+        this.page1.totalResult = res.count;
+      });
+    },
+    checkoxId(val) {
+      if (this.checkboxGroup1.custom_type == "") {
+        postD(company_productGetListApi(), this.checkboxGroup2).then((res) => {
+          this.tableData = res.list;
+          this.page1.totalResult = res.count;
+        });
+      } else {
+        this.checkboxGroup1.custom_type = val.toString();
+        postD(company_productGetListApi(), this.checkboxGroup1).then((res) => {
+          this.tableData = res.list;
+          this.page1.totalResult = res.count;
         });
       }
     },

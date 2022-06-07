@@ -1,28 +1,27 @@
 <template>
   <div>
-    <div class="spanstyle" @click="oneDle()"><span>回收</span></div>
+    <div class="spanstyle" @click="oneDle()"><span>删除</span></div>
   </div>
 </template>
 
 <script>
-import { company_productSetDelApi } from "../../../commodityUrl.js";
 import { postD } from "@/api";
+import { company_productDelProductApi } from "../../../commodityUrl.js";
 export default {
-  props: ["deloneDle"],
-  inject: ["commodityValue"],
+  props: ["delValueOne"],
+  inject: ["recycleBinValue"],
   data() {
     return {
-      comDelId: {
+      removeId: {
         id: "",
-        is_del:"1"
       },
     };
   },
   methods: {
     async oneDle() {
-      this.comDelId.id = this.deloneDle.id;
-      const onecomDelList = await this.$confirm(
-        "此操作将放商品入回收站, 是否继续?",
+      this.removeId.id = this.delValueOne.id;
+      const removeOne = await this.$confirm(
+        "此操作将放商品将永久删除, 是否继续?",
         "提示",
         {
           confirmButtonText: "确定",
@@ -30,14 +29,14 @@ export default {
           type: "warning",
         }
       ).catch((err) => err);
-      if (onecomDelList !== "confirm") {
-        return this.$message.info("取消放入回收站");
+      if (removeOne !== "confirm") {
+        return this.$message.info("取消删除");
       }
-      if (onecomDelList === "confirm") {
-        postD(company_productSetDelApi(), this.comDelId).then((res) => {
+      if (removeOne === "confirm") {
+        postD(company_productDelProductApi(), this.removeId).then((res) => {
           if (res.code == "200") {
-            this.$message.success("成功放入回收站");
-            this.commodityValue();
+            this.$message.success("成功删除");
+            this.recycleBinValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {

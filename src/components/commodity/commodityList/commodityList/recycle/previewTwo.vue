@@ -38,7 +38,7 @@
                   </span>
                 </div>
                 <div><img src="@/assets/imgers/七天.png" alt="" /><span>7天无理由退换</span></div>
-                <div><img src="@/assets/imgers/包邮.png" alt="" /><span>包邮</span></div>
+                <div><img src="@/assets/imgers/正品.png" alt="" /><span>包邮</span></div>
               </div>
             </div>
           </div>
@@ -65,7 +65,6 @@ import { company_productShowProductApi } from "../../../commodityUrl.js";
 import { imgUrl } from "@/assets/js/modifyStyle.js";
 export default {
   props: ["previewValue"],
-  inject: ["commodityValue"],
   data() {
     return {
       dialogVisible: false,
@@ -91,5 +90,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("./Preview.less");
+@import url("./previewTwo.less");
 </style>

@@ -14,6 +14,7 @@ export const custypeGetListApi = () => {
 export const company_productAddProductApi = () => {
     return "company_product/addProduct"
 }
+
 // 批量删除
 export const company_productSelectDelApi = () => {
     return "company_product/selectDel"
@@ -22,6 +23,17 @@ export const company_productSelectDelApi = () => {
 export const company_productDelProductApi = () => {
     return "company_product/delProduct"
 }
+
+// 批量回收站
+export const company_productSelectSetDelApi = () => {
+    return "company_product/selectSetDel"
+}
+
+// 回收站
+export const company_productSetDelApi = () => {
+    return "company_product/setDel"
+}
+
 // 批量上架
 export const company_productSetStatusApi = () => {
     return "company_product/setStatus"

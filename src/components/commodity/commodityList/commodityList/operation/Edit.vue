@@ -33,7 +33,7 @@
         </div>
         <div class="line2" style="margin-top: 15px">
           <el-form-item label="新增规格:" style="width: 100%">
-            <div v-for="(item, index) in ruleForms.spec" :key="index">
+            <div v-for="(item, index) in specs" :key="index">
               <div class="prizesS">
                 <el-input
                   v-model="item.color"
@@ -71,7 +71,7 @@
         </div>
         <div class="line2" style="margin-top: 15px">
           <el-form-item label="产品选择" prop="brand_id">
-            <el-select v-model="ruleForms.brand" placeholder="请选择">
+            <el-select v-model="ruleForms.brand_id" placeholder="请选择">
               <el-option
                 v-for="item in options"
                 :key="item.id"
@@ -160,7 +160,8 @@ export default {
       isClear: false,
       dialogVisible: false,
       ruleForms: {
-        thumb: [],
+        id:"",
+        thumb: "",
         title: "",
         spec: [
           {
@@ -170,7 +171,7 @@ export default {
             count: "",
           },
         ],
-        brand: "",
+        brand_id: "",
         type: "",
         custom_type: "",
         content: "",
@@ -210,21 +211,10 @@ export default {
       PreviewId: {
         id: "",
       },
+      thumbs:[]
     };
   },
-  created() {
-    this.editValue();
-  },
   methods: {
-    editValue() {
-      this.PreviewId.id = this.editIdValue.id;
-      postD(company_productShowProductApi(), this.PreviewId).then((res) => {
-       this.ruleForms.brand_id = res.data.brand
-        this.ruleForms = res.data;
-        this.ruleForms.spec = res.data.spec;
-        this.imagesValue = imgUrl();
-      });
-    },
     editShow() {
       this.dialogVisible = true;
       postD(brandGetListApi()).then((res) => {
@@ -238,9 +228,24 @@ export default {
       postD(custypeGetListApi()).then((res) => {
         this.custom_typeOptions = res.list;
       });
+      this.PreviewId.id = this.editIdValue.id;
+      postD(company_productShowProductApi(), this.PreviewId).then((res) => {
+        console.log(res);
+       this.ruleForms.brand_id = res.data.brand
+       this.ruleForms.thumb = res.data.thumb
+       this.ruleForms.title = res.data.title
+       this.specs = res.data.spec
+       this.ruleForms.type = res.data.type
+       this.ruleForms.custom_type = res.data.custom_type
+       this.ruleForms.content = res.data.content
+       this.ruleForms.id = res.data.id
+
+        this.imagesValue = imgUrl();
+      });
     },
     handleAvatarSuccesser(res, file) {
-      this.ruleForms.thumb.push(res.url);
+      this.thumbs.push(res.url);
+      
     },
     beforeAvatarUpload(file) {
       return beforeAvatar(file);
@@ -267,6 +272,7 @@ export default {
       let Obj = JSON.stringify(this.specs);
       param.append("specs", Obj);
       this.ruleForms.spec = Obj;
+      this.ruleForms.thumb = this.thumbs.toString()
       this.$refs.ruleFormsRef.validate((v) => {
         if (!v) return;
         postD(company_productEditProductApi(), this.ruleForms).then((res) => {

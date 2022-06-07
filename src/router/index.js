@@ -263,7 +263,16 @@ const routes = [
             meta: {
               title: "商品列表"
             },
+          },
+          {
+            path: "/custype/getList",
+            name: "custype/getList",
+            component: () => import("../components/commodity/classification/classificationList.vue"),
+            meta: {
+              title: "分类列表"
+            },
           }
+          
         ]
       },
     ]

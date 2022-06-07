@@ -157,8 +157,9 @@ export default {
       Content: "",
       isClear: false,
       dialogVisible: false,
+      thumbs:[],
       ruleForm: {
-        thumb: [],
+        thumb: "",
         title: "",
         spec: [
           {
@@ -224,7 +225,7 @@ export default {
       });
     },
     handleAvatarSuccesser(res, file) {
-      this.ruleForm.thumb.push(res.url);
+      this.thumbs.push(res.url);
     },
     beforeAvatarUpload(file) {
       return beforeAvatar(file);
@@ -251,6 +252,7 @@ export default {
       let Obj = JSON.stringify(this.specs);
       param.append("specs", Obj);
       this.ruleForm.spec = Obj;
+      this.ruleForm.thumb = this.thumbs.toString()
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;
         postD(company_productAddProductApi(), this.ruleForm).then((res) => {

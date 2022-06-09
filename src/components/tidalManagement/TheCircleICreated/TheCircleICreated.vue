@@ -31,13 +31,17 @@
       </div>
     </div>
     <div class="jjbody">
-      <div>
-        <span
-          ><strong>圈子公告:</strong>&nbsp;&nbsp;
-          <span v-for="item in NoticeValue" :key="item.id">
-            {{ item.description }}
-          </span>
-        </span>
+      <div class="jjbodyDiv">
+        <div><strong>圈子公告:</strong>&nbsp;&nbsp;</div>
+        <vue-seamless-scroll class="seamless-warp" :data="NoticeValue">
+          <ul class="item">
+            <li v-for="item in NoticeValue" :key="item.id">
+              <span class="title" v-text="item.description"></span
+              >
+            </li>
+          </ul>
+        </vue-seamless-scroll>
+        <div class="moreValue" @click="moreValue">更多</div>
       </div>
     </div>
     <div class="seatchStyle">
@@ -172,6 +176,7 @@
 </template>
 
 <script>
+import vueSeamlessScroll from "vue-seamless-scroll";
 import { postD } from "../../../api/index.js";
 import { imgUrl } from "../../../assets/js/modifyStyle.js";
 import {
@@ -187,7 +192,7 @@ import circleList from "./CircleList/circleList.vue";
 import LatestCircleList from "./CircleList/LatestCircleList.vue";
 import EssenceCircleList from "./CircleList/EssenceCircleList.vue";
 export default {
-  components: { circleList, LatestCircleList, EssenceCircleList },
+  components: { circleList, LatestCircleList, EssenceCircleList, vueSeamlessScroll },
   data() {
     return {
       paramsId: {
@@ -263,6 +268,9 @@ export default {
       postD(circle_noticeGetListApi(), this.notId).then((res) => {
         this.NoticeValue = res.list;
       });
+    },
+    moreValue() {
+
     },
     // 页面数据
     CircleShow() {
@@ -488,6 +496,9 @@ export default {
     goactivities() {
       this.$router.push("/Activity/release");
     },
+    moreValue() {
+      this.$router.push("/circle_notice/getList" +this.paramsId.id);
+    }
   },
 };
 </script>
@@ -622,16 +633,26 @@ export default {
 .jjbody {
   padding: 0px 180px;
   text-align: left;
-  div {
-    height: 30px;
+  .jjbodyDiv {
+    height: 40px;
     background: #ffffff;
-    line-height: 5px;
-    padding: 20px;
-    span {
+    line-height: 40px;
+    padding-left: 20px;
+    display: flex;
+    overflow: hidden;
+    .desStyle {
+      div {
+        float: left;
+      }
+    }
+    .moreValue {
+      cursor: pointer;
+      margin-left: auto;
+      margin-right: 20px;
       font-size: 14px;
       font-family: PingFang SC-Regular, PingFang SC;
       font-weight: 400;
-      color: #333333;
+      color: #999999;
     }
   }
 }

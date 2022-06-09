@@ -11,7 +11,7 @@
         <span>批量删除</span>
       </div>
       <div class="plsj">
-        <addbranch />
+        <addservice />
       </div>
       <div class="Res">
         <span>刷新</span>
@@ -21,12 +21,13 @@
       <el-table
         :data="tableData"
         style="width: 100%"
-        @selection-change="handleSelectionChange" 
+        @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" align="center"> </el-table-column>
-        <el-table-column label="分类名称" align="center" prop="title">
+        <el-table-column label="分类名称" align="center" prop="content">
         </el-table-column>
-        <el-table-column label="分类描述" align="center"  prop="description"> </el-table-column>
+        <el-table-column label="分类描述" align="center" prop="description">
+        </el-table-column>
         <el-table-column label="操作" align="center">
           <template v-slot="scoped">
             <div class="optionsStyle">
@@ -57,15 +58,15 @@
 
 <script>
 import { postD } from "@/api";
-import { custypeGetListApi,custypeSelectDelApi } from "../classificationUrl.js";
+import { users_serviceListServiceApi,users_serviceDelServiceApi } from "../serviceUrl.js";
 import edit from "./options/edit.vue";
 import delOne from "./options/delOne.vue";
-import Addbranch from './options/addbranch.vue';
+import addservice from "./options/addservice.vue";
 export default {
-  components:{edit,delOne, Addbranch},
+  components: { edit, delOne, addservice },
   provide() {
     return {
-      custypeList: this.custypeList,
+      serviceList: this.serviceList,
     };
   },
   data() {
@@ -86,17 +87,17 @@ export default {
       DelsValues: {
         id: "",
       },
-      allDel:{
-        id:""
-      }
+      allDel: {
+        id: "",
+      },
     };
   },
   created() {
-    this.custypeList();
+    this.serviceList();
   },
   methods: {
-    custypeList() {
-      postD(custypeGetListApi()).then((res) => {
+    serviceList() {
+      postD(users_serviceListServiceApi()).then((res) => {
         this.tableData = res.list;
         this.page1.totalResult = res.count;
       });
@@ -107,7 +108,7 @@ export default {
     handlePageChangeActivity({ currentPage, pageSize }) {
       this.page1.offset = currentPage;
       this.page1.limit = pageSize;
-      postD(custypeGetListApi(), this.page1).then((res) => {
+      postD(users_serviceListServiceApi(), this.page1).then((res) => {
         this.tableData = res.list;
         this.page1.totalResult = res.count;
       });
@@ -130,10 +131,10 @@ export default {
           this.ids.push(v.id);
         });
         this.allDel.id = this.ids.toString()
-        postD(custypeSelectDelApi(),this.allDel).then(res=> {
+        postD(users_serviceDelServiceApi(),this.allDel).then(res=> {
            if (res.code == "200") {
               this.$message.success("已成功删除");
-              this.custypeList();
+              this.serviceList();
             } else if (res.code == "-200") {
               this.$message.error("参数错误，或暂无数据");
             } else if (res.code == "-201") {
@@ -151,5 +152,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("./classificationList.less");
+@import url("./serviceList.less");
 </style>

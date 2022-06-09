@@ -45,7 +45,7 @@ import {
     Tag,
     Carousel,
     CarouselItem,
-    RadioButton
+    RadioButton,
 } from 'element-ui'
 export default {
     install(Vue) {

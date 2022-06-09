@@ -27,7 +27,7 @@ const routes = [
       },
       {
         path: "/pageHome",
-        name: "homePage",
+        name: "homePage", 
         component: () => import("../components/homePage/homePage.vue"),
       },
       {
@@ -65,6 +65,14 @@ const routes = [
             meta: {
               title: "查看圈子"
             },
+          },
+          {
+            path:"/circle_notice/getList:id",
+            name:"circle_notice/getList",
+            component: ()=> import("../components/tidalManagement/TheCircleICreated/Notice/NoticeList.vue"),
+            meta: {
+              title:"圈子公告"
+            }
           },
           {
             path: "/Forum/release:id",
@@ -270,6 +278,14 @@ const routes = [
             component: () => import("../components/commodity/classification/classificationList.vue"),
             meta: {
               title: "分类列表"
+            },
+          },
+          {
+            path: "/users_service/listService",
+            name: "users_service/listService",
+            component: () => import("../components/commodity/service/serviceList.vue"),
+            meta: {
+              title: "服务列表"
             },
           }
           

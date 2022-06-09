@@ -20,3 +20,7 @@ export const ForumSetEssApi = () => {
 export const circle_noticeGetListApi = () => {
     return "circle_notice/getList"
 }
+// 公告删除
+export const circle_noticeDelApi = () => {
+    return "circle_notice/del"
+}

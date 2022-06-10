@@ -2,52 +2,72 @@
   <div>
     <div style="padding: 20px 180px">
       <div class="releaseBody">
-        <div class="line1">
-          <img src="../../../../assets/imgers/发布.png" alt="" />
-          <el-input
-            v-model="addForm.theme"
-            placeholder="添加一个话题"
-          ></el-input>
-        </div>
-        <div class="line2">
-          <div class="line2Top">
-            <el-input
-              v-model="addForm.title"
-              placeholder="请输入你的标题"
-            ></el-input>
-          </div>
-        </div>
-        <div class="line3">
-          <div class="line3Top">
-            <span>正文内容</span>
-            <div class="lineRight">
-              <i class="el-icon-picture-outline" @click="addPhoto"></i>
-              <i class="el-icon-video-camera" @click="addVideo"></i>
-              <i class="el-icon-s-data" @click="addVoto"></i>
-            </div>
-          </div>
-        </div>
-        <div class="line4">
-          <div class="line4Top">
-            <el-input
-              type="textarea"
-              placeholder="发表内容…"
-              v-model="addForm.description"
+        <el-form
+          :model="addForm"
+          :rules="addFormRules"
+          ref="addFormRulesRef"
+          class="demo-ruleForm"
+        >
+          <div class="line1">
+            <img src="../../../../assets/imgers/发布.png" alt="" />
+            <el-select
+              v-model="addForm.theme"
+              placeholder="请选择"
+              clearable
+              filterable
+              @blur="selectBlur"
+              @clear="selectClear"
+              @change="selectChange"
             >
-            </el-input>
-            <div class="line4vote" v-if="addForm.is_voto == 1">
-              <div class="line4body">
-                <div class="VotingIcon"><i class="el-icon-s-data"></i></div>
-                <div class="VotingTitle">
-                  <span>选哪个</span>
-                </div>
-                <div class="VotingErr" @click="errorIcon">
-                  <i class="el-icon-error"></i>
-                </div>
+              <el-option
+                v-for="item in options"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id"
+              />
+            </el-select>
+          </div>
+          <div class="line2">
+            <el-form-item class="line2Top" prop="title">
+              <el-input
+                v-model="addForm.title"
+                placeholder="请输入你的标题"
+              ></el-input>
+            </el-form-item>
+          </div>
+          <div class="line3">
+            <div class="line3Top">
+              <span>正文内容</span>
+              <div class="lineRight">
+                <i class="el-icon-picture-outline" @click="addPhoto"></i>
+                <i class="el-icon-video-camera" @click="addVideo"></i>
+                <i class="el-icon-s-data" @click="addVoto"></i>
               </div>
             </div>
           </div>
-        </div>
+          <div class="line4">
+            <el-form-item class="line4Top" prop="description">
+              <el-input
+                type="textarea"
+                placeholder="发表内容…"
+                v-model="addForm.description"
+              >
+              </el-input>
+              <div class="line4vote" v-if="addForm.is_voto == 1">
+                <div class="line4body">
+                  <div class="VotingIcon"><i class="el-icon-s-data"></i></div>
+                  <div class="VotingTitle">
+                    <span>选哪个</span>
+                  </div>
+                  <div class="VotingErr" @click="errorIcon">
+                    <i class="el-icon-error"></i>
+                  </div>
+                </div>
+              </div>
+            </el-form-item>
+          </div>
+        </el-form>
+
         <div class="footer">
           <div class="PostAPost" @click="PostAPostUp">
             <span>发表帖子</span>
@@ -198,7 +218,7 @@ import { beforeAvatar } from "../../../../assets/js/modifyStyle.js";
 import EleUploadVideo from "vue-ele-upload-video";
 import { timestampToTime } from "../../../../assets/js/time.js";
 import { imgUrl } from "../../../../assets/js/modifyStyle.js";
-import { ForumReleaseApi } from "./ForumReleaseUrl.js";
+import { ForumReleaseApi, CircleGetCircleShowApi } from "./ForumReleaseUrl.js";
 import { postD } from "@/api/index.js";
 export default {
   components: {
@@ -219,25 +239,25 @@ export default {
       //   视频
       UploadVideoShow: false,
       addForm: {
-        is_circle:"1",
-        circle_id:"",
-        details: null,
-        content: null,
-        description: null,
-        theme: null, 
-        title: null,
-        thumb: null,
-        voto_start_time: null,
-        voto_end_time: null,
-        method: null,
+        is_circle: "1",
+        circle_id: "",
+        details: "",
+        content: "",
+        description: "",
+        theme: "",
+        title: "",
+        thumb: "",
+        voto_start_time: "",
+        voto_end_time: "",
+        method: "",
         is_voto: 0,
-        lat: null,
-        lng: null,
-        city: null,
+        lat: "",
+        lng: "",
+        city: "",
         item: [
           {
-            item: null,
-            is_img: null,
+            item: "",
+            is_img: "",
           },
         ],
       },
@@ -245,7 +265,14 @@ export default {
         title: [
           {
             required: true,
-            message: "请输入活动标题",
+            message: "请输入标题",
+            tirgger: "blur",
+          },
+        ],
+        description: [
+          {
+            required: true,
+            message: "请输入內容",
             tirgger: "blur",
           },
         ],
@@ -338,6 +365,12 @@ export default {
           label: "最多选五项",
         },
       ],
+      // 输入选择框
+      value: "",
+      options: "",
+      optionsId: {
+        id: "",
+      },
     };
   },
   created() {
@@ -347,17 +380,40 @@ export default {
     this.imgUrltitle();
   },
   methods: {
+    // 输入选择
+    selectBlur(e) {
+      // 意见类型
+      if (e.target.value !== "") {
+        this.value = e.target.value;
+        this.$forceUpdate(); // 强制更新
+      }
+    },
+    selectClear() {
+      this.value = "";
+      this.$forceUpdate();
+    },
+    selectChange(val) {
+      this.value = val;
+      this.$forceUpdate();
+    },
     imgUrltitle() {
       this.imagesValue = imgUrl();
+      this.optionsId.id = this.$route.params.id;
+      postD(CircleGetCircleShowApi(), this.optionsId).then((res) => {
+        this.options = res.data.forum;
+      });
     },
     Unpublishup() {
       this.$router.push("/Circle/getCircleShow" + this.paramsId.id);
     },
     PostAPostUp() {
-        this.$router.push("/Circle/getCircleShow" + this.paramsId.id);
-      postD(ForumReleaseApi(), this.addForm).then((res) => {
+      this.$refs.addFormRulesRef.validate((valid) => {
+        if (!valid) return;
+        console.log(this.addForm);
+        postD(ForumReleaseApi(), this.addForm).then((res) => {
         if (res.code == "200") {
           this.$message.success("状态修改成功");
+          this.$router.push("/Circle/getCircleShow" + this.paramsId.id);
         } else if (res.code == "-200") {
           this.$message.error("参数错误，或暂无数据");
         } else if (res.code == "-201") {
@@ -368,6 +424,9 @@ export default {
           this.$message.error("注册失败，账号已存在");
         }
       });
+      })
+      
+      
     },
     // 上传图片
     addPhoto() {
@@ -413,7 +472,9 @@ export default {
     },
     gatTime(date) {
       this.voto_start_time = date;
-      this.addForm.voto_start_time = timestampToTime(this.voto_start_time / 1000);
+      this.addForm.voto_start_time = timestampToTime(
+        this.voto_start_time / 1000
+      );
     },
     gutTime(date) {
       this.voto_end_time = date;

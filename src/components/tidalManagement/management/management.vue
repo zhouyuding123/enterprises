@@ -16,21 +16,11 @@
             <span>{{ listValue.title }}</span>
           </div>
         </div>
-        <div class="linedetails2">
-          <div class="mc"><span>圈子公告</span></div>
-          <div class="lineBorder" @click="Announcement">
-            <span>编辑公告</span>
-          </div>
-        </div>
         <div class="linedetails3">
           <div class="mc"><span>圈子标签</span></div>
           <div class="lineBorder">
             <span>{{ listValue.label }}</span>
           </div>
-        </div>
-        <div class="linedetails4">
-          <div class="mc"><span>圈子规则</span></div>
-          <div class="lineBorder"><span></span></div>
         </div>
         <div class="linedetails5">
           <div class="mc"><span>圈子简介</span></div>
@@ -52,36 +42,13 @@
     <div class="line4Div">
       <div class="qx" @click="cancel"><span>返回</span></div>
     </div>
-    <el-dialog title="提示" :visible.sync="AnnouncementShow" width="50%">
-      <el-form
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleFormRef"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-        <el-form-item label="公告标题" prop="title">
-          <el-input v-model="ruleForm.title"></el-input>
-        </el-form-item>
-        <el-form-item label="简单的描述" prop="description">
-          <el-input v-model="ruleForm.description"></el-input>
-        </el-form-item>
-        <el-form-item label="详细内容" prop="content">
-          <el-input v-model="ruleForm.content"></el-input>
-        </el-form-item>
-      </el-form>
-      <span>
-        <el-button @click="AnnouncementShow = false">取 消</el-button>
-        <el-button type="primary" @click="addRuleForm">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import { postD } from "../../../api";
 import { imgUrl } from "../../../assets/js/modifyStyle.js";
-import { CircleGetCircleShowApi, circle_noticeAddApi } from "./myCircleUrl.js";
+import { CircleGetCircleShowApi } from "./myCircleUrl.js";
 
 export default {
   data() {
@@ -93,36 +60,6 @@ export default {
       listValue: [],
       // 成员
       memberNum: "",
-      AnnouncementShow: false,
-      ruleForm: {
-        circle_id: "",
-        description: "",
-        title: "",
-        content: "",
-      },
-      rules: {
-        title: [
-          {
-            required: true,
-            message: "请输入公告标题",
-            tirgger: "blur",
-          },
-        ],
-        description: [
-          {
-            required: true,
-            message: "请输入公告描述",
-            tirgger: "blur",
-          },
-        ],
-        content: [
-          {
-            required: true,
-            message: "请输入公告详细内容",
-            tirgger: "blur",
-          },
-        ],
-      },
     };
   },
   created() {
@@ -135,29 +72,6 @@ export default {
         this.listValue = res.data.circle;
         this.imageValue = imgUrl();
         this.memberNum = res.data.member_count;
-      });
-    },
-    Announcement() {
-      this.AnnouncementShow = true;
-    },
-    addRuleForm() {
-      this.ruleForm.circle_id = this.paramsId.id;
-      this.$refs.ruleFormRef.validate((valid) => {
-        if (!valid) return;
-        postD(circle_noticeAddApi(), this.ruleForm).then((res) => {
-          if (res.code == "200") {
-            this.$message.success("发布公告成功");
-            this.listCircleValue();
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("未登陆");
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
-          } else {
-            this.$message.error("注册失败，账号已存在");
-          }
-        });
       });
     },
     zxc() {
@@ -213,7 +127,7 @@ export default {
   padding-right: 180px;
   .line2Value {
     background-color: white;
-    height: 340px;
+    height: 270px;
     text-align: left;
     .linedetails1 {
       padding: 30px 60px 20px 60px;

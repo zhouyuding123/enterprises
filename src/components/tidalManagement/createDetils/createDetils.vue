@@ -12,7 +12,7 @@
         <div class="SecondLine">
           <span>{{ detilsValues.title }}</span>
         </div>
-        <div class="ThirdLine">
+        <div class="ThirdLine" v-if="detilsValues.theme !== '' && detilsValues.theme !== null ">
           <div>
             <span> #{{ detilsValues.theme }} </span>
           </div>
@@ -22,7 +22,10 @@
             <span>{{ detilsValues.description }}</span>
           </div>
         </div>
-        <div class="fifthLine" v-if="detilsValues.is_voto == 0">
+        <div
+          class="fifthLine"
+          v-if="detilsValues.is_voto == 0 && detilsValues.thumb !== ''"
+        >
           <el-image :src="imagesValue + detilsValues.thumb"></el-image>
         </div>
         <div class="fifthLine" v-if="detilsValues.is_voto == 1">
@@ -77,7 +80,7 @@
                   </div>
                 </div>
                 <div v-if="codeValue == -200">
-                  <div class="votoTser" @click="voteCur" >
+                  <div class="votoTser" @click="voteCur">
                     <span>投票</span>
                   </div>
                 </div>
@@ -200,7 +203,7 @@ export default {
       },
       imagesShow: false,
       imagesShows: false,
-      codeValue:""
+      codeValue: "",
     };
   },
   created() {
@@ -227,7 +230,7 @@ export default {
     },
     votoState() {
       postD(ForumSeteVotoApi(), this.detilsId).then((res) => {
-          this.codeValue = res.code
+        this.codeValue = res.code;
       });
     },
     // 评论

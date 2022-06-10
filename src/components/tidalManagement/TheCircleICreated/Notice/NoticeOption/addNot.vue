@@ -1,31 +1,27 @@
 <template>
   <div>
-    <span class="addValue" @click="addShow">添加</span>
-    <el-dialog title="服务分类" :visible.sync="dialogVisible" width="30%">
+    <div class="addNotStyle" @click="addShow"><span>创建公告</span></div>
+    <el-dialog title="圈子公告" :visible.sync="dialogVisible" width="30%">
       <el-form
         :model="ruleForm"
         :rules="ruleFormRules"
         ref="ruleFormRef"
         hide-required-asterisk
       >
-        <el-form-item label="名称" prop="content">
-          <el-input
-            v-model="ruleForm.content"
-            placeholder="比如：放心购"
-          ></el-input>
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input
-            type="textarea"
-            v-model="ruleForm.description"
-            placeholder="随便描述"
-          ></el-input>
+        <el-form-item label="简单的内容" prop="description">
+          <el-input v-model="ruleForm.description"></el-input>
+        </el-form-item>
+        <el-form-item label="内容" prop="content">
+          <el-input type="textarea" v-model="ruleForm.content"></el-input>
         </el-form-item>
       </el-form>
-      <div class="dialog-footer">
+      <div style="padding-top: 45px">
         <span>
-          <el-button @click="Reset">重 置</el-button>
-          <el-button type="primary" @click="addClassification">保 存</el-button>
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="notAdd">发 布</el-button>
         </span>
       </div>
     </el-dialog>
@@ -34,25 +30,32 @@
 
 <script>
 import { postD } from "@/api";
-import { users_serviceAddServiceApi } from "../../serviceUrl.js";
+import { circle_noticeAddApi } from "../../TheCircleICreated.js";
 export default {
-  inject: ["serviceList"],
+  inject: ["notValue"],
   data() {
     return {
       dialogVisible: false,
-      ruleForm: { content: "" },
+      ruleForm: { circle_id: "", title: "", description: "", content: "" },
       ruleFormRules: {
-        content: [
+        title: [
           {
             required: true,
-            message: "请输入分类名称",
+            message: "请输入公告标题",
             tirgger: "blur",
           },
         ],
         description: [
           {
             required: true,
-            message: "请输入分类描述",
+            message: "请输入简单的内容",
+            tirgger: "blur",
+          },
+        ],
+        content: [
+          {
+            required: true,
+            message: "请输入公告内容",
             tirgger: "blur",
           },
         ],
@@ -63,18 +66,15 @@ export default {
     addShow() {
       this.dialogVisible = true;
     },
-    Reset() {
-      this.ruleForm.content = "";
-      this.ruleForm.description = "";
-    },
-    addClassification() {
+    notAdd() {
+      this.ruleForm.circle_id = this.$route.params.id;
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;
-        postD(users_serviceAddServiceApi(), this.ruleForm).then((res) => {
+        postD(circle_noticeAddApi(), this.ruleForm).then((res) => {
           if (res.code == "200") {
             this.$message.success("添加成功");
             this.dialogVisible = false;
-            this.serviceList();
+            this.notValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -92,5 +92,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("./addservice.less");
+@import url("./addNot.less");
 </style>
+
+    

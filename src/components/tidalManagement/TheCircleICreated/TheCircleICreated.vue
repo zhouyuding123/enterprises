@@ -32,12 +32,16 @@
     </div>
     <div class="jjbody">
       <div class="jjbodyDiv">
-        <div><strong>圈子公告:</strong>&nbsp;&nbsp;</div>
+        <div style="width:100px"><strong>圈子公告:</strong>&nbsp;&nbsp;</div>
         <vue-seamless-scroll class="seamless-warp" :data="NoticeValue">
           <ul class="item">
             <li v-for="item in NoticeValue" :key="item.id">
-              <span class="title" v-text="item.description"></span
+              <span
+                class="title"
+                v-text="item.description"
+                @click="thisTitle(item.id)"
               >
+              </span>
             </li>
           </ul>
         </vue-seamless-scroll>
@@ -172,6 +176,29 @@
         </div>
       </div>
     </div>
+    <el-dialog title="公告详情" :visible.sync="detilsShow" width="30%">
+      <div class="detilsBody">
+        <div>
+          <el-image :src="imagesValue + detilsValue.headimg" class="userImg">
+          </el-image>
+        </div>
+        <div class="notTitle">
+          <span>{{ detilsValue.username }}</span>
+        </div>
+        <div class="detilsTime">
+          <span>{{ ruleFormdetils.create_time }}</span>
+        </div>
+      </div>
+      <div class="detilsValues">
+          <div class="detilsValuesTitle">{{ruleFormdetils.title}}</div>
+          <div class="detilsValuesContent">{{ruleFormdetils.content}}</div>
+      </div>
+      <div style="padding-top: 45px">
+        <span>
+          <el-button @click="detilsShow = false">返 回</el-button>
+        </span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -185,16 +212,22 @@ import {
   ForumDelForumApi,
   ForumSetTopApi,
   ForumSetEssApi,
-  circle_noticeGetListApi,
+  circle_noticeGetListApi,circle_noticeGetShowApi
 } from "./TheCircleICreated.js";
 import { timestampToTime } from "../../../assets/js/time.js";
 import circleList from "./CircleList/circleList.vue";
 import LatestCircleList from "./CircleList/LatestCircleList.vue";
 import EssenceCircleList from "./CircleList/EssenceCircleList.vue";
 export default {
-  components: { circleList, LatestCircleList, EssenceCircleList, vueSeamlessScroll },
+  components: {
+    circleList,
+    LatestCircleList,
+    EssenceCircleList,
+    vueSeamlessScroll,
+  },
   data() {
     return {
+      step: 0.0001,
       paramsId: {
         id: "",
       },
@@ -252,6 +285,17 @@ export default {
         circle_id: "",
       },
       NoticeValue: [],
+      // 公告详情
+      detilsIdQ: {
+        id:""
+      },
+      detilsId: {
+        circle_id: "",
+        notice_id: "",
+      },
+      detilsShow:false,
+      detilsValue:[],
+      ruleFormdetils:[]
     };
   },
   created() {
@@ -269,9 +313,7 @@ export default {
         this.NoticeValue = res.list;
       });
     },
-    moreValue() {
-
-    },
+    moreValue() {},
     // 页面数据
     CircleShow() {
       postD(CircleGetCircleShowApi(), this.paramsId).then((res) => {
@@ -480,6 +522,30 @@ export default {
         });
       }
     },
+    thisTitle(val) {
+      this.detilsShow = true
+      this.detilsId.circle_id = this.$route.params.id;
+      this.detilsId.notice_id = val;
+      this.detilsIdQ.id = this.$route.params.id;
+      postD(CircleGetCircleShowApi(), this.detilsIdQ).then((res) => {
+        this.detilsValue = res.data.circle;
+        this.imagesValue = imgUrl();
+      });
+      postD(circle_noticeGetShowApi(),this.detilsId).then(res=> {
+        if (res.code == "200") {
+          this.ruleFormdetils = res.data;
+          console.log(this.ruleFormdetils);
+        } else if (res.code == "-200") {
+          this.$message.error("参数错误，或暂无数据");
+        } else if (res.code == "-201") {
+          this.$message.error("未登陆");
+        } else if (res.code == "-203") {
+          this.$message.error("对不起，你没有此操作权限");
+        } else {
+          this.$message.error("注册失败，已存在");
+        }
+      })
+    },
     // 详情
     detailsValue(data) {
       this.$router.push("/Forum/showForum" + data);
@@ -497,297 +563,12 @@ export default {
       this.$router.push("/Activity/release");
     },
     moreValue() {
-      this.$router.push("/circle_notice/getList" +this.paramsId.id);
-    }
+      this.$router.push("/circle_notice/getList" + this.paramsId.id);
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.Release {
-  position: absolute;
-  top: 80px;
-  right: 0;
-  padding: 20px 30px;
-  display: flex;
-  p {
-    width: 200px;
-    height: 40px;
-    background: #ffdc00;
-    border-radius: 20px 20px 20px 20px;
-    line-height: 40px;
-    font-size: 15px;
-  }
-}
-.thumbBody {
-  padding: 20px 180px;
-  .thumbbool {
-    position: relative;
-    .el-image {
-      width: 100%;
-      height: 200px;
-      background: #0b022d;
-    }
-    .headimgBody {
-      width: 160px;
-      height: 120px;
-      background: #0c032e;
-      border-radius: 6px 6px 6px 6px;
-      opacity: 1;
-      position: absolute;
-      top: 0;
-      margin: 40px 10px 40px 50px;
-      .el-image {
-        width: 100%;
-        height: 100%;
-        background: #0b022d;
-      }
-    }
-    .titleValue {
-      position: absolute;
-      top: 60px;
-      left: 240px;
-      .LabelValue {
-        font-size: 28px;
-        font-family: PingFang SC-Bold, PingFang SC;
-        font-weight: bold;
-        color: #ffffff;
-        line-height: 0px;
-        .thisLabelStyle {
-          margin-top: 60px;
-          text-align: left;
-          span {
-            font-size: 14px;
-            font-family: PingFang SC-Regular, PingFang SC;
-            font-weight: 400;
-            color: #ffffff;
-          }
-        }
-      }
-    }
-  }
-}
-.Statistics {
-  position: absolute;
-  top: 30px;
-  right: 40px;
-  div {
-    cursor: pointer;
-    width: 160px;
-    height: 40px;
-    border-radius: 20px 20px 20px 20px;
-    border: 1px solid #ffffff;
-    margin-top: 20px;
-    line-height: 30px;
-    position: relative;
-    span:nth-child(1) {
-      font-size: 16px;
-      font-family: PingFang SC-Bold, PingFang SC;
-      font-weight: bold;
-      color: #ffffff;
-      position: absolute;
-      top: 10%;
-      left: 25px;
-    }
-    span:nth-child(2) {
-      font-size: 12px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #ffffff;
-      position: absolute;
-      top: 9%;
-      left: 40%;
-    }
-    span:nth-child(3) {
-      font-size: 12px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #ffffff;
-      position: absolute;
-      right: 0;
-      top: 13%;
-      padding-right: 20px;
-    }
-  }
-  .qzgl {
-    cursor: pointer;
-    width: 160px;
-    height: 40px;
-    border-radius: 20px 20px 20px 20px;
-    border: 1px solid #ffffff;
-    margin-top: 20px;
-    line-height: 30px;
-    position: relative;
-    .qzglSpan {
-      position: absolute;
-      top: 9%;
-      left: 30%;
-    }
-    .qzglSpans {
-      position: absolute;
-      top: 9%;
-      left: 80%;
-    }
-  }
-}
-.jjbody {
-  padding: 0px 180px;
-  text-align: left;
-  .jjbodyDiv {
-    height: 40px;
-    background: #ffffff;
-    line-height: 40px;
-    padding-left: 20px;
-    display: flex;
-    overflow: hidden;
-    .desStyle {
-      div {
-        float: left;
-      }
-    }
-    .moreValue {
-      cursor: pointer;
-      margin-left: auto;
-      margin-right: 20px;
-      font-size: 14px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #999999;
-    }
-  }
-}
-.seatchStyle {
-  padding: 20px 155px;
-  div {
-    .el-input {
-      width: 75%;
-      height: 40px;
-    }
-  }
-}
-.fbtz {
-  cursor: pointer;
-  width: 120px;
-  height: 40px;
-  background: linear-gradient(180deg, #0c032e 0%, #5c5673 100%);
-  border-radius: 3px 3px 3px 3px;
-  span {
-    font-size: 16px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #ffffff;
-    line-height: 40px;
-  }
-}
-.plgl {
-  width: 120px;
-  height: 40px;
-  background: #ffffff;
-  border-radius: 3px 3px 3px 3px;
-  border: 1px solid #0c032e;
-  span {
-    font-size: 16px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #333333;
-    line-height: 40px;
-  }
-}
-.sx {
-  cursor: pointer;
-  float: right;
-  margin-right: 35px;
-  div {
-    width: 80px;
-    height: 40px;
-    background: #00b567;
-    border-radius: 4px 4px 4px 4px;
-    line-height: 40px;
-    span {
-      font-size: 14px;
-      font-family: PingFang SC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #ffffff;
-      line-height: 19px;
-    }
-  }
-}
-.listValue {
-  position: relative;
-  padding: 0px 180px;
-  .listFelt {
-    background: #ffffff;
-    border-radius: 0px 0px 0px 0px;
-    text-align: left;
-  }
-}
-.imgStyle {
-  border-radius: 50%;
-  position: absolute;
-  top: 25%;
-  left: 90%;
-}
-.el-dropdown-link {
-  font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #0177d5;
-  line-height: 19px;
-}
-.vxe-radio-group {
-  line-height: 50px;
-}
-.listRight {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding-right: 180px;
-  padding-top: 5px;
-}
-.el-button {
-  background: #ffffff;
-  color: #999999;
-}
-.xz {
-  display: table;
-  width: 100%;
-}
-.swdz {
-  display: table-cell;
-  padding-left: 5px;
-  .el-button {
-    font-size: 1px;
-  }
-}
-.topStyle {
-  .ToppingSpan {
-    width: 40px;
-    height: 20px;
-    background: #ffdc00;
-    border-radius: 4px 4px 4px 4px;
-    margin-right: 5px;
-    font-size: 1px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #ffffff;
-  }
-  .EssenceSpan {
-    width: 40px;
-    height: 20px;
-    background: #ff2659;
-    border-radius: 4px 4px 4px 4px;
-    margin-right: 5px;
-    font-size: 1px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #ffffff;
-  }
-}
-.details {
-  cursor: pointer;
-}
-.details:hover {
-  font-size: 16px;
-}
-// 查看圈子
+@import url("./TheCircleICreated.less");
 </style>

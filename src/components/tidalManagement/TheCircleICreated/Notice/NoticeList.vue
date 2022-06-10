@@ -1,26 +1,32 @@
 <template>
   <div class="notStyle">
     <div class="line1">
-      <div class="addNotStyle"><span>创建公告</span></div>
-      <div class="RefreshStyle"><span>刷新</span></div>
+      <add-not />
+      <div class="RefreshStyle" @click="Rsh"><span>刷新</span></div>
     </div>
     <div class="notValueStyle" v-for="item in NoticeValue" :key="item.id">
       <div class="notValueStyleValue">
         <div class="notValueStyleValuePadding">
+          <div class="notValueDivStyle">{{ item.title }}</div>
           <span>{{ item.description }}</span>
         </div>
       </div>
       <div class="notBorder"></div>
       <div class="notOptions">
+        <div class="notHeader">
+          <el-image :src="imagesValue + NotUser.headimg" class="userImg">
+          </el-image>
+        </div>
         <div class="notTitle">
-          <span>{{ item.title }}</span>
+          <span>{{ NotUser.username }}</span>
         </div>
         <div class="notTime">
           <span>{{ item.create_time }}</span>
         </div>
         <div class="botoptions">
           <template>
-            <div class="notEdit"><span>编辑</span></div>
+            <detils-not :detilsId="item.id" />
+            <edit-not :editId="item.id" />
             <div class="botDel" @click="addDel(item.id)"><span>删除</span></div>
           </template>
         </div>
@@ -43,16 +49,28 @@
 <script>
 import { postD } from "@/api/index.js";
 import {
-  circle_noticeGetListApi,
   circle_noticeDelApi,
+  CircleGetCircleShowApi,
 } from "../TheCircleICreated.js";
+import { imgUrl } from "@/assets/js/modifyStyle.js";
+import addNot from "./NoticeOption/addNot.vue";
+import editNot from "./NoticeOption/editNot.vue";
+import detilsNot from "./NoticeOption/detilsNot.vue";
 export default {
+  components: { addNot,editNot,detilsNot },
+  provide() {
+    return {
+      notValue: this.notValue,
+    };
+  },
   data() {
     return {
+      imagesValue: "",
       notId: {
-        circle_id: "",
+        id: "",
       },
       NoticeValue: [],
+      NotUser: [],
       dialogVisible: false,
       DelNotID: {
         id: "",
@@ -64,11 +82,15 @@ export default {
   },
   methods: {
     notValue() {
-      this.notId.circle_id = this.$route.params.id;
-      postD(circle_noticeGetListApi(), this.notId).then((res) => {
-        console.log(res);
-        this.NoticeValue = res.list;
+      this.notId.id = this.$route.params.id;
+      postD(CircleGetCircleShowApi(), this.notId).then((res) => {
+        this.NoticeValue = res.data.notice;
+        this.NotUser = res.data.circle;
+        this.imagesValue = imgUrl();
       });
+    },
+    Rsh() {
+      this.notValue();
     },
     addDel(val) {
       this.dialogVisible = true;

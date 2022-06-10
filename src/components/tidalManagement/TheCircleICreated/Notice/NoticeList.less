@@ -6,22 +6,8 @@
     display: flex;
 }
 
-.addNotStyle {
-    width: 120px;
-    height: 40px;
-    background: linear-gradient(180deg, #0C032E 0%, #5C5673 100%);
-    border-radius: 3px 3px 3px 3px;
-
-    span {
-        font-size: 16px;
-        font-family: PingFang SC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #FFFFFF;
-        line-height: 40px;
-    }
-}
-
 .RefreshStyle {
+    cursor: pointer;
     margin-left: auto;
     width: 80px;
     height: 40px;
@@ -51,6 +37,15 @@
 
     .notValueStyleValuePadding {
         padding: 30px 40px;
+
+        .notValueDivStyle {
+            height: 22px;
+            font-size: 16px;
+            font-family: PingFang SC-Bold, PingFang SC;
+            font-weight: bold;
+            color: #333333;
+            line-height: 0px;
+        }
     }
 }
 
@@ -64,7 +59,7 @@
 }
 
 .notTitle {
-    padding: 0px 0px 0px 80px;
+    padding: 0px 0px 0px 10px;
 
     span {
         font-size: 14px;
@@ -90,26 +85,6 @@
 .botoptions {
     margin-left: auto;
     display: flex;
-
-    .notEdit {
-        cursor: pointer;
-        margin-right: 10px;
-        margin-top: -10px;
-        width: 80px;
-        height: 40px;
-        background: #FFFFFF;
-        border-radius: 3px 3px 3px 3px;
-        opacity: 1;
-        border: 1px solid #0C032E;
-
-        span {
-            font-size: 16px;
-            font-family: PingFang SC-Regular, PingFang SC;
-            font-weight: 400;
-            color: #333333;
-            line-height: 40px;
-        }
-    }
 
     .botDel {
         cursor: pointer;
@@ -150,13 +125,27 @@
         border-radius: 20px 20px 20px 20px;
     }
 }
+
 .ssss {
     height: 100px;
     position: relative;
+
     span {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
     }
+}
+
+.notHeader {
+    padding-left: 20px;
+}
+
+.userImg {
+    width: 32px;
+    height: 32px;
+    background: #E3E8EF;
+    margin-top: -5px;
+    border-radius: 50%;
 }

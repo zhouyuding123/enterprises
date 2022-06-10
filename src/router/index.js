@@ -27,7 +27,7 @@ const routes = [
       },
       {
         path: "/pageHome",
-        name: "homePage", 
+        name: "homePage",
         component: () => import("../components/homePage/homePage.vue"),
       },
       {
@@ -67,11 +67,11 @@ const routes = [
             },
           },
           {
-            path:"/circle_notice/getList:id",
-            name:"circle_notice/getList",
-            component: ()=> import("../components/tidalManagement/TheCircleICreated/Notice/NoticeList.vue"),
+            path: "/circle_notice/getList:id",
+            name: "circle_notice/getList",
+            component: () => import("../components/tidalManagement/TheCircleICreated/Notice/NoticeList.vue"),
             meta: {
-              title:"圈子公告"
+              title: "圈子公告"
             }
           },
           {
@@ -155,6 +155,28 @@ const routes = [
         ]
       },
       {
+        path: "/Circles",
+        name: "CircleS",
+        component: () => import("../components/Stroll/StrollList.vue"),
+        meta: {
+          title: "逛逛"
+        },
+        children: [
+          {
+            path: "/Circles",
+            redirect: "/Circles/Stroll",
+          },
+          {
+            path: "/Circles/Stroll",
+            name: "Circles/Stroll",
+            component: () => import("../components/Stroll/StrollAround/strollAroundList.vue"),
+            meta: {
+              title: "逛逛列表"
+            },
+          },
+        ]
+      },
+      {
         path: "/Business",
         name: "Business",
         component: () => import("../components/StoreManagement/listBusiness.vue"),
@@ -177,13 +199,13 @@ const routes = [
         ]
       },
       {
-        path:"/match",
-        name:"match",
-        component: ()=> import("../components/EventManagement/listEvent.vue"),
+        path: "/match",
+        name: "match",
+        component: () => import("../components/EventManagement/listEvent.vue"),
         meta: {
           title: "赛事管理"
         },
-        children:[
+        children: [
           {
             path: "/match",
             redirect: "/match/listMacthMF",
@@ -227,9 +249,9 @@ const routes = [
         name: "brand",
         component: () => import("../components/BrandManagement/listBrand.vue"),
         meta: {
-          title:"品牌管理"
+          title: "品牌管理"
         },
-        children:[
+        children: [
           {
             path: "/brand",
             redirect: "/brand/getList",
@@ -253,13 +275,13 @@ const routes = [
         ]
       },
       {
-        path:"/company_product",
-        name:"company_product",
-        component: ()=> import("../components/commodity/listCommodity.vue"),
+        path: "/company_product",
+        name: "company_product",
+        component: () => import("../components/commodity/listCommodity.vue"),
         meta: {
           title: "商品管理"
         },
-        children:[
+        children: [
           {
             path: "/company_product",
             redirect: "/company_product/getList",
@@ -288,7 +310,7 @@ const routes = [
               title: "服务列表"
             },
           }
-          
+
         ]
       },
     ]

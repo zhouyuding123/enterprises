@@ -23,7 +23,7 @@
                 v-for="item in options"
                 :key="item.id"
                 :label="item.title"
-                :value="item.id"
+                :value="item.title"
               />
             </el-select>
           </div>
@@ -86,6 +86,7 @@
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
         :data="{ fileType: this.fileType }"
+        multiple
       >
         <img v-if="imageUrl" :src="imageUrl" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -238,6 +239,7 @@ export default {
       fileTypes: "moves",
       //   视频
       UploadVideoShow: false,
+      thumbs:[],
       addForm: {
         is_circle: "1",
         circle_id: "",
@@ -409,6 +411,7 @@ export default {
     PostAPostUp() {
       this.$refs.addFormRulesRef.validate((valid) => {
         if (!valid) return;
+        this.addForm.thumb = this.thumbs.toString()
         console.log(this.addForm);
         postD(ForumReleaseApi(), this.addForm).then((res) => {
         if (res.code == "200") {
@@ -434,7 +437,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      this.addForm.thumb = res.url;
+      this.thumbs.push(res.url)
       this.dialogVisible = false;
     },
     beforeAvatarUpload(file) {

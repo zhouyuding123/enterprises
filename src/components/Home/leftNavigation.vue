@@ -178,7 +178,6 @@ export default {
 .el-main {
   padding: 0;
   background-color: #f9f9f9;
-  overflow: hidden;
 }
 .indexhomePageStyle {
   width: 280px;

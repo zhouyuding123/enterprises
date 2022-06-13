@@ -222,7 +222,7 @@ import {
   ForumSetTopApi,
   ForumSetEssApi,
   ForumDelForumApi,
-} from "../strollUrl.js";
+} from "@/urls/wsUrl.js";
 import { imgUrl } from "@/assets/js/modifyStyle.js";
 import { timestampToTime } from "@/assets/js/time.js";
 import { styleModify, styleModifytwo } from "@/assets/js/modifyStyle.js";
@@ -234,10 +234,10 @@ export default {
       imagesValue: "",
       strollListImg: [],
       styleId:{
-        style:"2"
+        style:"1"
       },
       page1: {
-        style:"2",
+        style:"1",
         offset: 1,
         limit: 10,
         totalResult: 0,
@@ -248,7 +248,7 @@ export default {
       allAlign: null,
       tableData: [],
       page2: {
-        style:"2",
+        style:"1",
         offset: 1,
         limit: 10,
         totalResult: 0,
@@ -509,9 +509,9 @@ export default {
     },
     goactivities() {
       this.$router.push("/Activity/release");
-    },
+    },  
     addrelease() {
-      this.$router.push("/Circles/release");
+      this.$router.push("/Local/release");
     },
     strollDetial(val) {
       this.$router.push("/Forum/showForum" + val);
@@ -521,5 +521,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("./stroll.less");
+@import url("./Local.less");
 </style>

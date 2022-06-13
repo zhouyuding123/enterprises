@@ -18,7 +18,8 @@ const routes = [
     name: "home",
     component: () => import("../views/HomeView.vue"),
     meta: {
-      title: "控制台"
+      title: "控制台",
+      requireAuth:true
     },
     children: [
       {
@@ -35,7 +36,8 @@ const routes = [
         name: "Circle",
         component: () => import("../components/tidalManagement/tidalList.vue"),
         meta: {
-          title: "潮圈管理"
+          title: "潮圈管理",
+          requireAuth:true
         },
         children: [
           {
@@ -47,7 +49,8 @@ const routes = [
             name: "Circle/listCircle",
             component: () => import("../components/tidalManagement/tidalList/tidalListValue.vue"),
             meta: {
-              title: "圈子列表"
+              title: "圈子列表",
+              requireAuth:true
             },
           },
           {
@@ -55,7 +58,8 @@ const routes = [
             name: "Circle/createCircle",
             component: () => import("../components/tidalManagement/createCircle/createCircle.vue"),
             meta: {
-              title: "创建圈子"
+              title: "创建圈子",
+              requireAuth:true
             },
           },
           {
@@ -63,7 +67,8 @@ const routes = [
             name: "Circle/getCircleShow",
             component: () => import("../components/tidalManagement/TheCircleICreated/TheCircleICreated.vue"),
             meta: {
-              title: "查看圈子"
+              title: "查看圈子",
+              requireAuth:true
             },
           },
           {
@@ -71,7 +76,8 @@ const routes = [
             name: "circle_notice/getList",
             component: () => import("../components/tidalManagement/TheCircleICreated/Notice/NoticeList.vue"),
             meta: {
-              title: "圈子公告"
+              title: "圈子公告",
+              requireAuth:true
             }
           },
           {
@@ -79,7 +85,8 @@ const routes = [
             name: "Forum/release",
             component: () => import("../components/tidalManagement/TheCircleICreated/releasePost/release.vue"),
             meta: {
-              title: "发布帖子"
+              title: "发布帖子",
+              requireAuth:true
             }
           },
           {
@@ -87,7 +94,8 @@ const routes = [
             name: "Forum/showForum",
             component: () => import("../components/tidalManagement/createDetils/createDetils.vue"),
             meta: {
-              title: "圈子"
+              title: "圈子",
+              requireAuth:true
             },
           },
           {
@@ -95,7 +103,8 @@ const routes = [
             name: "myCircle",
             component: () => import("../components/tidalManagement/management/management.vue"),
             meta: {
-              title: "圈子管理"
+              title: "圈子管理",
+              requireAuth:true
             },
           },
           {
@@ -103,7 +112,8 @@ const routes = [
             name: "getMember",
             component: () => import("../components/tidalManagement/getMember/getMember.vue"),
             meta: {
-              title: "成员管理"
+              title: "成员管理",
+              requireAuth:true
             },
           },
           {
@@ -174,6 +184,66 @@ const routes = [
               title: "逛逛列表"
             },
           },
+          {
+            path: "/Circles/release",
+            name: "Circles/release",
+            component: () => import("../components/Stroll/StrollAround/strollRelease/strollRelease.vue"),
+            meta: {
+              title: "逛逛帖子发布"
+            },
+          },
+        ]
+      },
+      {
+        path: "/Local",
+        name: "Local",
+        component: () => import("../components/local/localList.vue"),
+        meta: {
+          title: "本地"
+        },
+        children:[
+          {
+            path: "/Local",
+            redirect: "/Local/local",
+          },
+          {
+            path: "/Local/local",
+            name: "Local/local",
+            component: () => import("../components/local/LocalAround/LocalAroundList.vue"),
+            meta: {
+              title: "本地帖子列表"
+            },
+          },
+          {
+            path: "/Local/release",
+            name: "Local/release",
+            component: () => import("../components/local/LocalAround/LocalRelease/LocalRelease.vue"),
+            meta: {
+              title: "本地帖子发布"
+            },
+          },
+        ]
+      },
+      {
+        path: "/News",
+        name: "News",
+        component: () => import("../components/News/NewsList.vue"),
+        meta: {
+          title: "消息"
+        },
+        children:[
+          {
+            path: "/News",
+            redirect: "/News/news",
+          },
+          {
+            path: "/News/news",
+            name: "News/news",
+            component: () => import("../components/News/NewsAround/NewsAroundList.vue"),
+            meta: {
+              title: "消息列表"
+            },
+          }
         ]
       },
       {
@@ -216,6 +286,14 @@ const routes = [
             component: () => import("../components/EventManagement/EventList/EventList.vue"),
             meta: {
               title: "赛事列表"
+            },
+          },
+          {
+            path: "/match/detial:id",
+            name: "match/detial",
+            component: () => import("../components/EventManagement/EventList/listFlag/detial/detial.vue"),
+            meta: {
+              title: "赛事详情"
             },
           },
           {

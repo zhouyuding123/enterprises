@@ -142,10 +142,10 @@
                   <p :v-model="(item.is_img = '0')"></p>
                   <el-input v-model="item.item"></el-input>
                   <p class="addInput" @click="addvoto(index)" v-if="index == 0">
-                    <img src="../../../../assets/imgers/jiahao.png" alt="" />
+                    <span>添加</span>
                   </p>
                   <p class="addInput" v-else @click="delvoto(index)">
-                    <img src="../../../../assets/imgers/jianhao.png" alt="" />
+                    <span>删除</span>
                   </p>
                 </div>
                 <div v-if="is_img == 1" class="yesIsimg">
@@ -168,10 +168,10 @@
                       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                     <p class="addInput" @click="addvoto" v-if="index == 0">
-                      <img src="../../../../assets/imgers/jiahao.png" alt="" />
+                      <span>添加</span>
                     </p>
                     <p class="addInput" v-else @click="delvoto(index)">
-                      <img src="../../../../assets/imgers/jianhao.png" alt="" />
+                      <span>删除</span>
                     </p>
                   </div>
                 </div>
@@ -219,7 +219,7 @@ import { beforeAvatar } from "../../../../assets/js/modifyStyle.js";
 import EleUploadVideo from "vue-ele-upload-video";
 import { timestampToTime } from "../../../../assets/js/time.js";
 import { imgUrl } from "../../../../assets/js/modifyStyle.js";
-import { ForumReleaseApi, CircleGetCircleShowApi } from "./ForumReleaseUrl.js";
+import { ForumReleaseApi, Forum_themeGetListApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api/index.js";
 export default {
   components: {
@@ -239,10 +239,9 @@ export default {
       fileTypes: "moves",
       //   视频
       UploadVideoShow: false,
-      thumbs:[],
+      thumbs: [],
       addForm: {
-        is_circle: "1",
-        circle_id: "",
+        style: "2",
         details: "",
         content: "",
         description: "",
@@ -377,19 +376,18 @@ export default {
   },
   created() {
     this.paramsId.id = this.$route.params.id;
-    this.addForm.circle_id = this.$route.params.id;
     this.token = localStorage.getItem("token", this.token);
     this.imgUrltitle();
   },
   methods: {
     // 输入选择
     selectBlur(e) {
-        // 意见类型
-        if (e.target.value !== '') {
-          this.value = e.target.value;
-          this.$forceUpdate()   // 强制更新
-        }
-      },
+      // 意见类型
+      if (e.target.value !== "") {
+        this.value = e.target.value;
+        this.$forceUpdate(); // 强制更新
+      }
+    },
     selectClear() {
       this.value = "";
       this.$forceUpdate();
@@ -400,37 +398,34 @@ export default {
     },
     imgUrltitle() {
       this.imagesValue = imgUrl();
-      this.optionsId.id = this.$route.params.id;
-      postD(CircleGetCircleShowApi(), this.optionsId).then((res) => {
-        this.options = res.data.forum;
+      postD(Forum_themeGetListApi()).then((res) => {
+        this.options = res.list;
       });
     },
     Unpublishup() {
-      this.$router.push("/Circle/getCircleShow" + this.paramsId.id);
+      this.$router.push("/Circles/Stroll");
     },
     PostAPostUp() {
-      this.addForm.theme = this.value
+      this.addForm.theme = this.value;
       this.$refs.addFormRulesRef.validate((valid) => {
         if (!valid) return;
-        this.addForm.thumb = this.thumbs.toString()
+        this.addForm.thumb = this.thumbs.toString();
         console.log(this.addForm);
         postD(ForumReleaseApi(), this.addForm).then((res) => {
-        if (res.code == "200") {
-          this.$message.success("状态修改成功");
-          this.$router.push("/Circle/getCircleShow" + this.paramsId.id);
-        } else if (res.code == "-200") {
-          this.$message.error("参数错误，或暂无数据");
-        } else if (res.code == "-201") {
-          this.$message.error("未登陆");
-        } else if (res.code == "-203") {
-          this.$message.error("对不起，你没有此操作权限");
-        } else {
-          this.$message.error("注册失败，账号已存在");
-        }
+          if (res.code == "200") {
+            this.$message.success("状态修改成功");
+            this.$router.push("/Circles/Stroll");
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
       });
-      })
-      
-      
     },
     // 上传图片
     addPhoto() {
@@ -438,7 +433,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      this.thumbs.push(res.url)
+      this.thumbs.push(res.url);
       this.dialogVisible = false;
     },
     beforeAvatarUpload(file) {

@@ -33,7 +33,7 @@
       >
         <vxe-column width="100%">
           <template v-slot="scoped">
-            <div class="All_list">
+            <div class="All_list" @click="eveDetial(scoped.row.id)">
               <div>
                 <el-image
                   :src="imagesValue + scoped.row.thumb"
@@ -226,6 +226,9 @@ export default {
     ManuscriptScreening(data) {
       this.ScreeningId.id = data.id
       this.$router.push("/Match/works" + this.ScreeningId.id)
+    },
+    eveDetial(val) {
+      this.$router.push("/match/detial" + val)
     }
   },
 };

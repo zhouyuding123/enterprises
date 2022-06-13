@@ -12,7 +12,10 @@
         <div class="SecondLine">
           <span>{{ detilsValues.title }}</span>
         </div>
-        <div class="ThirdLine" v-if="detilsValues.theme !== '' && detilsValues.theme !== null ">
+        <div
+          class="ThirdLine"
+          v-if="detilsValues.theme !== '' && detilsValues.theme !== null"
+        >
           <div>
             <span> #{{ detilsValues.theme }} </span>
           </div>
@@ -24,9 +27,11 @@
         </div>
         <div
           class="fifthLine"
-          v-if="detilsValues.is_voto == 0 && detilsValues.thumb !== ''"
+          v-if="detilsValues.thumb !== '' && detilsValues.thumb !== null"
         >
-          <el-image :src="imagesValue + detilsValues.thumb"></el-image>
+          <div v-for="item in imgList" :key="item.id">
+            <el-image :src="imagesValue + item"></el-image>
+          </div>
         </div>
         <div class="fifthLine" v-if="detilsValues.is_voto == 1">
           <div class="isVoto">
@@ -204,6 +209,7 @@ export default {
       imagesShow: false,
       imagesShows: false,
       codeValue: "",
+      imgList: [],
     };
   },
   created() {
@@ -219,6 +225,7 @@ export default {
         this.detilsValues = res.data;
         this.imagesValue = imgUrl();
         this.contentValue = res.data.comment_list;
+        this.imgList = this.detilsValues.thumb.split(",");
         // 投票数据
         this.votoValue = res.data.voto;
         this.votoValue.forEach((v) => {

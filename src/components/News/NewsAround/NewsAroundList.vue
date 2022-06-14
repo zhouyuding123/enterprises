@@ -1,3 +1,3 @@
 <template>
-    <div>22123</div>
+    <div class="Bodys">22123</div>
 </template>

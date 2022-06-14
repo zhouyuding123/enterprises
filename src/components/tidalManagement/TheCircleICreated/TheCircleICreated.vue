@@ -32,7 +32,7 @@
     </div>
     <div class="jjbody">
       <div class="jjbodyDiv">
-        <div style="width:100px"><strong>圈子公告:</strong>&nbsp;&nbsp;</div>
+        <div style="width: 100px"><strong>圈子公告:</strong>&nbsp;&nbsp;</div>
         <vue-seamless-scroll class="seamless-warp" :data="NoticeValue">
           <ul class="item">
             <li v-for="item in NoticeValue" :key="item.id">
@@ -75,47 +75,108 @@
         </div>
       </el-row>
     </div>
-    <div class="listValue">
-      <div class="listFelt">
-        <p style="height: 50px">
-          <vxe-radio-group v-model="selectTab">
-            <vxe-radio-button label="tab1" content="全部"></vxe-radio-button>
-            <vxe-radio-button label="tab2" content="热门"></vxe-radio-button>
-            <vxe-radio-button label="tab3" content="最新"></vxe-radio-button>
-            <vxe-radio-button label="tab4" content="精华"></vxe-radio-button>
-            <div class="listRight">
-              <el-button @click="SetAsTopS">设为置顶</el-button>
-              <el-button @click="SetAsEssence">设为精华</el-button>
-              <el-button>删除帖子</el-button>
-            </div>
-          </vxe-radio-group>
-        </p>
+    <div class="choice">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="圈子帖子" name="first">
+          <div class="listValue">
+            <div class="listFelt">
+              <p style="height: 50px">
+                <vxe-radio-group v-model="selectTab">
+                  <vxe-radio-button
+                    label="tab1"
+                    content="全部"
+                  ></vxe-radio-button>
+                  <vxe-radio-button
+                    label="tab2"
+                    content="热门"
+                  ></vxe-radio-button>
+                  <vxe-radio-button
+                    label="tab3"
+                    content="最新"
+                  ></vxe-radio-button>
+                  <vxe-radio-button
+                    label="tab4"
+                    content="精华"
+                  ></vxe-radio-button>
+                  <div class="listRight">
+                    <el-button @click="SetAsTopS">设为置顶</el-button>
+                    <el-button @click="SetAsEssence">设为精华</el-button>
+                    <el-button>删除帖子</el-button>
+                  </div>
+                </vxe-radio-group>
+              </p>
 
-        <div v-show="selectTab === 'tab1'">
-          <vxe-table
-            :sync-resize="selectTab"
-            :data="tableData"
-            height="300"
-            @checkbox-change="checkboxChangeEvent"
-            @checkbox-all="checkboxChangeEvent"
-          >
-            <vxe-column align="center" type="checkbox" width="50"></vxe-column>
-            <vxe-column field="title">
-              <template v-slot="scoped">
-                <div class="topStyle">
-                  <span v-if="scoped.row.is_top == 1" class="ToppingSpan"
-                    >置顶</span
-                  >
-                  <span class="EssenceSpan" v-if="scoped.row.is_ess == 1"
-                    >精华</span
-                  >
-                  <span @click="detailsValue(scoped.row.id)" class="details">{{
-                    scoped.row.title
-                  }}</span>
-                </div>
-              </template>
-            </vxe-column>
-            <vxe-column>
+              <div v-show="selectTab === 'tab1'">
+                <vxe-table
+                  :sync-resize="selectTab"
+                  :data="tableData"
+                  @checkbox-change="checkboxChangeEvent"
+                  @checkbox-all="checkboxChangeEvent"
+                >
+                  <vxe-column
+                    align="center"
+                    type="checkbox"
+                    width="50"
+                  ></vxe-column>
+                  <vxe-column field="title">
+                    <template v-slot="scoped">
+                      <div>
+                        <div class="topStyle">
+                          <div>
+                            <span
+                              v-if="scoped.row.is_top == 1"
+                              class="ToppingSpan"
+                              >置顶</span
+                            >
+                          </div>
+                          <div>
+                            <span
+                              class="EssenceSpan"
+                              v-if="scoped.row.is_ess == 1"
+                              >精华</span
+                            >
+                          </div>
+                          <div>
+                            <span
+                              @click="detailsValue(scoped.row.id)"
+                              class="details"
+                              >{{ scoped.row.title }}</span
+                            >
+                          </div>
+                          <div class="postiongs">
+                            <div class="Topping"><span>置顶</span></div>
+                            <div class="Topping"><span>精华</span></div>
+                            <div class="Topping"><span>删除帖子</span></div>
+                          </div>
+                        </div>
+                        <div class="Postdescription">
+                          {{ scoped.row.description }}
+                        </div>
+                        <div
+                          class="tablineValue3"
+                          v-if="
+                            scoped.row.theme !== '' && scoped.row.theme !== null
+                          "
+                        >
+                          <span>#{{ scoped.row.theme }}</span>
+                        </div>
+                        <div v-if="scoped.row.thumb" class="tablineValue4">
+                          <div
+                            v-for="items in scoped.row.thumb.split(',')"
+                            :key="items"
+                            class="imgadde"
+                          >
+                            <img
+                              :src="imagesValue + items"
+                              alt=""
+                              style="width: 106px; height: 106px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </vxe-column>
+                  <!-- <vxe-column>
               <template v-slot="scoped">
                 <el-image
                   :src="imagesValue + scoped.row.thumb"
@@ -147,35 +208,40 @@
                   >
                 </div>
               </template>
-            </vxe-column>
-          </vxe-table>
-          <vxe-pager
-            :current-page="page1.offset"
-            :page-size="page1.limit"
-            :total="page1.totalResult"
-            :layouts="[
-              'PrevPage',
-              'JumpNumber',
-              'NextPage',
-              'FullJump',
-              'Sizes',
-              'Total',
-            ]"
-            @page-change="handlePageChangeActivity"
-          ></vxe-pager>
-        </div>
+            </vxe-column> -->
+                </vxe-table>
+                <vxe-pager
+                  :current-page="page1.offset"
+                  :page-size="page1.limit"
+                  :total="page1.totalResult"
+                  :layouts="[
+                    'PrevPage',
+                    'JumpNumber',
+                    'NextPage',
+                    'FullJump',
+                    'Sizes',
+                    'Total',
+                  ]"
+                  @page-change="handlePageChangeActivity"
+                ></vxe-pager>
+              </div>
 
-        <div v-show="selectTab === 'tab2'">
-          <circle-list />
-        </div>
-        <div v-show="selectTab === 'tab3'">
-          <latest-circle-list />
-        </div>
-        <div v-show="selectTab === 'tab4'">
-          <essence-circle-list />
-        </div>
-      </div>
+              <div v-show="selectTab === 'tab2'">
+                <circle-list />
+              </div>
+              <div v-show="selectTab === 'tab3'">
+                <latest-circle-list />
+              </div>
+              <div v-show="selectTab === 'tab4'">
+                <essence-circle-list />
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="我的帖子" name="second"></el-tab-pane>
+      </el-tabs>
     </div>
+
     <el-dialog title="公告详情" :visible.sync="detilsShow" width="30%">
       <div class="detilsBody">
         <div>
@@ -190,8 +256,8 @@
         </div>
       </div>
       <div class="detilsValues">
-          <div class="detilsValuesTitle">{{ruleFormdetils.title}}</div>
-          <div class="detilsValuesContent">{{ruleFormdetils.content}}</div>
+        <div class="detilsValuesTitle">{{ ruleFormdetils.title }}</div>
+        <div class="detilsValuesContent">{{ ruleFormdetils.content }}</div>
       </div>
       <div style="padding-top: 45px">
         <span>
@@ -212,7 +278,8 @@ import {
   ForumDelForumApi,
   ForumSetTopApi,
   ForumSetEssApi,
-  circle_noticeGetListApi,circle_noticeGetShowApi
+  circle_noticeGetListApi,
+  circle_noticeGetShowApi,
 } from "./TheCircleICreated.js";
 import { timestampToTime } from "../../../assets/js/time.js";
 import circleList from "./CircleList/circleList.vue";
@@ -287,15 +354,18 @@ export default {
       NoticeValue: [],
       // 公告详情
       detilsIdQ: {
-        id:""
+        id: "",
       },
       detilsId: {
         circle_id: "",
         notice_id: "",
       },
-      detilsShow:false,
-      detilsValue:[],
-      ruleFormdetils:[]
+      detilsShow: false,
+      detilsValue: [],
+      ruleFormdetils: [],
+      activeName: "first",
+      value: "",
+      options: {},
     };
   },
   created() {
@@ -523,7 +593,7 @@ export default {
       }
     },
     thisTitle(val) {
-      this.detilsShow = true
+      this.detilsShow = true;
       this.detilsId.circle_id = this.$route.params.id;
       this.detilsId.notice_id = val;
       this.detilsIdQ.id = this.$route.params.id;
@@ -531,7 +601,7 @@ export default {
         this.detilsValue = res.data.circle;
         this.imagesValue = imgUrl();
       });
-      postD(circle_noticeGetShowApi(),this.detilsId).then(res=> {
+      postD(circle_noticeGetShowApi(), this.detilsId).then((res) => {
         if (res.code == "200") {
           this.ruleFormdetils = res.data;
           console.log(this.ruleFormdetils);
@@ -544,7 +614,7 @@ export default {
         } else {
           this.$message.error("注册失败，已存在");
         }
-      })
+      });
     },
     // 详情
     detailsValue(data) {

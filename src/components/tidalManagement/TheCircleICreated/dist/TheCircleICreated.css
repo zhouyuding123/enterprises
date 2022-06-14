@@ -1,0 +1,422 @@
+.Release {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  padding: 20px 30px;
+  display: flex;
+  z-index: 11111;
+}
+.Release p {
+  width: 200px;
+  height: 40px;
+  background: #ffdc00;
+  border-radius: 20px 20px 20px 20px;
+  line-height: 40px;
+  font-size: 15px;
+}
+.thumbBody {
+  padding: 20px 180px;
+}
+.thumbBody .thumbbool {
+  position: relative;
+}
+.thumbBody .thumbbool .el-image {
+  width: 100%;
+  height: 200px;
+  background: #0b022d;
+}
+.thumbBody .thumbbool .headimgBody {
+  width: 160px;
+  height: 120px;
+  background: #0c032e;
+  border-radius: 6px 6px 6px 6px;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  margin: 40px 10px 40px 50px;
+}
+.thumbBody .thumbbool .headimgBody .el-image {
+  width: 100%;
+  height: 100%;
+  background: #0b022d;
+}
+.thumbBody .thumbbool .titleValue {
+  position: absolute;
+  top: 60px;
+  left: 240px;
+}
+.thumbBody .thumbbool .titleValue .LabelValue {
+  font-size: 28px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 0px;
+}
+.thumbBody .thumbbool .titleValue .LabelValue .thisLabelStyle {
+  margin-top: 60px;
+  text-align: left;
+}
+.thumbBody .thumbbool .titleValue .LabelValue .thisLabelStyle span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
+.Statistics {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+}
+.Statistics div {
+  cursor: pointer;
+  width: 160px;
+  height: 40px;
+  border-radius: 20px 20px 20px 20px;
+  border: 1px solid #ffffff;
+  margin-top: 20px;
+  line-height: 30px;
+  position: relative;
+}
+.Statistics div span:nth-child(1) {
+  font-size: 16px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #ffffff;
+  position: absolute;
+  top: 10%;
+  left: 25px;
+}
+.Statistics div span:nth-child(2) {
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  position: absolute;
+  top: 9%;
+  left: 40%;
+}
+.Statistics div span:nth-child(3) {
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  position: absolute;
+  right: 0;
+  top: 13%;
+  padding-right: 20px;
+}
+.Statistics .qzgl {
+  cursor: pointer;
+  width: 160px;
+  height: 40px;
+  border-radius: 20px 20px 20px 20px;
+  border: 1px solid #ffffff;
+  margin-top: 20px;
+  line-height: 30px;
+  position: relative;
+}
+.Statistics .qzgl .qzglSpan {
+  position: absolute;
+  top: 9%;
+  left: 30%;
+}
+.Statistics .qzgl .qzglSpans {
+  position: absolute;
+  top: 9%;
+  left: 80%;
+}
+.jjbody {
+  padding: 0px 180px;
+  text-align: left;
+}
+.jjbody .jjbodyDiv {
+  height: 40px;
+  background: #ffffff;
+  line-height: 40px;
+  padding-left: 20px;
+  display: flex;
+  overflow: hidden;
+}
+.jjbody .jjbodyDiv .moreValue {
+  width: 50px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 20px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
+.seatchStyle {
+  padding: 20px 155px;
+}
+.seatchStyle div .el-input {
+  width: 71%;
+  height: 40px;
+}
+.fbtz {
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  background: linear-gradient(180deg, #0c032e 0%, #5c5673 100%);
+  border-radius: 3px 3px 3px 3px;
+}
+.fbtz span {
+  font-size: 16px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 40px;
+}
+.plgl {
+  width: 120px;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid #0c032e;
+}
+.plgl span {
+  font-size: 16px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 40px;
+}
+.sx {
+  cursor: pointer;
+  float: right;
+  margin-right: 35px;
+}
+.sx div {
+  width: 80px;
+  height: 40px;
+  background: #00b567;
+  border-radius: 4px 4px 4px 4px;
+  line-height: 40px;
+}
+.sx div span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 19px;
+}
+.listValue {
+  position: relative;
+}
+.listValue .listFelt {
+  background: #ffffff;
+  border-radius: 0px 0px 0px 0px;
+  text-align: left;
+}
+.imgStyle {
+  border-radius: 50%;
+  position: absolute;
+  top: 25%;
+  left: 90%;
+}
+.el-dropdown-link {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #0177d5;
+  line-height: 19px;
+}
+.vxe-radio-group {
+  line-height: 50px;
+}
+.listRight {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: 180px;
+  padding-top: 5px;
+}
+.el-button {
+  background: #ffffff;
+  color: #999999;
+}
+.xz {
+  display: table;
+  width: 100%;
+}
+.swdz {
+  display: table-cell;
+  padding-left: 5px;
+}
+.swdz .el-button {
+  font-size: 1px;
+}
+.topStyle {
+  display: flex;
+}
+.ToppingSpan {
+  width: 40px;
+  height: 20px;
+  background: #ffdc00;
+  border-radius: 4px 4px 4px 4px;
+  margin-right: 5px;
+  font-size: 1px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
+.EssenceSpan {
+  width: 40px;
+  height: 20px;
+  background: #ff2659;
+  border-radius: 4px 4px 4px 4px;
+  margin-right: 5px;
+  font-size: 1px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
+.details {
+  cursor: pointer;
+  font-size: 20px;
+}
+.details:hover {
+  color: red;
+}
+.item {
+  width: 1000px;
+  overflow: hidden;
+}
+.item li {
+  cursor: pointer;
+}
+.item li :hover {
+  color: red;
+}
+.userImg {
+  width: 32px;
+  height: 32px;
+  background: #E3E8EF;
+  margin-top: -5px;
+  border-radius: 50%;
+}
+.detilsBody {
+  display: flex;
+}
+.notTitle {
+  padding: 0px 0px 0px 10px;
+}
+.notTitle span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #3D444D;
+  line-height: 0px;
+}
+.detilsTime {
+  margin-left: auto;
+}
+.detilsValues {
+  text-align: left;
+}
+.detilsValues .detilsValuesTitle {
+  padding-top: 20px;
+  font-size: 16px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #333333;
+  line-height: 19px;
+}
+.detilsValues .detilsValuesContent {
+  padding-top: 20px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+}
+.seamless-warp {
+  overflow: hidden;
+  width: 1065px;
+}
+.title {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 0px;
+}
+.choice {
+  margin: 0px 180px;
+  text-align: left;
+  background-color: white;
+}
+ /deep/ .el-tabs__nav-wrap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 1;
+  background-color: white;
+}
+ /deep/ .el-tabs__active-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: #FFDC00;
+  z-index: 1;
+  transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  list-style: none;
+}
+ /deep/ .el-tabs__item {
+  padding: 0 20px;
+  height: 40px;
+  box-sizing: border-box;
+  line-height: 40px;
+  display: inline-block;
+  list-style: none;
+  font-weight: 500;
+  color: #303133;
+  position: relative;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
+.postiongs {
+  margin-left: auto;
+  display: flex;
+}
+.postiongs .Topping {
+  width: 80px;
+  height: 30px;
+  background: #FFFFFF;
+  border-radius: 4px 4px 4px 4px;
+  border: 1px solid #DFDFDF;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.postiongs .Topping span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 30px;
+}
+.Postdescription {
+  margin-top: 20px;
+}
+.tablineValue3 {
+  width: 80px;
+  height: 20px;
+  background: #EEEEEE;
+  border-radius: 10px 10px 10px 10px;
+  text-align: center;
+  margin-top: 10px;
+}
+.tablineValue3 span {
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #CCCCCC;
+  line-height: 20px;
+}

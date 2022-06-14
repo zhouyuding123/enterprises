@@ -4,7 +4,6 @@
       <div class="activityline1Body">
         <ordinary />
         <selection />
-        <luck />
       </div>
     </div>
     <div class="activityline2">

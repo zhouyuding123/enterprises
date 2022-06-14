@@ -86,18 +86,7 @@ export default {
   methods: {
     usersList() {
       postD(users_companyListRuleApi()).then((res) => {
-        if (res.code == "200") {
-            this.leftNavigationValue = res.list;
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("登入失效,请重新登入");
-            this.$router.push("/login")
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
-          } else {
-            this.$message.error("注册失败，账号已存在");
-          }
+        this.leftNavigationValue = res.list;
       });
     },
     useName() {
@@ -112,7 +101,7 @@ export default {
   height: 100vh;
   .el-container {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     .el-header {
       background: #0c032e;
       text-align: right;

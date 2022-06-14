@@ -165,7 +165,7 @@ export default {
   }
 }
 .listCircle {
-  width: 446px;
+  width: 450px;
   height: 180px;
   background: #ffffff;
   border-radius: 6px 6px 6px 6px;
@@ -247,5 +247,6 @@ export default {
 }
 .activities {
   cursor: pointer;
+  z-index: 9999;
 }
 </style>

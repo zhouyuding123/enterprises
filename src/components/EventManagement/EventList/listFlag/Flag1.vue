@@ -31,7 +31,7 @@
         :row-style="tableRowStyle"
         :header-row-style="tableStyle"
       >
-        <vxe-column width="100%">
+        <vxe-column>
           <template v-slot="scoped">
             <div class="All_list" @click="eveDetial(scoped.row.id)">
               <div>

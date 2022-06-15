@@ -33,7 +33,7 @@
             </div>
             <div v-if="item.thumb" class="tablineValue4">
               <div
-                v-for="items in item.thumb.split(',')"
+                v-for="items in item.thumb.split(',').slice(0, 3)"
                 :key="items"
                 class="imgadde"
               >
@@ -188,7 +188,7 @@
                     </div>
                     <div v-if="item.thumb" class="tablineValue4">
                       <div
-                        v-for="items in item.thumb.split(',')"
+                        v-for="items in item.thumb.split(',').slice(0, 3)"
                         :key="items"
                         class="imgadde"
                       >
@@ -212,6 +212,9 @@
                           margin-top: 20px;
                         "
                       />
+                    </div>
+                    <div class="strollNames">
+                      <span>{{ item.username }}</span>
                     </div>
                     <div class="tablineTime">
                       <span>{{ funTime(item.create_time) }}</span>
@@ -303,7 +306,7 @@ export default {
       strollListImg: [],
       styleId: {
         style: "1",
-        own:"1"
+        own: "1",
       },
       page1: {
         style: "1",
@@ -354,7 +357,7 @@ export default {
       isIndeterminate: true,
       checkAll: false,
       checkedCities: [],
-       ids: [],
+      ids: [],
       dels: {
         id: "",
       },
@@ -619,7 +622,7 @@ export default {
           if (res.code == "200") {
             this.$message.success("删除成功");
             this.Mystroll();
-            this.arrs = ""
+            this.arrs = "";
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {

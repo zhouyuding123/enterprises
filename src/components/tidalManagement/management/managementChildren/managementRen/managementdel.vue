@@ -78,7 +78,6 @@ export default {
       this.arr.forEach((v) => {
         this.arrs.push(v);
       });
-      console.log(this.arrs);
     },
   },
 };

@@ -27,9 +27,9 @@
         </div>
         <div
           class="fifthLine"
-          v-if="detilsValues.thumb !== '' && detilsValues.thumb !== null"
+          v-if="detilsValues.thumb !== '' && detilsValues.thumb !== null && detilsValues.thumb"
         >
-          <div v-for="item in imgList" :key="item.id">
+          <div v-for="item in detilsValues.thumb.split(',')" :key="item.id">
             <el-image :src="imagesValue + item"></el-image>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default {
         this.detilsValues = res.data;
         this.imagesValue = imgUrl();
         this.contentValue = res.data.comment_list;
-        this.imgList = this.detilsValues.thumb.split(",");
+        // this.imgList = this.detilsValues.thumb.split(",");
         // 投票数据
         this.votoValue = res.data.voto;
         this.votoValue.forEach((v) => {

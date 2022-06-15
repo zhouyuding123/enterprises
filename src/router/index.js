@@ -19,7 +19,7 @@ const routes = [
     component: () => import("../views/HomeView.vue"),
     meta: {
       title: "控制台",
-      requireAuth:true
+      requireAuth: true
     },
     children: [
       {
@@ -37,7 +37,7 @@ const routes = [
         component: () => import("../components/tidalManagement/tidalList.vue"),
         meta: {
           title: "潮圈管理",
-          requireAuth:true
+          requireAuth: true
         },
         children: [
           {
@@ -50,7 +50,7 @@ const routes = [
             component: () => import("../components/tidalManagement/tidalList/tidalListValue.vue"),
             meta: {
               title: "圈子列表",
-              requireAuth:true
+              requireAuth: true
             },
           },
           {
@@ -59,7 +59,7 @@ const routes = [
             component: () => import("../components/tidalManagement/createCircle/createCircle.vue"),
             meta: {
               title: "创建圈子",
-              requireAuth:true
+              requireAuth: true
             },
           },
           {
@@ -68,7 +68,7 @@ const routes = [
             component: () => import("../components/tidalManagement/TheCircleICreated/TheCircleICreated.vue"),
             meta: {
               title: "查看圈子",
-              requireAuth:true
+              requireAuth: true
             },
           },
           {
@@ -77,7 +77,7 @@ const routes = [
             component: () => import("../components/tidalManagement/TheCircleICreated/Notice/NoticeList.vue"),
             meta: {
               title: "圈子公告",
-              requireAuth:true
+              requireAuth: true
             }
           },
           {
@@ -86,7 +86,7 @@ const routes = [
             component: () => import("../components/tidalManagement/TheCircleICreated/releasePost/release.vue"),
             meta: {
               title: "发布帖子",
-              requireAuth:true
+              requireAuth: true
             }
           },
           {
@@ -95,7 +95,7 @@ const routes = [
             component: () => import("../components/tidalManagement/createDetils/createDetils.vue"),
             meta: {
               title: "圈子",
-              requireAuth:true
+              requireAuth: true
             },
           },
           {
@@ -104,7 +104,7 @@ const routes = [
             component: () => import("../components/tidalManagement/management/management.vue"),
             meta: {
               title: "圈子管理",
-              requireAuth:true
+              requireAuth: true
             },
           },
           {
@@ -113,7 +113,7 @@ const routes = [
             component: () => import("../components/tidalManagement/getMember/getMember.vue"),
             meta: {
               title: "成员管理",
-              requireAuth:true
+              requireAuth: true
             },
           },
           {
@@ -201,7 +201,7 @@ const routes = [
         meta: {
           title: "本地"
         },
-        children:[
+        children: [
           {
             path: "/Local",
             redirect: "/Local/local",
@@ -231,7 +231,7 @@ const routes = [
         meta: {
           title: "消息"
         },
-        children:[
+        children: [
           {
             path: "/News",
             redirect: "/News/news",
@@ -242,6 +242,28 @@ const routes = [
             component: () => import("../components/News/NewsAround/NewsAroundList.vue"),
             meta: {
               title: "消息列表"
+            },
+          }
+        ]
+      },
+      {
+        path: "/Post",
+        name: "Post",
+        component: () => import("../components/Post/Post.vue"),
+        meta: {
+          title: "帖子"
+        },
+        children: [
+          {
+            path: "/Post",
+            redirect: "/Post/post",
+          },
+          {
+            path: "/Post/post",
+            name: "Post/post",
+            component: () => import("../components/Post/postList/postList.vue"),
+            meta: {
+              title: "帖子管理"
             },
           }
         ]
@@ -388,9 +410,38 @@ const routes = [
               title: "服务列表"
             },
           }
-
         ]
       },
+      {
+        path: "/designer_works",
+        name: "designer_works",
+        component: () => import("../components/designer/designer.vue"),
+        meta: {
+          title: "设计师专区"
+        },
+        children: [
+          {
+            path: "/designer_works",
+            redirect: "/designer_works/getListMF",
+          },
+          {
+            path: "/designer_works/getListMF",
+            name: "getListMF",
+            component: () => import("../components/designer/free/freeList.vue"),
+            meta: {
+              title: "免费列表"
+            },
+          },
+          {
+            path: "/designer_works/getListFF",
+            name: "getListFF",
+            component: () => import("../components/designer/pay/payList.vue"),
+            meta: {
+              title: "付费列表"
+            },
+          },
+        ]
+      }
     ]
   }
 ];

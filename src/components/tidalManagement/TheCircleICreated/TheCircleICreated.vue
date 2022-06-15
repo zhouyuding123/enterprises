@@ -86,7 +86,7 @@
                     label="tab1"
                     content="全部"
                   ></vxe-radio-button>
-                  <vxe-radio-button
+                  <!-- <vxe-radio-button
                     label="tab2"
                     content="热门"
                   ></vxe-radio-button>
@@ -97,11 +97,13 @@
                   <vxe-radio-button
                     label="tab4"
                     content="精华"
-                  ></vxe-radio-button>
+                  ></vxe-radio-button> -->
                   <div class="listRight">
                     <el-button @click="SetAsTopS">设为置顶</el-button>
                     <el-button @click="SetAsEssence">设为精华</el-button>
-                    <el-button>删除帖子</el-button>
+                    <el-button @click="cancelSetAsTopS">取消置顶</el-button>
+                    <el-button @click="cancelSetAsEssence">取消精华</el-button>
+                    <el-button @click="canDels">删除帖子</el-button>
                   </div>
                 </vxe-radio-group>
               </p>
@@ -144,9 +146,40 @@
                             >
                           </div>
                           <div class="postiongs">
-                            <div class="Topping"><span>置顶</span></div>
-                            <div class="Topping"><span>精华</span></div>
-                            <div class="Topping"><span>删除帖子</span></div>
+                            <div
+                              class="Topping"
+                              @click="SetAsTop(scoped.row)"
+                              v-if="scoped.row.is_top != 1"
+                            >
+                              <span>置顶</span>
+                            </div>
+                            <div
+                              class="Topping"
+                              @click="SetAsTop(scoped.row)"
+                              v-if="scoped.row.is_top != 0"
+                            >
+                              <span>取消置顶</span>
+                            </div>
+                            <div
+                              class="Topping"
+                              @click="SetAsEssencer(scoped.row)"
+                              v-if="scoped.row.is_ess != 1"
+                            >
+                              <span>精华</span>
+                            </div>
+                            <div
+                              class="Topping"
+                              @click="SetAsEssencer(scoped.row)"
+                              v-if="scoped.row.is_ess != 0"
+                            >
+                              <span>取消精华</span>
+                            </div>
+                            <div
+                              class="Topping"
+                              @click="DeletePost(scoped.row)"
+                            >
+                              <span>删除帖子</span>
+                            </div>
                           </div>
                         </div>
                         <div class="Postdescription">
@@ -162,7 +195,9 @@
                         </div>
                         <div v-if="scoped.row.thumb" class="tablineValue4">
                           <div
-                            v-for="items in scoped.row.thumb.split(',')"
+                            v-for="items in scoped.row.thumb
+                              .split(',')
+                              .slice(0, 3)"
                             :key="items"
                             class="imgadde"
                           >
@@ -174,41 +209,68 @@
                           </div>
                         </div>
                       </div>
+                      <div class="tablineValuestablineO">
+                        <div>
+                          <img
+                            :src="imagesValue + scoped.row.headimage"
+                            alt=""
+                            style="
+                              width: 32px;
+                              height: 32px;
+                              border-radius: 50%;
+                              margin-top: 20px;
+                            "
+                          />
+                        </div>
+                        <div class="strollName">
+                          <span>{{ scoped.row.username }}</span>
+                        </div>
+                        <div class="tablineTime">
+                          <span>{{ funTime(scoped.row.create_time) }}</span>
+                        </div>
+                        <div class="tablineoptions">
+                          <div class="tablineoptionsValue">
+                            <div class="tablineoptionsimg">
+                              <div>
+                                <img
+                                  src="../../../assets/strollimg/爱心.png"
+                                  alt=""
+                                />
+                              </div>
+                              <div class="ImgSpan"><span>123</span></div>
+                            </div>
+                            <div class="tablineoptionsimg">
+                              <div>
+                                <img
+                                  src="../../../assets/strollimg/评论.png"
+                                  alt=""
+                                />
+                              </div>
+                              <div class="ImgSpan"><span>123</span></div>
+                            </div>
+                            <div class="tablineoptionsimg">
+                              <div>
+                                <img
+                                  src="../../../assets/strollimg/收藏.png"
+                                  alt=""
+                                />
+                              </div>
+                              <div class="ImgSpan"><span>123</span></div>
+                            </div>
+                            <div class="tablineoptionsimg">
+                              <div>
+                                <img
+                                  src="../../../assets/strollimg/转发.png"
+                                  alt=""
+                                />
+                              </div>
+                              <div class="ImgSpan"><span>123</span></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </template>
                   </vxe-column>
-                  <!-- <vxe-column>
-              <template v-slot="scoped">
-                <el-image
-                  :src="imagesValue + scoped.row.thumb"
-                  style="width: 32px; height: 32px"
-                  class="imgStyle"
-                >
-                </el-image>
-              </template>
-            </vxe-column>
-            <vxe-column field="nickname" align="left" width="140"></vxe-column>
-            <vxe-column field="create_time" width="150">
-              <template v-slot="scoped">
-                <div>{{ timeer(scoped.row.create_time) }}</div>
-              </template>
-            </vxe-column>
-            <vxe-column align="center" class="xz">
-              <template v-slot="scoped">
-                <div class="swdz">
-                  <el-button @click="SetAsTop(scoped.row)">设为置顶</el-button>
-                </div>
-                <div class="swdz">
-                  <el-button @click="SetAsEssencer(scoped.row)"
-                    >设为精华</el-button
-                  >
-                </div>
-                <div class="swdz">
-                  <el-button @click="DeletePost(scoped.row)"
-                    >删除帖子</el-button
-                  >
-                </div>
-              </template>
-            </vxe-column> -->
                 </vxe-table>
                 <vxe-pager
                   :current-page="page1.offset"
@@ -238,7 +300,151 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="我的帖子" name="second"></el-tab-pane>
+        <el-tab-pane label="我的帖子" name="second" >
+          <!-- <my-post /> -->
+          <div class="listRights">
+      <el-button @click="SetAsTopS">设为置顶</el-button>
+      <el-button @click="SetAsEssence">设为精华</el-button>
+      <el-button @click="cancelSetAsTopS">取消置顶</el-button>
+      <el-button @click="cancelSetAsEssence">取消精华</el-button>
+      <el-button @click="canDels">删除帖子</el-button>
+    </div>
+    <div>
+      <vxe-table
+        :data="tableData"
+        @checkbox-change="checkboxChangeEvent"
+        @checkbox-all="checkboxChangeEvent"
+      >
+        <vxe-column align="center" type="checkbox" width="50"></vxe-column>
+        <vxe-column field="title">
+          <template v-slot="scoped">
+            <div>
+              <div class="topStyle">
+                <div>
+                  <span v-if="scoped.row.is_top == 1" class="ToppingSpan"
+                    >置顶</span
+                  >
+                </div>
+                <div>
+                  <span class="EssenceSpan" v-if="scoped.row.is_ess == 1"
+                    >精华</span
+                  >
+                </div>
+                <div>
+                  <span @click="detailsValue(scoped.row.id)" class="details">{{
+                    scoped.row.title
+                  }}</span>
+                </div>
+                <div class="postiongs">
+                  <div
+                    class="Topping"
+                    @click="SetAsTop(scoped.row)"
+                    v-if="scoped.row.is_top != 1"
+                  >
+                    <span>置顶</span>
+                  </div>
+                  <div
+                    class="Topping"
+                    @click="SetAsTop(scoped.row)"
+                    v-if="scoped.row.is_top != 0"
+                  >
+                    <span>取消置顶</span>
+                  </div>
+                  <div
+                    class="Topping"
+                    @click="SetAsEssencer(scoped.row)"
+                    v-if="scoped.row.is_ess != 1"
+                  >
+                    <span>精华</span>
+                  </div>
+                  <div
+                    class="Topping"
+                    @click="SetAsEssencer(scoped.row)"
+                    v-if="scoped.row.is_ess != 0"
+                  >
+                    <span>取消精华</span>
+                  </div>
+                  <div class="Topping" @click="DeletePost(scoped.row)">
+                    <span>删除帖子</span>
+                  </div>
+                </div>
+              </div>
+              <div class="Postdescription">
+                {{ scoped.row.description }}
+              </div>
+              <div
+                class="tablineValue3"
+                v-if="scoped.row.theme !== '' && scoped.row.theme !== null"
+              >
+                <span>#{{ scoped.row.theme }}</span>
+              </div>
+              <div v-if="scoped.row.thumb" class="tablineValue4">
+                <div
+                  v-for="items in scoped.row.thumb.split(',').slice(0, 3)"
+                  :key="items"
+                  class="imgadde"
+                >
+                  <img
+                    :src="imagesValue + items"
+                    alt=""
+                    style="width: 106px; height: 106px"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="tablineValuestablineO">
+              <div>
+                <img
+                  :src="imagesValue + scoped.row.headimage"
+                  alt=""
+                  style="
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    margin-top: 20px;
+                  "
+                />
+              </div>
+              <div class="strollName">
+                <span>{{ scoped.row.username }}</span>
+              </div>
+              <div class="tablineTime">
+                <span>{{ funTime(scoped.row.create_time) }}</span>
+              </div>
+              <div class="tablineoptions">
+                <div class="tablineoptionsValue">
+                  <div class="tablineoptionsimg">
+                    <div>
+                      <img src="../../../assets/strollimg/爱心.png" alt="" />
+                    </div>
+                    <div class="ImgSpan"><span>123</span></div>
+                  </div>
+                  <div class="tablineoptionsimg">
+                    <div>
+                      <img src="../../../assets/strollimg/评论.png" alt="" />
+                    </div>
+                    <div class="ImgSpan"><span>123</span></div>
+                  </div>
+                  <div class="tablineoptionsimg">
+                    <div>
+                      <img src="../../../assets/strollimg/收藏.png" alt="" />
+                    </div>
+                    <div class="ImgSpan"><span>123</span></div>
+                  </div>
+                  <div class="tablineoptionsimg">
+                    <div>
+                      <img src="../../../assets/strollimg/转发.png" alt="" />
+                    </div>
+                    <div class="ImgSpan"><span>123</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </vxe-column>
+      </vxe-table>
+    </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
 
@@ -281,10 +487,10 @@ import {
   circle_noticeGetListApi,
   circle_noticeGetShowApi,
 } from "./TheCircleICreated.js";
-import { timestampToTime } from "../../../assets/js/time.js";
 import circleList from "./CircleList/circleList.vue";
 import LatestCircleList from "./CircleList/LatestCircleList.vue";
 import EssenceCircleList from "./CircleList/EssenceCircleList.vue";
+import { timestampToTime } from "@/assets/js/time.js";
 export default {
   components: {
     circleList,
@@ -294,7 +500,7 @@ export default {
   },
   data() {
     return {
-      step: 0.0001,
+      step: 500000000,
       paramsId: {
         id: "",
       },
@@ -322,11 +528,20 @@ export default {
       DeletePostValue: {
         id: "",
       },
+      Deletes: [],
+      DeleteValue: [],
+      delids: {
+        id: "",
+      },
       //置顶
       Topids: [],
       TopidsL: {
         forum_id: "",
         is_top: "1",
+      },
+      TopidsL1: {
+        forum_id: "",
+        is_top: "0",
       },
       //选中时将对象保存到arrs中
       Toparrs: [],
@@ -335,17 +550,29 @@ export default {
         forum_id: "",
         is_top: "1",
       },
+      Topone: {
+        forum_id: "",
+        is_top: "0",
+      },
       //精华
       Essids: [],
       EssidsL: {
         forum_id: "",
         is_ess: "1",
       },
+      EssidsL1: {
+        forum_id: "",
+        is_ess: "0",
+      },
       //选中时将对象保存到arrs中
       EssarrsValue: [],
       Ess: {
         forum_id: "",
         is_ess: "1",
+      },
+      EssOne: {
+        forum_id: "",
+        is_ess: "0",
       },
       // gonggao
       notId: {
@@ -366,6 +593,10 @@ export default {
       activeName: "first",
       value: "",
       options: {},
+      myRequest: {
+        circle_id: "",
+        own: "1",
+      },
     };
   },
   created() {
@@ -410,9 +641,6 @@ export default {
         this.page1.totalResult = res.count;
       });
     },
-    timeer(val) {
-      return timestampToTime(val);
-    },
     Refresh() {
       this.releaseValue();
     },
@@ -442,7 +670,7 @@ export default {
         this.DeletePostValue.id = data.id;
         postD(ForumDelForumApi(), this.DeletePostValue).then((res) => {
           if (res.code == "200") {
-            this.$message.success("状态修改成功");
+            this.$message.success("删除成功");
             this.releaseValue();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
@@ -456,11 +684,13 @@ export default {
         });
       }
     },
-    // 置顶
+    // 获取批量
     checkboxChangeEvent(data) {
       this.ToparrsValue = data.records;
       this.EssarrsValue = data.records;
+      this.DeleteValue = data.records;
     },
+    // 单个置顶
     async SetAsTop(data) {
       const SetAsTopValue = await this.$confirm(
         "此操作将此条内容设为置顶, 是否继续?",
@@ -475,23 +705,42 @@ export default {
         return this.$message.info("取消置顶");
       }
       if (SetAsTopValue === "confirm") {
-        this.Top.forum_id = data.id.toString();
-        postD(ForumSetTopApi(), this.Top).then((res) => {
-          if (res.code == "200") {
-            this.$message.success("状态修改成功");
-            this.releaseValue();
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("未登陆");
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
-          } else {
-            this.$message.error("注册失败，账号已存在");
-          }
-        });
+        if (data.is_top !== 1) {
+          this.Top.forum_id = data.id.toString();
+          postD(ForumSetTopApi(), this.Top).then((res) => {
+            if (res.code == "200") {
+              this.$message.success("置顶成功");
+              this.releaseValue();
+            } else if (res.code == "-200") {
+              this.$message.error("参数错误，或暂无数据");
+            } else if (res.code == "-201") {
+              this.$message.error("未登陆");
+            } else if (res.code == "-203") {
+              this.$message.error("对不起，你没有此操作权限");
+            } else {
+              this.$message.error("注册失败，账号已存在");
+            }
+          });
+        } else {
+          this.Topone.forum_id = data.id.toString();
+          postD(ForumSetTopApi(), this.Topone).then((res) => {
+            if (res.code == "200") {
+              this.$message.success("取消成功");
+              this.releaseValue();
+            } else if (res.code == "-200") {
+              this.$message.error("参数错误，或暂无数据");
+            } else if (res.code == "-201") {
+              this.$message.error("未登陆");
+            } else if (res.code == "-203") {
+              this.$message.error("对不起，你没有此操作权限");
+            } else {
+              this.$message.error("注册失败，账号已存在");
+            }
+          });
+        }
       }
     },
+    // 批量置顶
     async SetAsTopS() {
       const SetAsTopSValue = await this.$confirm(
         "此操作将批量置顶, 是否继续?",
@@ -514,6 +763,47 @@ export default {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
             this.releaseValue();
+            this.TopidsL.forum_id = "";
+            this.Topids = [];
+            this.ToparrsValue = [];
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
+      }
+    },
+    // 批量取消置顶
+    async cancelSetAsTopS() {
+      const cancelSetAsTopSValue = await this.$confirm(
+        "此操作将批量取消置顶, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (cancelSetAsTopSValue !== "confirm") {
+        return this.$message.info("取消操作");
+      }
+      if (cancelSetAsTopSValue === "confirm") {
+        this.ToparrsValue.forEach((v) => {
+          this.Topids.push(v.id);
+        });
+        this.TopidsL1.forum_id = this.Topids.toString();
+        postD(ForumSetTopApi(), this.TopidsL1).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("状态修改成功");
+            this.releaseValue();
+            this.TopidsL1.forum_id = "";
+            this.Topids = [];
+            this.ToparrsValue = [];
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -541,23 +831,42 @@ export default {
         return this.$message.info("取消精华");
       }
       if (SetAsEssenceOne === "confirm") {
-        this.Ess.forum_id = data.id.toString();
-        postD(ForumSetEssApi(), this.Ess).then((res) => {
-          if (res.code == "200") {
-            this.$message.success("状态修改成功");
-            this.releaseValue();
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("未登陆");
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
-          } else {
-            this.$message.error("注册失败，账号已存在");
-          }
-        });
+        if (data.is_ess !== 1) {
+          this.Ess.forum_id = data.id.toString();
+          postD(ForumSetEssApi(), this.Ess).then((res) => {
+            if (res.code == "200") {
+              this.$message.success("设置精华成功");
+              this.releaseValue();
+            } else if (res.code == "-200") {
+              this.$message.error("参数错误，或暂无数据");
+            } else if (res.code == "-201") {
+              this.$message.error("未登陆");
+            } else if (res.code == "-203") {
+              this.$message.error("对不起，你没有此操作权限");
+            } else {
+              this.$message.error("注册失败，账号已存在");
+            }
+          });
+        }else {
+          this.EssOne.forum_id = data.id.toString();
+          postD(ForumSetEssApi(), this.EssOne).then((res) => {
+            if (res.code == "200") {
+              this.$message.success("取消精华成功");
+              this.releaseValue();
+            } else if (res.code == "-200") {
+              this.$message.error("参数错误，或暂无数据");
+            } else if (res.code == "-201") {
+              this.$message.error("未登陆");
+            } else if (res.code == "-203") {
+              this.$message.error("对不起，你没有此操作权限");
+            } else {
+              this.$message.error("注册失败，账号已存在");
+            }
+          });
+        }
       }
     },
+    // 批量精华
     async SetAsEssence() {
       const SetAsEssenceValue = await this.$confirm(
         "此操作将选中内容设为精华, 是否继续?",
@@ -580,6 +889,9 @@ export default {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
             this.releaseValue();
+            this.EssidsL1.forum_id = "";
+            this.Essids = [];
+            this.EssarrsValue = [];
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -592,6 +904,81 @@ export default {
         });
       }
     },
+    // 批量取消精华
+    async cancelSetAsEssence() {
+      const cancelSetAsEssenceValue = await this.$confirm(
+        "此操作将选中内容批量取消精华, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (cancelSetAsEssenceValue !== "confirm") {
+        return this.$message.info("取消精华");
+      }
+      if (cancelSetAsEssenceValue === "confirm") {
+        this.EssarrsValue.forEach((v) => {
+          this.Essids.push(v.id);
+        });
+        this.EssidsL1.forum_id = this.Essids.toString();
+        postD(ForumSetEssApi(), this.EssidsL1).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("状态修改成功");
+            this.releaseValue();
+            this.EssidsL1.forum_id = "";
+            this.Essids = [];
+            this.EssarrsValue = [];
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
+      }
+    },
+    // 批量删除
+    async canDels() {
+      const canDelsValue = await this.$confirm(
+        "此操作将选中内容批量删除, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (canDelsValue !== "confirm") {
+        return this.$message.info("取消批量删除");
+      }
+      if (canDelsValue === "confirm") {
+        this.DeleteValue.forEach((v) => {
+          this.Deletes.push(v.id);
+        });
+        this.delids.id = this.Deletes.toString();
+        postD(ForumDelForumApi(), this.delids).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("状态修改成功");
+            this.releaseValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
+      }
+    },
+
+    // 公告
     thisTitle(val) {
       this.detilsShow = true;
       this.detilsId.circle_id = this.$route.params.id;
@@ -604,7 +991,6 @@ export default {
       postD(circle_noticeGetShowApi(), this.detilsId).then((res) => {
         if (res.code == "200") {
           this.ruleFormdetils = res.data;
-          console.log(this.ruleFormdetils);
         } else if (res.code == "-200") {
           this.$message.error("参数错误，或暂无数据");
         } else if (res.code == "-201") {
@@ -615,6 +1001,9 @@ export default {
           this.$message.error("注册失败，已存在");
         }
       });
+    },
+    funTime(val) {
+      return timestampToTime(val);
     },
     // 详情
     detailsValue(data) {

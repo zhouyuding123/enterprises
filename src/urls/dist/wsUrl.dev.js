@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
+exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
 
 var ForumReleaseApi = function ForumReleaseApi() {
   return "Forum/release";
@@ -62,6 +62,13 @@ exports.ForumSetEssApi = ForumSetEssApi;
 
 var matchShowMatchApi = function matchShowMatchApi() {
   return "match/showMatch";
-};
+}; // 设计师作品列表
+
 
 exports.matchShowMatchApi = matchShowMatchApi;
+
+var designer_worksGetListApi = function designer_worksGetListApi() {
+  return "designer_works/getList";
+};
+
+exports.designer_worksGetListApi = designer_worksGetListApi;

@@ -28,7 +28,7 @@
             </div>
             <div v-if="item.thumb" class="tablineValue4">
               <div
-                v-for="items in item.thumb.split(',')"
+                v-for="items in item.thumb.split(',').slice(0,3)"
                 :key="items"
                 class="imgadde"
               >
@@ -183,7 +183,7 @@
                     </div>
                     <div  class="tablineValue4">
                       <div
-                        v-for="items in item.thumb.split(',')"
+                        v-for="items in item.thumb.split(',').slice(0,3)"
                         :key="items"
                         class="imgadde"
                       >
@@ -207,6 +207,9 @@
                           margin-top: 20px;
                         "
                       />
+                    </div>
+                    <div class="strollNames">
+                      <span>{{ item.username }}</span>
                     </div>
                     <div class="tablineTime">
                       <span>{{ funTime(item.create_time) }}</span>
@@ -386,6 +389,7 @@ export default {
         this.strollList = res.list;
         this.imagesValue = imgUrl();
         this.page1.totalResult = res.count;
+
       });
     },
     handlePageChangeActivity({ currentPage, pageSize }) {

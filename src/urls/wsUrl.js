@@ -34,4 +34,8 @@ export const ForumSetEssApi = () => {
 export const matchShowMatchApi = () => {
     return "match/showMatch"
 }
+// 设计师作品列表
+export const designer_worksGetListApi = () => {
+    return "designer_works/getList"
+}
 

@@ -38,4 +38,8 @@ export const matchShowMatchApi = () => {
 export const designer_worksGetListApi = () => {
     return "designer_works/getList"
 }
+// 作品信息
+export const designer_worksShowApi = () => {
+    return "designer_works/show"
+}
 

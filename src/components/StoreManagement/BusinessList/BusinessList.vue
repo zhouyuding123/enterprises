@@ -63,9 +63,10 @@
           <template v-slot="scoped">
             <div
               :class="{
-                green: scoped.row.auth === 1,
-                yellow: scoped.row.auth == 0,
-                red: scoped.row.auth === 2,
+                green: scoped.row.auth === 2,
+                yellow: scoped.row.auth == 1,
+                red: scoped.row.auth === 3,
+                back: scoped.row.auth === 0,
               }"
             >
               {{ filterAuth(scoped.row.auth) }}
@@ -184,7 +185,9 @@ export default {
       } else if (val == 1) {
         return "已认证";
       } else if (val == 2) {
-        return "驳回";
+        return "审核通过";
+      } else if( val ===3 ) {
+        return "驳回"
       }
     },
     statusChaged(data) {
@@ -226,5 +229,8 @@ export default {
 }
 .storeListBody {
   padding: 20px 30px;
+}
+.back {
+  color: black;
 }
 </style>

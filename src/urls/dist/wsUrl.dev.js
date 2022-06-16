@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
+exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
 
 var ForumReleaseApi = function ForumReleaseApi() {
   return "Forum/release";
@@ -69,6 +69,13 @@ exports.matchShowMatchApi = matchShowMatchApi;
 
 var designer_worksGetListApi = function designer_worksGetListApi() {
   return "designer_works/getList";
-};
+}; // 作品信息
+
 
 exports.designer_worksGetListApi = designer_worksGetListApi;
+
+var designer_worksShowApi = function designer_worksShowApi() {
+  return "designer_works/show";
+};
+
+exports.designer_worksShowApi = designer_worksShowApi;

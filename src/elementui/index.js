@@ -47,10 +47,12 @@ import {
     CarouselItem,
     RadioButton,
     Tabs,
-    TabPane
+    TabPane,
+    Drawer
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(Drawer)
         Vue.use(Tabs)
         Vue.use(TabPane)
         Vue.use(RadioButton)

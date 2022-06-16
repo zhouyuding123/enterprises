@@ -137,7 +137,6 @@ export default {
     WorkDetailsList() {
       this.routeId = this.$route.params;
       postD(MatchWorksShowApi(), this.routeId).then((res) => {
-        console.log(res.data);
         this.WorksShowData = res.data;
         this.imagesValue = imgUrl();
         var arr = this.WorksShowData.imgs.split(",");

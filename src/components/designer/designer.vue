@@ -3,23 +3,74 @@
     <div class="crumbsStyle">
       <crumbs></crumbs>
       <div class="sjs">
+        <div class="vip"><img src="@/assets/imgers/vip.png" alt="" /></div>
+        <div class="Open"><span>开通设计师专区VIP</span></div>
+        <div class="bd"><img src="@/assets/imgers/榜单.png" alt="" /></div>
+        <div class="sx" @click="screen" :v-model="direction">
+          <img src="@/assets/imgers/筛选.png" alt="" />
+        </div>
+
+        <div class="seatch" @click="seatchiinput"><img src="@/assets/imgers/搜索.png" alt="" />
         
+        </div>
       </div>
     </div>
-    <router-view to="'/'+value.name" />
+    <el-drawer :visible.sync="drawer" :direction="direction">
+      <div class="drawwer">
+        <el-radio-group v-model="seatchid.product_type_id" fill="#5C5673">
+          <el-radio-button
+            border
+            v-for="item in drawerValue"
+            :label="item.id"
+            :key="item.id"
+            >{{ item.title }}</el-radio-button
+          >
+        </el-radio-group>
+      </div>
+    </el-drawer>
+    <el-drawer :visible.sync="drawers" :direction="direction">
+      <div class="drawwer">
+        <el-input v-model="keyword" placeholder="请输入内容" @keyup.enter.native="searchbutton"></el-input>
+      </div>
+    </el-drawer>
+    <router-view to="'/'+value.name +" :ListValue= "seatchid.product_type_id" :seatcher="seatchid.keyword"/>
   </div>
 </template>
 <script>
+import { postD } from "@/api";
 import crumbs from "../Home/crumbs.vue";
-export default { 
+export default {
   components: {
     crumbs,
   },
   data() {
-    return {};
+    return {
+      drawer: false,
+      drawers: false,
+      direction: "ttb",
+      drawerValue: [],
+      seatchid: {
+        product_type_id: "",
+        keyword:""
+      },
+      keyword:""
+    };
   },
   methods: {
-    
+    screen() {
+      this.drawer = true;
+      postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
+        (res) => {
+          this.drawerValue = res.list;
+        }
+      );
+    },
+    seatchiinput() {
+      this.drawers = true;
+    },
+    searchbutton() {
+      this.seatchid.keyword = this.keyword 
+    }
   },
 };
 </script>
@@ -34,7 +85,64 @@ export default {
   .sjs {
     margin-left: auto;
     padding-right: 30px;
-    padding-top: 28px;
+    padding-top: 20px;
+    display: flex;
+    .seatch {
+      margin-right: 30px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+    .sx {
+      margin-right: 40px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+    .bd {
+      margin-right: 40px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+    .vip {
+      margin-right: 7px;
+      cursor: pointer;
+    }
+    .Open {
+      margin-right: 40px;
+      cursor: pointer;
+      span {
+        font-size: 14px;
+        font-family: PingFang SC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #333333;
+        line-height: 40px;
+      }
+    }
   }
+}
+.el-radio-group {
+  display: flex;
+  padding: 10px 20px;
+}
+.el-radio-button {
+  height: 30px;
+  background: #5c5673;
+  margin-left: 10px;
+  border: 1px solid #5c5673;
+  border-radius: 3px 3px 3px 3px;
+  width: 160px;
+  height: 40px;
+  background: linear-gradient(180deg, #0c032e 0%, #5c5673 100%);
+  border-radius: 3px 3px 3px 3px;
+  font-size: 16px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+/deep/.el-radio-button__inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px 3px 3px 3px;
+  line-height: 10px;
 }
 </style>

@@ -433,6 +433,14 @@ const routes = [
             },
           },
           {
+            path: "/designer_works/getListMF/freeDetil:id",
+            name: "freeDetil",
+            component: () => import("../components/designer/free/freeDetil/freeDetil.vue"),
+            meta: {
+              title: "免费作品"
+            },
+          },
+          {
             path: "/designer_works/getListFF",
             name: "getListFF",
             component: () => import("../components/designer/pay/payList.vue"),

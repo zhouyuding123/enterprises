@@ -1,0 +1,350 @@
+.worksBody {
+  padding: 20px 180px;
+}
+.worksBody .worksDiv {
+  width: 100%;
+  height: 120px;
+  background: #FFFFFF;
+  display: flex;
+}
+.headimagephoto {
+  margin: 20px 40px;
+}
+.headimagephoto .headStyle {
+  width: 80px;
+  height: 80px;
+  background: #E3E8EF;
+  border-radius: 50%;
+}
+.nicknameValue .name_nickname {
+  padding: 33px 0px;
+  position: relative;
+}
+.nicknameValue .name_nickname .nickname_span {
+  font-size: 18px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #333333;
+  line-height: 0px;
+}
+.nicknameValue .name_nickname .top {
+  margin-left: 80px;
+  position: absolute;
+  top: 27px;
+  left: 0;
+}
+.nicknameValue .name_nickname .top img {
+  width: 90px;
+  height: 25px;
+}
+.nicknameValue .name_nickname .top span {
+  font-size: 8px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: white;
+  position: absolute;
+  line-height: 20px;
+  width: 100px;
+  margin-left: -85px;
+}
+.fans_num {
+  text-align: left;
+}
+.fans_num span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 18px;
+}
+.buttons {
+  margin-left: auto;
+  display: flex;
+  padding: 50px 40px;
+}
+.buttons .button_Shop {
+  width: 80px;
+  height: 30px;
+  background: #FFDC00;
+  border-radius: 3px 3px 3px 3px;
+  cursor: pointer;
+}
+.buttons .button_Shop span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 30px;
+}
+.buttons .button_to {
+  width: 80px;
+  height: 30px;
+  background: #1677FF;
+  border-radius: 3px 3px 3px 3px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.buttons .button_to span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 30px;
+}
+.buttons .button_follow {
+  width: 80px;
+  height: 30px;
+  background: #FBFBFB;
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid #707070;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.buttons .button_follow span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 30px;
+}
+.worksDiv2 {
+  padding: 20px 0px;
+  background-color: white;
+}
+.worksDiv2 .worksDiv2line1 {
+  display: flex;
+}
+.worksDiv2 .worksDiv2line1 .line1_value {
+  padding: 40px;
+  text-align: left;
+}
+.worksDiv2 .worksDiv2line1 .line1_value p {
+  font-size: 20px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.worksDiv2 .worksDiv2line1 .line1_value span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #CCCCCC;
+  line-height: 47px;
+}
+.worksDiv2 .worksDiv2line1 .line1_Collection {
+  display: flex;
+  margin-left: auto;
+  padding: 36px 40px;
+}
+.worksDiv2 .worksDiv2line1 .line1_Collection div {
+  padding-left: 70px;
+}
+.worksDiv2 .worksDiv2line1 .line1_Collection div img {
+  cursor: pointer;
+}
+.worksDiv2 .worksDiv2line1 .line1_Collection div p {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 15px;
+}
+.worksDiv2 .worksDiv2line2 {
+  padding: 40px 0px 40px 40px;
+  text-align: left;
+}
+.worksDiv2 .imgs {
+  padding: 0px 40px 72px 40px;
+}
+.worksDiv2 .imgs img {
+  width: 1200px;
+  height: 812px;
+}
+.worksDiv3 {
+  margin: 20px 0;
+  background-color: white;
+}
+.worksDiv3 .worksDiv3line1 {
+  padding: 30px 40px;
+  text-align: left;
+}
+.worksDiv3 .worksDiv3line1 span {
+  font-size: 20px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #333333;
+  line-height: 0px;
+}
+.worksDiv3 .worksDiv3line2 {
+  text-align: left;
+  padding: 0px 40px 32px 40px;
+}
+.worksDiv3 .worksDiv3line2 div {
+  margin-top: 10px;
+  position: relative;
+}
+.worksDiv3 .worksDiv3line2 div .worksline1 {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 0px;
+}
+.worksDiv3 .worksDiv3line2 div .worksline1Value {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 0px;
+  margin-left: 30px;
+}
+.el-tag {
+  background: #141414;
+  text-align: center;
+}
+.el-tag span {
+  font-size: 8px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: -10px;
+}
+.lastDiv {
+  height: 34px;
+}
+.worksline1Values {
+  position: absolute;
+  margin-left: 30px;
+}
+.shaped {
+  width: 100%;
+  height: 1px;
+  border: 1px solid #DDDDDD;
+}
+.bottomValue {
+  display: flex;
+  padding: 28px 40px;
+}
+.bottomValue .statement {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 0px;
+}
+.operation {
+  margin-left: auto;
+  display: flex;
+}
+.operation span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  margin-left: 10px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.operation .fgx {
+  width: 0px;
+  height: 20px;
+  opacity: 1;
+  border: 1px solid #DDDDDD;
+  margin-left: 20px;
+}
+.operation .forward {
+  margin-left: 20px;
+  cursor: pointer;
+}
+.operation .complaint {
+  cursor: pointer;
+}
+.comment {
+  padding: 30px 40px;
+}
+ /deep/ .el-textarea__inner {
+  resize: none;
+  background: #F5F5F5;
+  border-radius: 6px 6px 6px 6px;
+  height: 160px;
+}
+.Comments {
+  display: flex;
+  padding: 20px 0px;
+}
+.Comment {
+  margin-left: auto;
+  width: 160px;
+  height: 40px;
+  background: #FFFFFF;
+  border-radius: 6px 6px 6px 6px;
+  border: 1px solid #0C032E;
+}
+.Comment span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 40px;
+}
+.CommentList {
+  padding: 40px;
+  border-top: 1px solid #DDDDDD;
+  display: flex;
+}
+.CommentListTitle {
+  padding-left: 30px;
+  padding-top: 20px;
+  width: 100%;
+}
+.CommentListTitle .CommentListTitles {
+  display: flex;
+}
+.CommentListTitle .CommentListTitles .CommentListTitleNickname span {
+  font-size: 16px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.CommentListTitle .CommentListTitles .CommentListTitletime {
+  margin-left: auto;
+}
+.CommentListTitle .CommentListTitles .CommentListTitletime span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
+.CommentListTitle .CommentListTitleContent {
+  padding-top: 20px;
+  text-align: left;
+}
+.CommentListTitle .CommentListTitleContent span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+}
+.CommentListTitle .CommentListTitleax {
+  text-align: left;
+  padding-top: 23px;
+  cursor: pointer;
+}
+.CommentListTitle .CommentListTitleax img {
+  width: 16px;
+  height: 16px;
+}
+.CommentListTitle .CommentListTitleax span {
+  font-size: 10px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
+.CommentListTitle .CommentListTitleComment {
+  height: auto;
+  background-color: #F5F5F5;
+  border-radius: 5px 5px 5px 5px;
+  text-align: left;
+  padding: 10px;
+  margin-top: 20px;
+}

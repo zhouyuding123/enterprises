@@ -92,10 +92,10 @@
             声明：本站内用户发表的所有内容及言论仅代表其本人，并不反映本站意见及观点。
           </div>
           <div class="operation">
-            <div class="complaint" @click="zxc">
+            <div class="complaint">
               <img src="@/assets/imgers/转发.png" alt="" />
             </div>
-            <span @click="zxc">举报</span>
+            <span>举报</span>
             <div class="fgx"></div>
             <div class="forward">
               <img src="@/assets/imgers/转发.png" alt="" />
@@ -105,10 +105,15 @@
         </div>
         <div class="shaped"></div>
         <div class="comment">
-          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="commentValue.content">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="commentValue.content"
+          >
           </el-input>
           <div class="Comments">
-            <div class="Comment" >
+            <div class="Comment" @click="CommentValues">
               <span>发表评论</span>
             </div>
           </div>
@@ -116,7 +121,7 @@
             class="CommentList"
             v-for="items in comment_list"
             :key="items.id"
-          > 
+          >
             <div>
               <img
                 :src="imagesValue + items.headimage"
@@ -138,27 +143,33 @@
                   <span>{{ fullTime(items.create_time) }}</span>
                 </div>
               </div>
-              <div class="CommentListTitleContent" @click="comment(items.id)">
+              <div class="CommentListTitleContent">
                 <span>{{ items.content }}</span>
               </div>
               <div class="CommentListTitleax">
                 <img src="@/assets/imgers/爱心.png" alt="" />
                 <span>123</span>
+                <p @click="comment(items)">回复</p>
               </div>
-              <div class="CommentListTitleComment" v-if="items.chridren == ''">
-                <div
-                  v-for="(item, index) in items.chridren"
-                  :key="index"
-                  @click="comment(index)"
-                >
+              <div v-if="showInput == items.id">
+                <el-input
+                  v-model="commentValueser.content"
+                  :placeholder="'回复@' + items.nickname + ':'"
+                ></el-input>
+                <div style="width:100%"><div @click="zxc" class="commentStyle"><span>发表评论</span></div></div>
+              </div>
+              <div class="CommentListTitleComment" v-if="items.chridren === ''">
+                <div v-for="(item, index) in items.chridren" :key="index">
                   <div>{{ item.nickname }}:{{ item.content }}</div>
+                  <div @click="comment(item)" style="text-align: right">
+                    回复
+                  </div>
                 </div>
               </div>
-              <div class="CommentListTitleComment" v-if="items.chridren">
+              <div class="CommentListTitleComment" v-if="items.chridren != ''">
                 <div
                   v-for="(item, index) in items.chridren"
                   :key="index"
-                  @click="comment(index)"
                   style="margin-top: 10px"
                 >
                   <div>
@@ -166,8 +177,17 @@
                       item.content
                     }}
                   </div>
-                  <div>
-
+                  <div @click="comment(item)" style="text-align: right">
+                    回复
+                  </div>
+                  <div v-if="showInput == item.id">
+                    <el-input
+                      v-model="commentValueser.content"
+                      :placeholder="'回复@' + item.nickname + ':'"
+                    ></el-input>
+                    <div>
+                      <div @click="zxc" class="commentStyle"><span>发表评论</span></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -180,7 +200,10 @@
 </template>
 
 <script>
-import { designer_worksShowApi } from "@/urls/wsUrl.js";
+import {
+  designer_worksShowApi,
+  designer_worksCommentApi,
+} from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 import { imgUrl } from "@/assets/js/modifyStyle.js";
 import { timestampToTime } from "@/assets/js/time.js";
@@ -194,10 +217,19 @@ export default {
       comment_list: [],
       commentValue: {
         works_id: "",
+        pid: "0",
+        content: "",
+        fid: "0",
+        placehoder: "评论",
+      },
+      commentValueser: {
+        works_id: "",
         pid: "",
         content: "",
         fid: "",
+        placehoder: "评论",
       },
+      showInput: 0,
     };
   },
   created() {
@@ -257,12 +289,55 @@ export default {
     fullTime(val) {
       return timestampToTime(val);
     },
-    comment(val) {
-      console.log(val);
+    CommentValues() {
+      this.commentValue.works_id = this.$route.params.id;
+      postD(designer_worksCommentApi(), this.commentValue).then((res) => {
+        if (res.code == "200") {
+          this.$message.success("已成功评论");
+          this.WorkDetailsList();
+        } else if (res.code == "-200") {
+          this.$message.error("参数错误，或暂无数据");
+        } else if (res.code == "-201") {
+          this.$message.error("未登陆");
+        } else if (res.code == "-203") {
+          this.$message.error("对不起，你没有此操作权限");
+        } else {
+          this.$message.error("注册失败，账号已存在");
+        }
+      });
+    },
+    comment(e) {
+      console.log(e);
+      this.showInput = e.id;
+      if (e.pid == 0) {
+        this.commentValueser.works_id = this.$route.params.id;
+        this.commentValueser.pid = e.id;
+        this.commentValueser.content = "";
+        this.commentValueser.fid = e.id;
+        this.placehoder = "评论" + e.nickname;
+      } else {
+        this.commentValueser.pid = e.id;
+        this.commentValueser.fid = e.fid;
+        this.placehoder = "回复" + e.nickname;
+      }
     },
     zxc() {
-      console.log(123);
-      console.log(this.comment_list);
+      console.log(this.commentValueser);
+      postD(designer_worksCommentApi(), this.commentValueser).then((res) => {
+        if (res.code == "200") {
+          this.$message.success("已成功评论");
+          this.WorkDetailsList();
+          this.commentValueser.content = "";
+        } else if (res.code == "-200") {
+          this.$message.error("参数错误，或暂无数据");
+        } else if (res.code == "-201") {
+          this.$message.error("未登陆");
+        } else if (res.code == "-203") {
+          this.$message.error("对不起，你没有此操作权限");
+        } else {
+          this.$message.error("注册失败，账号已存在");
+        }
+      });
     },
   },
 };

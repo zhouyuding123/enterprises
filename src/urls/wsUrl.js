@@ -42,4 +42,9 @@ export const designer_worksGetListApi = () => {
 export const designer_worksShowApi = () => {
     return "designer_works/show"
 }
+// 作品评论
+export const designer_worksCommentApi = () => {
+    return "designer_works/comment"
+}
+
 

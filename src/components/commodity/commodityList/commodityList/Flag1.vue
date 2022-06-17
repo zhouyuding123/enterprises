@@ -20,7 +20,7 @@
             >
           </el-radio-group>
         </div>
-        <div class="filterValueline2">
+        <!-- <div class="filterValueline2">
           <div class="ptfl">平台分类</div>
           <el-radio-group
             v-model="PTcheckboxGroup1.type"
@@ -36,7 +36,7 @@
               >{{ item.title }}</el-radio-button
             >
           </el-radio-group>
-        </div>
+        </div> -->
         <div class="filterValueline3">
           <div class="ppfl">品牌分类</div>
           <el-radio-group
@@ -593,23 +593,23 @@ export default {
         });
       }
     },
-    PTcheckoxId(val) {
-      if (val == undefined) {
-        postD(company_productGetListApi(), this.PTcheckboxGroup2).then(
-          (res) => {
-            this.tableData = res.list;
-            this.page1.totalResult = res.count;
-          }
-        );
-      } else {
-        postD(company_productGetListApi(), this.PTcheckboxGroup1).then(
-          (res) => {
-            this.tableData = res.list;
-            this.page1.totalResult = res.count;
-          }
-        );
-      }
-    },
+    // PTcheckoxId(val) {
+    //   if (val == undefined) {
+    //     postD(company_productGetListApi(), this.PTcheckboxGroup2).then(
+    //       (res) => {
+    //         this.tableData = res.list;
+    //         this.page1.totalResult = res.count;
+    //       }
+    //     );
+    //   } else {
+    //     postD(company_productGetListApi(), this.PTcheckboxGroup1).then(
+    //       (res) => {
+    //         this.tableData = res.list;
+    //         this.page1.totalResult = res.count;
+    //       }
+    //     );
+    //   }
+    // },
     selectOptions() {
       postD(company_productGetListApi(), this.OptionsValue).then((res) => {
         this.tableData = res.list;

@@ -451,19 +451,18 @@ const routes = [
         ]
       }
     ]
-  }
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("../views/register.vue"),
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
-});
-router.beforeEach((to, from, next) => {
-  if (to.path === "/login") return next();
-  const totoken = window.localStorage.getItem("token");
-  if (!totoken) return next("/login");
-  next();
 });
 
 const originPush = VueRouter.prototype.push

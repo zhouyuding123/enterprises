@@ -156,13 +156,13 @@
                   v-model="commentValueser.content"
                   :placeholder="'回复@' + items.nickname + ':'"
                 ></el-input>
-                <div style="width:100%"><div @click="zxc" class="commentStyle"><span>发表评论</span></div></div>
+                <div style="width:100%"><div @click="zxc" class="commentStyle"><span>发布</span></div></div>
               </div>
               <div class="CommentListTitleComment" v-if="items.chridren === ''">
                 <div v-for="(item, index) in items.chridren" :key="index">
                   <div>{{ item.nickname }}:{{ item.content }}</div>
-                  <div @click="comment(item)" style="text-align: right">
-                    回复
+                  <div @click="comment(item)" style="text-align: right;" class="reply">
+                    <span>回复</span>
                   </div>
                 </div>
               </div>
@@ -177,8 +177,8 @@
                       item.content
                     }}
                   </div>
-                  <div @click="comment(item)" style="text-align: right">
-                    回复
+                  <div @click="comment(item)" style="text-align: right" class="reply">
+                    <span>回复</span>
                   </div>
                   <div v-if="showInput == item.id">
                     <el-input
@@ -186,7 +186,7 @@
                       :placeholder="'回复@' + item.nickname + ':'"
                     ></el-input>
                     <div>
-                      <div @click="zxc" class="commentStyle"><span>发表评论</span></div>
+                      <div @click="zxc" class="commentStyle"><span>发布</span></div>
                     </div>
                   </div>
                 </div>
@@ -283,11 +283,9 @@ export default {
         this.comment_list = tmp;
       });
     },
-    Superior() {
-      this.$router.go(-1);
-    },
     fullTime(val) {
-      return timestampToTime(val);
+      let newDate = /\d{4}-\d{1,2}-\d{1,2}/g.exec( timestampToTime(val) )
+      return newDate[0]
     },
     CommentValues() {
       this.commentValue.works_id = this.$route.params.id;
@@ -307,7 +305,6 @@ export default {
       });
     },
     comment(e) {
-      console.log(e);
       this.showInput = e.id;
       if (e.pid == 0) {
         this.commentValueser.works_id = this.$route.params.id;
@@ -322,7 +319,6 @@ export default {
       }
     },
     zxc() {
-      console.log(this.commentValueser);
       postD(designer_worksCommentApi(), this.commentValueser).then((res) => {
         if (res.code == "200") {
           this.$message.success("已成功评论");
@@ -346,42 +342,3 @@ export default {
 <style lang="less" scoped>
 @import url("./freeDetil.less");
 </style>
-
-var tmp = []
-     res.data.comment_list.forEach((item, i) => {
-      if (item.fid == 0) {
-       tmp.push({
-        content: item.content,
-        create_time: item.create_time,
-        fid: item.fid,
-        headimage: item.headimage,
-        id: item.id,
-        nickname: item.nickname,
-        pid: item.pid,
-        username: item.username,
-        chridren: []
-       })
-      }
-     })
-     tmp.forEach((item, i) => {
-      res.data.comment_list.forEach((list, j) => {
-       if (item.id == list.fid) {
-        item.chridren.push(list)
-       }
-      })
-     })
-     tmp.forEach((item, i) => {
-      item.chridren.forEach((list, j) => {
-       list.type = ''
-       list.people = ''
-       res.data.comment_list.forEach((jk, k) => {
-        if (jk.pid != 0) {
-         if (list.pid == jk.id) {
-          list.type = '回复',
-           list.people = jk.nickname
-         }
-        }
-       })
-      })
-     })
-     this.comment_list = tmp

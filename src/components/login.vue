@@ -56,6 +56,7 @@
         <el-form-item class="btns" style="display: flex">
           <el-button type="primary" @click="loginer">登入</el-button>
           <el-button type="info" @click="reset">重置</el-button>
+          <el-button @click="reg">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -64,7 +65,7 @@
 
 <script>
 import { postD } from "../api/index.js";
-import {users_companyLoginPWApi} from "./login.js"
+import {users_companyLoginPWApi} from "@/urls/wsUrl.js"
 export default {
   data() {
     return {
@@ -100,6 +101,9 @@ export default {
     // 点击重置
     reset() {
       this.$refs.loginRef.resetFields();
+    },
+    reg() {
+      this.$router.replace("/register")
     },
     loginer() {
       this.$refs.loginRef.validate((valid) => {

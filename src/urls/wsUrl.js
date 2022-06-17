@@ -46,5 +46,21 @@ export const designer_worksShowApi = () => {
 export const designer_worksCommentApi = () => {
     return "designer_works/comment"
 }
+// 删除门店
+export const BusinessDelBusinessApi = () => {
+    return "Business/delBusiness"
+}
+// 注册账号
+export const users_companyRegisterApi = () => {
+    return "users_company/register"
+}
+// 注册验证账号
+export const users_companyVerifyUsersApi = () => {
+    return "users_company/verifyUsers"
+}
+// 登入
+export const users_companyLoginPWApi = () => {
+    return "users_company/loginPW"
+}
 
 

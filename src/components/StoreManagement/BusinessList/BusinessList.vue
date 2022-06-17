@@ -92,7 +92,7 @@
           align="center"
         ></vxe-column>
         <vxe-column title="操作" align="center">
-          <business-list-del />
+          <template v-slot="scoped"><business-list-del :delValue="scoped.row" /></template>
         </vxe-column>
       </vxe-table>
       <vxe-pager

@@ -457,10 +457,15 @@ const routes = [
     name: "register",
     component: () => import("../views/register.vue"),
   },
+  {
+    path: "/about",
+    name: "about",
+    component: () => import("../views/About.vue"),
+  },
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes,
 });

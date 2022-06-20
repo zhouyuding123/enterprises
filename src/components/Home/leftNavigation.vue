@@ -92,7 +92,7 @@ export default {
           this.$message.error("参数错误，或暂无数据");
         } else if (res.code == "-201") {
           this.$message.error("重新登入");
-          this.$router.push("/login")
+          this.$router.push("/about")
         } else if (res.code == "-203") {
           this.$message.error("对不起，你没有此操作权限");
         } else {

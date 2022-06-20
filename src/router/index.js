@@ -341,7 +341,15 @@ const routes = [
             meta: {
               title: "稿件详情"
             },
-          }
+          },
+          {
+            path: "/match/platform",
+            name: "platform",
+            component: () => import("../components/EventManagement/PlatformEvents/PlatformEvents.vue"),
+            meta: {
+              title: "平台赛事"
+            },
+          }          
         ]
       },
       {

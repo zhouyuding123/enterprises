@@ -62,5 +62,9 @@ export const users_companyVerifyUsersApi = () => {
 export const users_companyLoginPWApi = () => {
     return "users_company/loginPW"
 }
+// 所有赛事列表（进行中）
+export const matchListMacthApi = () => {
+    return "match/listMacth"
+}
 
 

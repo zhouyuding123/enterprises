@@ -13,19 +13,32 @@
       </div>
     </div>
     <div class="list_list">
-      <div class="eve_List" v-for="item in platformValue" :key="item.id">
-        <div class="list_img"><img :src="imagesValue+item.thumb" alt="" /></div>
-        <div  style="text-align: left;">
-            <div  class="evetime"><span>{{item.title}}</span></div>
-            <div class="evetimse">
-                <div><span>投稿截止至{{fullTime(item.sign_end_time)}}</span></div>
-                <div class="peopo"><span>{{item.condition}}人已参与</span></div>
+      <div
+        class="eve_List"
+        v-for="item in platformValue"
+        :key="item.id"
+        @click="JumpDetails(item)"
+      >
+        <div class="list_img">
+          <img :src="imagesValue + item.thumb" alt="" />
+        </div>
+        <div style="text-align: left">
+          <div class="evetime">
+            <span>{{ item.title }}</span>
+          </div>
+          <div class="evetimse">
+            <div>
+              <span>投稿截止至{{ fullTime(item.sign_end_time) }}</span>
             </div>
+            <div class="peopo">
+              <span>{{ item.part_num }}人已参与</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="pager">
-        <vxe-pager
+      <vxe-pager
         :current-page="page1.offset"
         :page-size="page1.limit"
         :total="page1.totalResult"
@@ -47,7 +60,7 @@
 <script>
 import { matchListMacthApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
-import { imgUrl } from '@/assets/js/modifyStyle';
+import { imgUrl } from "@/assets/js/modifyStyle";
 export default {
   data() {
     return {
@@ -72,17 +85,17 @@ export default {
   },
   created() {
     this.platformList();
-    this.imagesValue = imgUrl()
+    this.imagesValue = imgUrl();
   },
   methods: {
     platformList() {
       postD(matchListMacthApi(), this.platformId).then((res) => {
         this.platformValue = res.list;
-        this.page1.totalResult = res.count
+        this.page1.totalResult = res.count;
       });
     },
     fullTime(val) {
-      let newDate = /\d{4}-\d{1,2}-\d{1,2}/g.exec(val) 
+      let newDate = /\d{4}-\d{1,2}-\d{1,2}/g.exec(val);
       return newDate[0];
     },
     // 分页
@@ -96,11 +109,14 @@ export default {
     },
     // 搜索
     seatchValue() {
-        postD(matchListMacthApi(), this.seatch).then((res) => {
+      postD(matchListMacthApi(), this.seatch).then((res) => {
         this.platformValue = res.list;
-        this.page1.totalResult = res.count
+        this.page1.totalResult = res.count;
       });
-    }
+    },
+    JumpDetails(val) {
+      this.$router.push("/match/detial" + val.id); 
+    },
   },
 };
 </script>

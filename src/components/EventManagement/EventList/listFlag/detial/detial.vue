@@ -1,12 +1,35 @@
 <template>
   <div class="detialBody">
+    <div class="titleValue">{{ detialValueList.title }}</div>
     <div class="detialImg">
-      <img :src="imagesValue + detialValueList.poster" alt="" />
-      <div class="sxgj" @click="ManuscriptScreening">
+      <img
+        :src="imagesValue + detialValueList.poster"
+        alt=""
+        @click="judgmentb"
+      />
+      <div
+        class="sxgj"
+        @click="accessClick"
+        v-if="
+          detialValueList.is_platform == '1' &&
+          Judgment == true &&
+          detialValueList.access == false
+        "
+      >
+        <span>申请冠名商资格</span>
+      </div>
+      <div
+        class="sxgj"
+        @click="ManuscriptScreening"
+        v-if="detialValueList.is_platform == '2'"
+      >
         <span>筛选稿件</span>
       </div>
     </div>
-    <div class="eventbackground">
+    <div
+      class="eventbackground"
+      v-if="detialValueList.access !== false && Judgment == false"
+    >
       <div class="eventline1">
         <div class="eventline1_div1" @click="eveTheme('aa' + 1)">
           <div><span>赛事主题</span></div>
@@ -181,11 +204,87 @@
         </div>
       </div>
     </div>
+    <div class="" v-if="detialValueList.access !== false && Judgment == true">
+      <div class="titleline1">
+        <div class="countSstyle">
+          <div class="numbervalue">
+            <span>{{ workvalue.accept_count }}</span>
+          </div>
+          <div class="numbervalue2"><span>参与选手</span></div>
+        </div>
+        <div class="vertical"></div>
+        <div class="countSstyle">
+          <div class="numbervalue">
+            <span>{{ workvalue.voto_count }}</span>
+          </div>
+          <div class="numbervalue2"><span>积累投票</span></div>
+        </div>
+        <div class="vertical"></div>
+        <div class="countSstyle">
+          <div class="numbervalue">
+            <span>{{ workvalue.browse }}</span>
+          </div>
+          <div class="numbervalue2"><span>访问量</span></div>
+        </div>
+      </div>
+      <div class="titleline2">
+        <div class="listPadding">
+          <div class="seatch_list">
+            <i
+              class="el-icon-search"
+              style="position: absolute; margin: 12px 0 0 20px; color: #dddddd"
+            ></i>
+            <el-input
+              v-model="seatch.keyword"
+              placeholder="请输入内容"
+            ></el-input>
+            <div class="buttom_seatch">
+              <span> 搜索 </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="titleline3">
+        <!-- <div class="titlevoto" v-for="item in ">
+
+        </div> -->
+      </div>
+    </div>
+    <el-dialog title="申请冠名商资格" :visible.sync="dialogVisible" width="30%">
+      <div class="textLine"></div>
+      <el-form
+        :model="addruleForm"
+        :rules="addrules"
+        ref="addruleForm"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="联系人" prop="name">
+          <el-input v-model="addruleForm.name" placeholder="请输入"></el-input>
+        </el-form-item>
+        <el-form-item label="联系方式" prop="tel">
+          <el-input v-model="addruleForm.tel" placeholder="请输入"></el-input>
+        </el-form-item>
+
+        <el-form-item label="请输入报价金额" prop="price">
+          <el-input v-model="addruleForm.price" placeholder="请输入"></el-input>
+        </el-form-item>
+      </el-form>
+      <div class="jt">具体详情官方平台会电话联络沟通</div>
+      <div style="padding-top: 60px">
+        <span>
+          <el-button type="primary" @click="addAccess">提交申请</el-button>
+        </span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { matchShowMatchApi } from "@/urls/wsUrl.js";
+import {
+  matchShowMatchApi,
+  matchAddAccessApi,
+  MatchWorksApi,
+} from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 import { imgUrl } from "@/assets/js/modifyStyle";
 export default {
@@ -199,28 +298,112 @@ export default {
       ScreeningId: {
         id: "",
       },
+      Nowtimes: "",
+      votoEndtime: "",
+      Judgment: true,
+      dialogVisible: false,
+      addruleForm: {
+        price: "",
+        match_id: "",
+        name: "",
+        tel: "",
+      },
+      addrules: {
+        name: [
+          {
+            required: true,
+            message: "请输入联系人",
+            tirgger: "blur",
+          },
+        ],
+        price: [
+          {
+            required: true,
+            message: "请输入金额",
+            tirgger: "blur",
+          },
+          { min: 3, message: "长度在 3 位数以上 ", trigger: "blur" },
+        ],
+        tel: [
+          {
+            required: true,
+            message: "请输入联系电话",
+            tirgger: "blur",
+          },
+          { min: 11, max: 11, message: "长度在 11 位数 ", trigger: "blur" },
+        ],
+      },
+      // 作品
+      workvalue: [],
+      seatch: {
+        keyword: "",
+      },
     };
   },
   created() {
     this.detialValue();
+    this.worksValue();
   },
   methods: {
+    judgmentb() {
+      this.Nowtimes = new Date().valueOf();
+      this.votoEndtime = Date.parse(this.detialValueList.voto_end_time);
+      if (
+        this.detialValueList.access !== false &&
+        this.votoEndtime <= this.Nowtimes
+      ) {
+        this.Judgment = true;
+      }
+    },
     detialValue() {
       this.detialId.id = this.$route.params.id;
       postD(matchShowMatchApi(), this.detialId).then((res) => {
         this.detialValueList = res.data;
         this.imagesValue = imgUrl();
-        console.log(res);
+        this.Nowtimes = new Date().valueOf();
+        this.votoEndtime = Date.parse(this.detialValueList.voto_end_time);
+        if (this.votoEndtime <= this.Nowtimes) {
+          this.Judgment = false;
+        }
+      });
+    },
+    worksValue() {
+      postD(MatchWorksApi(), this.detialId).then((res) => {
+        this.workvalue = res;
       });
     },
     fullTimes(val) {
       let newDate = /\d{4}-\d{1,2}-\d{1,2}/g.exec(val);
       return newDate[0];
     },
+    accessClick() {
+      this.dialogVisible = true;
+    },
     eveTheme: function (e) {
       document.getElementById(e).scrollIntoView({
         behavior: "smooth", // 平滑过渡
         block: "start", // 上边框与视窗顶部平齐。默认值
+      });
+    },
+    addAccess() {
+      this.$refs.addruleForm.validate((v) => {
+        if (!v) return;
+        this.addruleForm.match_id = this.detialId.id;
+        postD(matchAddAccessApi(), this.addruleForm).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("冠名成功");
+            this.dialogVisible = false;
+            this.detialValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，已存在");
+          }
+        });
       });
     },
     ManuscriptScreening() {

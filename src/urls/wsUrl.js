@@ -66,5 +66,12 @@ export const users_companyLoginPWApi = () => {
 export const matchListMacthApi = () => {
     return "match/listMacth"
 }
-
+// 赛事冠名 
+export const matchAddAccessApi = () => {
+    return "match/addAccess"
+}
+// 参赛作品列表（随机排序,赛事预览效果）
+export const MatchWorksApi = () => {
+    return "Match/works"
+}
 

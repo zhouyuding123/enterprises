@@ -2,6 +2,9 @@
   <div class="divBody">
     <el-container>
       <el-header style="height: 80px">
+        <div class="logoImg">
+          <img src="@/assets/logo.png" alt="" />
+        </div>
         <a href=""><img src="../../assets/imgers/tx.png" alt="" /></a>
         <p class="headerP">{{ useNames }}</p>
         <el-dropdown>
@@ -34,7 +37,9 @@
                 to="/pageHome"
                 style="text-decoration: none"
               >
-                <div>控制台</div></router-link
+                <div>
+                  <img src="@/assets/strollimg/控制.png" alt="" />控制台
+                </div></router-link
               >
             </div>
             <el-submenu
@@ -44,8 +49,10 @@
             >
               <template #title>
                 <div class="spoow">&nbsp;</div>
-                <i :class="item.icon"></i>
-                <div class="textLitle">{{ item.title }}</div>
+                <i :class="item.icon" style="width: 15px; height: 15px"></i>
+                <div class="textLitle">
+                  <span>{{ item.title }}</span>
+                </div>
               </template>
               <el-menu-item-group>
                 <el-menu-item
@@ -53,7 +60,7 @@
                   :key="value.id"
                   :index="'/' + value.name"
                 >
-                  <div style="font-size: 12px">
+                  <div style="font-size: 12px; margin-left: 12px">
                     {{ value.title }}
                   </div></el-menu-item
                 >
@@ -92,7 +99,7 @@ export default {
           this.$message.error("参数错误，或暂无数据");
         } else if (res.code == "-201") {
           this.$message.error("重新登入");
-          this.$router.push("/about")
+          this.$router.push("/about");
         } else if (res.code == "-203") {
           this.$message.error("对不起，你没有此操作权限");
         } else {
@@ -152,7 +159,7 @@ export default {
   text-align: left;
   width: 279px;
   i {
-    padding-left: 50px;
+    padding-left: 10px;
     color: white;
   }
   .el-menu-item-group {
@@ -162,7 +169,13 @@ export default {
 .textLitle {
   display: inline-block;
   position: absolute;
-  padding-left: 20px;
+  padding-left: 30px;
+  span {
+    font-size: 14px;
+    font-family: PingFang SC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+  }
 }
 .indexhomePage {
   width: 100%;
@@ -172,7 +185,14 @@ export default {
   font-size: 14px;
   line-height: 30px;
   div {
-    margin-left: -55px;
+    display: flex;
+    margin-left: 30px;
+    img {
+      width: 16px;
+      height: 16px;
+      margin-top: 6px;
+      margin-right: 20px;
+    }
   }
 }
 .el-main {
@@ -182,5 +202,13 @@ export default {
 .indexhomePageStyle {
   width: 280px;
   border-right: 2px black solid;
+}
+.logoImg {
+  position: absolute;
+  margin-left: 30px;
+  margin-top: 10px;
+  img {
+    width: 150px;
+  }
 }
 </style>

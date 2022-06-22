@@ -332,14 +332,77 @@
         </div>
       </div>
       <div class="ext">
-        <div class="extList" v-for="(item,index) in publicityValueList" :key="index">
-            <div class="pubimg">
-              <img :src="imagesValue+ item.thumb" alt="">
+        <div class="extList" v-for="(item, index) in naberone" :key="index">
+          <div class="RankStyle">第一名</div>
+          <div class="pubimg">
+            <img :src="imagesValue + item.thumb" alt="" />
+          </div>
+          <div class="pubtitle">
+            <div class="pubtitle1">
+              <div>{{ item.title }}</div>
+              <div class="pubtitle1line1">
+                <div class="pubtitle1line1img">
+                  <img :src="imagesValue + item.headimage" alt="" />
+                </div>
+                <div class="pubtitle1line1name">
+                  <span>{{ item.nickname }}</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <div></div>
-            <div></div>
+            <div class="pubtitle2">
+              <div>
+                <span>{{ item.voto_count }}票</span>
+              </div>
             </div>
+          </div>
+        </div>
+        <div class="extList" v-for="(item, index) in nabertwo" :key="index">
+          <div class="RankStyle">第二名</div>
+          <div class="pubimg">
+            <img :src="imagesValue + item.thumb" alt="" />
+          </div>
+          <div class="pubtitle">
+            <div class="pubtitle1">
+              <div>{{ item.title }}</div>
+              <div class="pubtitle1line1">
+                <div class="pubtitle1line1img">
+                  <img :src="imagesValue + item.headimage" alt="" />
+                </div>
+                <div class="pubtitle1line1name">
+                  <span>{{ item.nickname }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="pubtitle2">
+              <div>
+                <span>{{ item.voto_count }}票</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="extList" v-for="(item, index) in naberthree" :key="index">
+          <div class="RankStyle">第三名</div>
+          <div class="pubimg">
+            <img :src="imagesValue + item.thumb" alt="" />
+          </div>
+          <div class="pubtitle">
+            <div class="pubtitle1">
+              <div>{{ item.title }}</div>
+              <div class="pubtitle1line1">
+                <div class="pubtitle1line1img">
+                  <img :src="imagesValue + item.headimage" alt="" />
+                </div>
+                <div class="pubtitle1line1name">
+                  <span>{{ item.nickname }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="pubtitle2">
+              <div>
+                <span>{{ item.voto_count }}票</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div></div>
@@ -449,6 +512,9 @@ export default {
         accept_id: "",
       },
       publicityValueList: [],
+      naberone: [],
+      nabertwo: [],
+      naberthree:[]
     };
   },
   created() {
@@ -461,7 +527,6 @@ export default {
       this.Nowtimes = new Date().valueOf();
       this.votoEndtime =
         Date.parse(this.detialValueList.voto_end_time) + 86399999;
-
       if (
         this.detialValueList.access !== false &&
         this.votoEndtime <= this.Nowtimes
@@ -472,6 +537,21 @@ export default {
     detialValue() {
       this.detialId.id = this.$route.params.id;
       postD(matchShowMatchApi(), this.detialId).then((res) => {
+        this.naberone = this.publicityValueList.slice(
+          0,
+          res.data.prize[0].amount
+        );
+        this.nabertwo = this.publicityValueList.slice(
+          res.data.prize[0].amount,
+          res.data.prize[1].amount + res.data.prize[0].amount
+        );
+        this.naberthree = this.publicityValueList.slice(
+          res.data.prize[1].amount + res.data.prize[0].amount,
+          res.data.prize[2].amount + res.data.prize[0].amount+ res.data.prize[1].amount
+        );
+        console.log(this.naberthree);
+
+
         this.detialValueList = res.data;
         this.imagesValue = imgUrl();
         this.Nowtimes = new Date().valueOf();
@@ -545,8 +625,7 @@ export default {
     },
     // 公示
     publicityValue() {
-      postD(MatchWorksListApi(),this.detialId).then((res) => {
-        console.log( res.list.indexOf());
+      postD(MatchWorksListApi(), this.detialId).then((res) => {
         this.publicityValueList = res.list;
       });
     },

@@ -866,6 +866,11 @@
     background: #FFFFFF;
     border-radius: 10px 10px 10px 10px;
     margin-bottom: 20px;
+    position: relative;
+}
+.RankStyle {
+    position: absolute;
+    right: 0;
 }
 
 .pubimg {
@@ -874,12 +879,56 @@
     background: #FFFFFF;
     border-radius: 10px 10px 10px 10px;
     padding-top: 30px;
-    
+
 
     img {
         margin-left: 100px;
         width: 600px;
         height: 420px;
         border-radius: 10px 10px 10px 10px;
+    }
+}
+
+.pubtitle {
+    display: flex;
+    margin-top: 50px;
+    margin-left: 20px;
+
+    .pubtitle1 {
+        text-align: left;
+
+        .pubtitle1line1 {
+            display: flex;
+
+            .pubtitle1line1img {
+                margin-top: 10px;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                }
+            }
+
+            .pubtitle1line1name {
+                margin-top: 15px;
+                margin-left: 10px;
+
+                span {
+                    font-size: 14px;
+                    font-family: PingFang SC-Regular, PingFang SC;
+                    font-weight: 400;
+                    color: #999999;
+                }
+            }
+        }
+
+    }
+
+    .pubtitle2 {
+        margin-left: auto;
+        display: flex;
+        margin-right: 40px;
+        margin-top: 25px;
     }
 }

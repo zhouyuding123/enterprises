@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MatchWorksApi = exports.matchAddAccessApi = exports.matchListMacthApi = exports.users_companyLoginPWApi = exports.users_companyVerifyUsersApi = exports.users_companyRegisterApi = exports.BusinessDelBusinessApi = exports.designer_worksCommentApi = exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
+exports.MatchWorksListApi = exports.MatchSetVotoApi = exports.MatchVerVotoApi = exports.MatchWorksApi = exports.matchAddAccessApi = exports.matchListMacthApi = exports.users_companyLoginPWApi = exports.users_companyVerifyUsersApi = exports.users_companyRegisterApi = exports.BusinessDelBusinessApi = exports.designer_worksCommentApi = exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
 
 var ForumReleaseApi = function ForumReleaseApi() {
   return "Forum/release";
@@ -132,6 +132,27 @@ exports.matchAddAccessApi = matchAddAccessApi;
 
 var MatchWorksApi = function MatchWorksApi() {
   return "Match/works";
-};
+}; // 验证可否投票
+
 
 exports.MatchWorksApi = MatchWorksApi;
+
+var MatchVerVotoApi = function MatchVerVotoApi() {
+  return "Match/verVoto";
+}; // 作品投票
+
+
+exports.MatchVerVotoApi = MatchVerVotoApi;
+
+var MatchSetVotoApi = function MatchSetVotoApi() {
+  return "Match/setVoto";
+}; // 参赛作品列表（评选期以前只能发布者查看，评选期只有发布者和冠名商查看（可查看投票情况），公示期都可查看（可查看投票情况））
+
+
+exports.MatchSetVotoApi = MatchSetVotoApi;
+
+var MatchWorksListApi = function MatchWorksListApi() {
+  return "Match/worksList";
+};
+
+exports.MatchWorksListApi = MatchWorksListApi;

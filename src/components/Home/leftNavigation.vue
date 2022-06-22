@@ -3,7 +3,7 @@
     <el-container>
       <el-header style="height: 80px">
         <div class="logoImg">
-          <img src="@/assets/logo.png" alt="" />
+          <img src="@/assets/imgers/logo.png" alt="" />
         </div>
         <a href=""><img src="../../assets/imgers/tx.png" alt="" /></a>
         <p class="headerP">{{ useNames }}</p>
@@ -60,7 +60,7 @@
                   :key="value.id"
                   :index="'/' + value.name"
                 >
-                  <div style="font-size: 12px; margin-left: 12px">
+                  <div style="font-size: 12px;">
                     {{ value.title }}
                   </div></el-menu-item
                 >
@@ -163,7 +163,7 @@ export default {
     color: white;
   }
   .el-menu-item-group {
-    padding-left: 50px;
+    padding-left: 27px;
   }
 }
 .textLitle {

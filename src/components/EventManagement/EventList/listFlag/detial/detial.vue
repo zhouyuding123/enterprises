@@ -28,7 +28,7 @@
     </div>
     <div
       class="eventbackground"
-      v-if="detialValueList.access !== false && Judgment == false"
+      v-if="detialValueList.access !== false && Nowtimes < votostarttime"
     >
       <div class="eventline1">
         <div class="eventline1_div1" @click="eveTheme('aa' + 1)">
@@ -204,25 +204,32 @@
         </div>
       </div>
     </div>
-    <div class="" v-if="detialValueList.access !== false && Judgment == true">
+    <div
+      class=""
+      v-if="
+        detialValueList.access !== false &&
+        Nowtimes > votostarttime &&
+        Nowtimes < exhstarttime
+      "
+    >
       <div class="titleline1">
         <div class="countSstyle">
           <div class="numbervalue">
-            <span>{{ workvalue.accept_count }}</span>
+            <span>{{ workvalues.accept_count }}</span>
           </div>
           <div class="numbervalue2"><span>参与选手</span></div>
         </div>
         <div class="vertical"></div>
         <div class="countSstyle">
           <div class="numbervalue">
-            <span>{{ workvalue.voto_count }}</span>
+            <span>{{ workvalues.voto_count }}</span>
           </div>
           <div class="numbervalue2"><span>积累投票</span></div>
         </div>
         <div class="vertical"></div>
         <div class="countSstyle">
           <div class="numbervalue">
-            <span>{{ workvalue.browse }}</span>
+            <span>{{ workvalues.browse }}</span>
           </div>
           <div class="numbervalue2"><span>访问量</span></div>
         </div>
@@ -245,10 +252,97 @@
         </div>
       </div>
       <div class="titleline3">
-        <!-- <div class="titlevoto" v-for="item in ">
-
-        </div> -->
+        <div
+          class="titlevoto"
+          v-for="items in workvalue"
+          :key="items.accept_id"
+        >
+          <div class="titleimg">
+            <span>{{ items.accept_id }}</span>
+            <img :src="imagesValue + items.thumb" alt="" />
+          </div>
+          <div class="titleTitle">
+            <div class="titleValues">
+              <span>{{ items.title }}</span>
+            </div>
+            <div class="hsadimg">
+              <div class="imghead">
+                <el-image
+                  :src="imagesValue + items.headimage"
+                  style="border-radius: 50%"
+                ></el-image>
+              </div>
+              <div class="imgname">
+                <span>{{ items.nickname }}</span>
+              </div>
+            </div>
+            <div
+              class="votonum"
+              id="votonumvo"
+              v-if="items.is_voto === 1"
+              @click="votonums(items.accept_id)"
+            >
+              <span>投TA一票</span>
+            </div>
+            <div class="votonumser" v-if="items.is_voto === 2">
+              <span>您已投票</span>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div v-if="detialValueList.access !== false && Nowtimes > exhstarttime">
+      <div class="titleline1">
+        <div class="countSstyle">
+          <div class="numbervalue">
+            <span>{{ workvalues.accept_count }}</span>
+          </div>
+          <div class="numbervalue2"><span>参与选手</span></div>
+        </div>
+        <div class="vertical"></div>
+        <div class="countSstyle">
+          <div class="numbervalue">
+            <span>{{ workvalues.voto_count }}</span>
+          </div>
+          <div class="numbervalue2"><span>积累投票</span></div>
+        </div>
+        <div class="vertical"></div>
+        <div class="countSstyle">
+          <div class="numbervalue">
+            <span>{{ workvalues.browse }}</span>
+          </div>
+          <div class="numbervalue2"><span>访问量</span></div>
+        </div>
+      </div>
+      <div class="titleline2">
+        <div class="listPadding">
+          <div class="seatch_list">
+            <i
+              class="el-icon-search"
+              style="position: absolute; margin: 12px 0 0 20px; color: #dddddd"
+            ></i>
+            <el-input
+              v-model="seatchs.keyword"
+              placeholder="请输入内容"
+            ></el-input>
+            <div class="buttom_seatch">
+              <span> 搜索 </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ext">
+        <div class="extList" v-for="(item,index) in publicityValueList" :key="index">
+            <div class="pubimg">
+              <img :src="imagesValue+ item.thumb" alt="">
+            </div>
+            <div>
+              <div></div>
+            <div></div>
+            </div>
+        </div>
+      </div>
+      <div></div>
     </div>
     <el-dialog title="申请冠名商资格" :visible.sync="dialogVisible" width="30%">
       <div class="textLine"></div>
@@ -284,12 +378,21 @@ import {
   matchShowMatchApi,
   matchAddAccessApi,
   MatchWorksApi,
+  MatchSetVotoApi,
+  MatchWorksListApi,
 } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 import { imgUrl } from "@/assets/js/modifyStyle";
 export default {
   data() {
     return {
+      // 搜索
+      seatchs: {
+        keyword: "",
+      },
+      seatch: {
+        keyword: "",
+      },
       detialId: {
         id: "",
       },
@@ -300,6 +403,9 @@ export default {
       },
       Nowtimes: "",
       votoEndtime: "",
+      exhendtime: "",
+      exhstarttime: "",
+      votostarttime: "",
       Judgment: true,
       dialogVisible: false,
       addruleForm: {
@@ -338,16 +444,24 @@ export default {
       seatch: {
         keyword: "",
       },
+      workvalues: [],
+      votoid: {
+        accept_id: "",
+      },
+      publicityValueList: [],
     };
   },
   created() {
     this.detialValue();
     this.worksValue();
+    this.publicityValue();
   },
   methods: {
     judgmentb() {
       this.Nowtimes = new Date().valueOf();
-      this.votoEndtime = Date.parse(this.detialValueList.voto_end_time);
+      this.votoEndtime =
+        Date.parse(this.detialValueList.voto_end_time) + 86399999;
+
       if (
         this.detialValueList.access !== false &&
         this.votoEndtime <= this.Nowtimes
@@ -361,15 +475,20 @@ export default {
         this.detialValueList = res.data;
         this.imagesValue = imgUrl();
         this.Nowtimes = new Date().valueOf();
-        this.votoEndtime = Date.parse(this.detialValueList.voto_end_time);
-        if (this.votoEndtime <= this.Nowtimes) {
-          this.Judgment = false;
-        }
+        this.votoEndtime =
+          Date.parse(this.detialValueList.voto_end_time) + 86399999;
+        this.exhendtime =
+          Date.parse(this.detialValueList.exh_end_time) + 86399999;
+        this.exhstarttime =
+          Date.parse(this.detialValueList.exh_start_time) + 86399999;
+        this.votostarttime =
+          Date.parse(this.detialValueList.voto_start_time) + 86399999;
       });
     },
     worksValue() {
       postD(MatchWorksApi(), this.detialId).then((res) => {
-        this.workvalue = res;
+        this.workvalues = res;
+        this.workvalue = res.list.reverse();
       });
     },
     fullTimes(val) {
@@ -404,6 +523,31 @@ export default {
             this.$message.error("注册失败，已存在");
           }
         });
+      });
+    },
+    // 投票
+    votonums(val) {
+      this.votoid.accept_id = val;
+      postD(MatchSetVotoApi(), this.votoid).then((res) => {
+        if (res.code == "200") {
+          this.$message.success("投票成功");
+          this.worksValue();
+        } else if (res.code == "-200") {
+          this.$message.error("投票失败");
+        } else if (res.code == "-201") {
+          this.$message.error("未登陆");
+        } else if (res.code == "-203") {
+          this.$message.error("对不起，你没有此操作权限");
+        } else {
+          this.$message.error("注册失败，已存在");
+        }
+      });
+    },
+    // 公示
+    publicityValue() {
+      postD(MatchWorksListApi(),this.detialId).then((res) => {
+        console.log( res.list.indexOf());
+        this.publicityValueList = res.list;
       });
     },
     ManuscriptScreening() {

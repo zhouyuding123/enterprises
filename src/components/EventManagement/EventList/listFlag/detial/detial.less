@@ -655,19 +655,20 @@
     display: flex;
 
     .countSstyle {
-        padding: 43px 227px;
+        padding: 43px 210px;
 
         .numbervalue {
             font-size: 60px;
             font-family: PingFang SC-Bold, PingFang SC;
             color: #333333;
             line-height: 84px;
-            width: 72px;
             height: 84px;
         }
 
         .numbervalue2 {
+            width: 70px;
             padding-top: 10px;
+            margin-left: 20px;
         }
     }
 }
@@ -680,8 +681,9 @@
     border: 1px solid #DDDDDD;
     margin-top: 50px;
 }
+
 .listPadding {
-    padding: 20px 420px;
+    padding: 20px 385px;
 }
 
 .seatch_list {
@@ -710,15 +712,174 @@
     span {
         font-size: 14px;
         font-family: PingFang SC-Regular, PingFang SC;
- 
+
         color: #333333;
         line-height: 30px;
     }
 }
 
 .titleline3 {
-    background-color: red;
+    display: flex;
+    flex-wrap: wrap;
+
     .titlevoto {
+        width: 360px;
+        height: 500px;
+        background: #FFFFFF;
+        border-radius: 6px 6px 6px 6px;
+        margin-left: 30px;
+        margin-top: 20px;
+
+        .titleimg {
+            width: 360px;
+            height: 360px;
+            background: #FFFFFF;
+            border-radius: 6px 6px 6px 6px;
+            position: relative;
+
+            span {
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                background: #000000;
+                border-radius: 6px 0px 0px 0px;
+                opacity: 0.6;
+                font-size: 16px;
+                font-family: PingFang SC-Bold, PingFang SC;
+                font-weight: bold;
+                color: #FFFFFF;
+                line-height: 40px;
+            }
+
+            img {
+                width: 360px;
+                height: 360px;
+            }
+        }
+
+    }
+}
+
+.titleTitle {
+    margin-top: 10px;
+    margin-left: 20px;
+    text-align: left;
+
+    .titleValues {
+        width: 322px;
+        height: 17px;
+        overflow: hidden;
+
+        text-overflow:ellipsis span {
+            font-size: 14px;
+            font-family: PingFang SC-Bold, PingFang SC;
+            font-weight: bold;
+            color: #333333;
+            line-height: 20px;
+        }
+    }
+
+    .hsadimg {
         display: flex;
+        margin-top: 10px;
+
+        .imghead {
+            width: 42px;
+            height: 42px;
+        }
+
+        .imgname {
+            margin-left: 10px;
+            margin-top: 10px;
+
+            span {
+                font-size: 14px;
+                font-family: PingFang SC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #999999;
+            }
+        }
+    }
+
+    .countmun {
+        margin-top: 27px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+            font-size: 16px;
+            font-family: PingFang SC-Bold, PingFang SC;
+            font-weight: bold;
+            color: #0F0241;
+        }
+    }
+}
+
+.votonum {
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 280px;
+    height: 40px;
+    background: linear-gradient(270deg, #F8781D 0%, #FED339 100%);
+    border-radius: 20px 20px 20px 20px;
+    opacity: 1;
+    text-align: center;
+    cursor: pointer;
+
+    span {
+        font-size: 16px;
+        font-family: PingFang SC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+        line-height: 40px;
+    }
+}
+
+.votonumser {
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 280px;
+    height: 40px;
+    background: #DDDDDD;
+    border-radius: 20px 20px 20px 20px;
+    opacity: 1;
+    text-align: center;
+    cursor: pointer;
+
+    span {
+        font-size: 16px;
+        font-family: PingFang SC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+        line-height: 40px;
+    }
+}
+
+.ext {
+    padding-left: 385px;
+}
+
+.extList {
+    width: 800px;
+    height: 550px;
+    background: #FFFFFF;
+    border-radius: 10px 10px 10px 10px;
+    margin-bottom: 20px;
+}
+
+.pubimg {
+    width: 600px;
+    height: 420px;
+    background: #FFFFFF;
+    border-radius: 10px 10px 10px 10px;
+    padding-top: 30px;
+    
+
+    img {
+        margin-left: 100px;
+        width: 600px;
+        height: 420px;
+        border-radius: 10px 10px 10px 10px;
     }
 }

@@ -74,4 +74,17 @@ export const matchAddAccessApi = () => {
 export const MatchWorksApi = () => {
     return "Match/works"
 }
+// 验证可否投票
+export const MatchVerVotoApi = () => {
+    return "Match/verVoto"
+}
+// 作品投票
+export const MatchSetVotoApi = () => {
+    return "Match/setVoto"
+}
+// 参赛作品列表（评选期以前只能发布者查看，评选期只有发布者和冠名商查看（可查看投票情况），公示期都可查看（可查看投票情况））
+export const MatchWorksListApi = () => {
+    return "Match/worksList"
+}
+
 

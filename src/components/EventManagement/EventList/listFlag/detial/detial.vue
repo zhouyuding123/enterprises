@@ -332,7 +332,7 @@
         </div>
       </div>
       <div class="ext">
-        <div class="extList" v-for="(item, index) in naberone" :key="index">
+        <div class="extList" v-for="item in naberone" :key="item.works_id">
           <div class="RankStyle">第一名</div>
           <div class="pubimg">
             <img :src="imagesValue + item.thumb" alt="" />
@@ -356,7 +356,7 @@
             </div>
           </div>
         </div>
-        <div class="extList" v-for="(item, index) in nabertwo" :key="index">
+        <div class="extList" v-for="item in nabertwo" :key="item.works_id">
           <div class="RankStyle">第二名</div>
           <div class="pubimg">
             <img :src="imagesValue + item.thumb" alt="" />
@@ -380,7 +380,7 @@
             </div>
           </div>
         </div>
-        <div class="extList" v-for="(item, index) in naberthree" :key="index">
+        <div class="extList" v-for="item in naberthree" :key="item.works_id">
           <div class="RankStyle">第三名</div>
           <div class="pubimg">
             <img :src="imagesValue + item.thumb" alt="" />
@@ -514,7 +514,7 @@ export default {
       publicityValueList: [],
       naberone: [],
       nabertwo: [],
-      naberthree:[]
+      naberthree: [],
     };
   },
   created() {
@@ -537,20 +537,22 @@ export default {
     detialValue() {
       this.detialId.id = this.$route.params.id;
       postD(matchShowMatchApi(), this.detialId).then((res) => {
-        this.naberone = this.publicityValueList.slice(
-          0,
-          res.data.prize[0].amount
-        );
+        var i = 0;
+        var s = i+1
+        var l = i+2
+        let Numberone = res.data.prize[i].amount;
+        let Numbertwo = res.data.prize[s].amount;
+        let Numberthree = res.data.prize[l].amount;
+        this.naberone = this.publicityValueList.slice(0, Numberone);
         this.nabertwo = this.publicityValueList.slice(
-          res.data.prize[0].amount,
-          res.data.prize[1].amount + res.data.prize[0].amount
+          Numberone,
+          Numbertwo + Numberone
         );
         this.naberthree = this.publicityValueList.slice(
-          res.data.prize[1].amount + res.data.prize[0].amount,
-          res.data.prize[2].amount + res.data.prize[0].amount+ res.data.prize[1].amount
+          Numbertwo + Numberone,
+          Numberthree + Numberone + Numbertwo
         );
         console.log(this.naberthree);
-
 
         this.detialValueList = res.data;
         this.imagesValue = imgUrl();

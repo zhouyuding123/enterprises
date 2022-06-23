@@ -1,7 +1,8 @@
 <template>
   <div class="detialBody">
     <div class="titleValue"><span>{{ detialValueList.title }}</span></div>
-    <div class="detialImg">
+    <div v-if="Nowtimes<exhendtime">
+      <div class="detialImg">
       <img
         :src="imagesValue + detialValueList.poster"
         alt=""
@@ -26,11 +27,15 @@
         <span>筛选稿件</span>
       </div>
     </div>
+    </div>
+    <div v-if="Nowtimes>exhendtime">
+      赛事已结束
+    </div>
     <div
       class="eventbackground"
       v-if="
         Nowtimes > signstarttime &&
-        Nowtimes < signendtime
+        Nowtimes < signendtime&&Nowtimes < exhendtime
       "
     >
       <div class="eventline1">
@@ -283,7 +288,8 @@
                 <span>{{ items.nickname }}</span>
               </div>
             </div>
-            <div
+            <div v-if="detialValueList.access == true">
+              <div
               class="votonum"
               id="votonumvo"
               v-if="items.is_voto === 1"
@@ -293,6 +299,12 @@
             </div>
             <div class="votonumser" v-if="items.is_voto === 2">
               <span>您已投票</span>
+            </div>
+            </div>
+            <div >
+            <div class="votomuns">
+              <span>100票</span>
+            </div>
             </div>
           </div>
         </div>
@@ -315,7 +327,7 @@
         </div>
       </div>
     </div>
-    <div v-if="detialValueList.access !== false && Nowtimes > exhstarttime">
+    <div v-if="Nowtimes > exhstarttime&&Nowtimes < exhendtime">
       <div class="titleline1">
         <div class="countSstyle">
           <div class="numbervalue">
@@ -618,8 +630,9 @@ export default {
     },
     worksValue() {
       postD(MatchWorksApi(), this.detialId).then((res) => {
+        console.log(res);
         this.workvalues = res;
-        this.workvalue = res.list.reverse();
+        this.workvalue = res.list;
         this.detialId.totalResult = res.accept_count;
       });
     },
@@ -628,7 +641,7 @@ export default {
       this.detialId.offset = currentPage;
       this.detialId.limit = pageSize;
       postD(MatchWorksApi(), this.detialId).then((res) => {
-        this.workvalue = res.list.reverse();;
+        this.workvalue = res.list
         this.detialId.totalResult = res.accept_count;
       });
     },

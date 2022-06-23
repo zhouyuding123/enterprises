@@ -319,6 +319,14 @@ const routes = [
             },
           },
           {
+            path: "/matchs/detialtwo:id",
+            name: "match/detialtwo",
+            component: () => import("../components/EventManagement/EventList/listFlag/detial/detialtwo.vue"),
+            meta: {
+              title: "我的赛事详情"
+            },
+          },
+          {
             path: "/match/release",
             name: "match/release",
             component: () => import("../components/EventManagement/EventList/listFlag/add/addMatch.vue"),
@@ -341,7 +349,7 @@ const routes = [
             meta: {
               title: "稿件详情"
             },
-          },     
+          },
         ]
       },
       {
@@ -457,7 +465,7 @@ const routes = [
         meta: {
           title: "官方赛事"
         },
-        children:[
+        children: [
           {
             path: "/Platfrom",
             redirect: "/match/platform",
@@ -479,7 +487,7 @@ const routes = [
         meta: {
           title: "企业赛事"
         },
-        children:[
+        children: [
           {
             path: "/enterprise",
             redirect: "/match/enterprise",
@@ -491,7 +499,7 @@ const routes = [
             meta: {
               title: "企业赛事"
             },
-          }  
+          }
         ]
       }
     ]

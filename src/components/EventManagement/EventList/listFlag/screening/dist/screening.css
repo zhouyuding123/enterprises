@@ -1,0 +1,94 @@
+.workBody ul li {
+  float: left;
+  margin-left: 20px;
+  margin-top: 30px;
+}
+.workBody ul li .thumbStyle {
+  width: 300px;
+  height: 170px;
+  background: #E8E8E8;
+  border-radius: 6px 6px 0px 0px;
+}
+.workBody ul li .titleser {
+  text-align: left;
+  padding: 3px 11px;
+  width: 100%;
+  overflow: hidden;
+  font-size: 14px;
+  height: 25px;
+  line-height: 20px;
+  color: #06121E;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+}
+.workBody ul li .uservalue {
+  display: flex;
+  padding: 5px 11px;
+}
+.workBody ul li .uservalue .headimageStyle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.workBody ul li .uservalue span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 0px;
+  margin: 10px;
+}
+.xxValue {
+  width: 300px;
+  height: 230px;
+  background: #FFFFFF;
+  border-radius: 6px 6px 6px 6px;
+}
+.votosome {
+  display: flex;
+}
+.votosome .appropriate {
+  margin: 10px 15px;
+  width: 120px;
+  height: 40px;
+  background: #FFFFFF;
+  border-radius: 4px 4px 4px 4px;
+  opacity: 1;
+  border: 1px solid #DFDFDF;
+}
+.votosome .appropriate span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 40px;
+}
+.appropriate1 {
+  margin: 10px 15px;
+  width: 120px;
+  height: 40px;
+  background: #00B567;
+  border-radius: 4px 4px 4px 4px;
+  opacity: 1;
+  border: 1px solid #DFDFDF;
+}
+.appropriate1 img {
+  margin-top: 10px;
+}
+.appropriate2 {
+  margin: 10px 15px;
+  width: 120px;
+  height: 40px;
+  background: #FF0000;
+  border-radius: 4px 4px 4px 4px;
+  opacity: 1;
+  border: 1px solid #DFDFDF;
+}
+.appropriate2 img {
+  margin-top: 10px;
+}
+.pager1 {
+  position: absolute;
+  bottom: 0;
+  padding: 20px 600px;
+}

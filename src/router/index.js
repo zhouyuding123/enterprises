@@ -341,15 +341,7 @@ const routes = [
             meta: {
               title: "稿件详情"
             },
-          },
-          {
-            path: "/match/platform",
-            name: "platform",
-            component: () => import("../components/EventManagement/PlatformEvents/PlatformEvents.vue"),
-            meta: {
-              title: "平台赛事"
-            },
-          }          
+          },     
         ]
       },
       {
@@ -456,6 +448,50 @@ const routes = [
               title: "付费列表"
             },
           },
+        ]
+      },
+      {
+        path: "/Platfrom",
+        name: "Platfrom",
+        component: () => import("../components/designer/designer.vue"),
+        meta: {
+          title: "官方赛事"
+        },
+        children:[
+          {
+            path: "/Platfrom",
+            redirect: "/match/platform",
+          },
+          {
+            path: "/match/platform",
+            name: "platform",
+            component: () => import("../components/Platfrom/PlatformEvents/PlatformEvents.vue"),
+            meta: {
+              title: "平台赛事"
+            },
+          },
+        ],
+      },
+      {
+        path: "/enterprise",
+        name: "enterprise",
+        component: () => import("../components/enterprise/listenterprise.vue"),
+        meta: {
+          title: "企业赛事"
+        },
+        children:[
+          {
+            path: "/enterprise",
+            redirect: "/match/enterprise",
+          },
+          {
+            path: "/match/enterprise",
+            name: "enterprise",
+            component: () => import("../components/enterprise/enterpriseEvents/enterpriseEvents.vue"),
+            meta: {
+              title: "企业赛事"
+            },
+          }  
         ]
       }
     ]

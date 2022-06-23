@@ -86,5 +86,9 @@ export const MatchSetVotoApi = () => {
 export const MatchWorksListApi = () => {
     return "Match/worksList"
 }
+// 作品筛选
+export const MatchScreenApi = () => {
+    return "Match/screen"
+}
 
 

@@ -1,5 +1,6 @@
 .detialBody {
   padding: 20px;
+  text-align: center;
 }
 .detialBody .detialImg {
   position: relative;
@@ -551,6 +552,9 @@
 .titleValue {
   font-size: 28px;
   padding-bottom: 10px;
+  height: 30px;
+  line-height: 30px;
+  overflow: hidden;
 }
 .titleline1 {
   width: 100%;
@@ -739,6 +743,11 @@
   background: #FFFFFF;
   border-radius: 10px 10px 10px 10px;
   margin-bottom: 20px;
+  position: relative;
+}
+.RankStyle {
+  position: absolute;
+  right: 0;
 }
 .pubimg {
   width: 600px;
@@ -752,4 +761,39 @@
   width: 600px;
   height: 420px;
   border-radius: 10px 10px 10px 10px;
+}
+.pubtitle {
+  display: flex;
+  margin-top: 50px;
+  margin-left: 20px;
+}
+.pubtitle .pubtitle1 {
+  text-align: left;
+}
+.pubtitle .pubtitle1 .pubtitle1line1 {
+  display: flex;
+}
+.pubtitle .pubtitle1 .pubtitle1line1 .pubtitle1line1img {
+  margin-top: 10px;
+}
+.pubtitle .pubtitle1 .pubtitle1line1 .pubtitle1line1img img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.pubtitle .pubtitle1 .pubtitle1line1 .pubtitle1line1name {
+  margin-top: 15px;
+  margin-left: 10px;
+}
+.pubtitle .pubtitle1 .pubtitle1line1 .pubtitle1line1name span {
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
+.pubtitle .pubtitle2 {
+  margin-left: auto;
+  display: flex;
+  margin-right: 40px;
+  margin-top: 25px;
 }

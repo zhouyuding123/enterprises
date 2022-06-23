@@ -1,6 +1,6 @@
 <template>
   <div class="detialBody">
-    <div class="titleValue">{{ detialValueList.title }}</div>
+    <div class="titleValue"><span>{{ detialValueList.title }}</span></div>
     <div class="detialImg">
       <img
         :src="imagesValue + detialValueList.poster"
@@ -28,7 +28,10 @@
     </div>
     <div
       class="eventbackground"
-      v-if="detialValueList.access !== false && Nowtimes < votostarttime"
+      v-if="
+        Nowtimes > signstarttime &&
+        Nowtimes < signendtime
+      "
     >
       <div class="eventline1">
         <div class="eventline1_div1" @click="eveTheme('aa' + 1)">
@@ -203,6 +206,11 @@
           <span>{{ detialValueList.nickname }}</span>
         </div>
       </div>
+      <div class="Sponsor" v-if="detialValueList.access !==false">
+        <div class="SponsorDiv">
+          <span>{{ detialValueList.access.nickname }}</span>
+        </div>
+      </div>
     </div>
     <div
       class=""
@@ -332,7 +340,7 @@
         </div>
       </div>
       <div class="ext">
-        <div class="extList" v-for="item in naberone" :key="item.works_id">
+        <div class="extList" v-for="item in pricelist" :key="item.works_id">
           <div class="RankStyle">第一名</div>
           <div class="pubimg">
             <img :src="imagesValue + item.thumb" alt="" />
@@ -356,7 +364,7 @@
             </div>
           </div>
         </div>
-        <div class="extList" v-for="item in nabertwo" :key="item.works_id">
+        <!-- <div class="extList" v-for="item in nabertwo" :key="item.works_id">
           <div class="RankStyle">第二名</div>
           <div class="pubimg">
             <img :src="imagesValue + item.thumb" alt="" />
@@ -403,7 +411,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div></div>
     </div>
@@ -465,6 +473,8 @@ export default {
         id: "",
       },
       Nowtimes: "",
+      signstarttime: "",
+      signendtime: "",
       votoEndtime: "",
       exhendtime: "",
       exhstarttime: "",
@@ -515,7 +525,19 @@ export default {
       naberone: [],
       nabertwo: [],
       naberthree: [],
+      prices: [],
+      pricelist: [],
     };
+  },
+  watch: {
+    prices(newval) {
+      var mapva = [];
+      newval.forEach((item, i) => {
+        mapva.push(...this.publicityValueList.splice(0, item.amount));
+      });
+      console.log(mapva);
+      this.pricelist = mapva;
+    },
   },
   created() {
     this.detialValue();
@@ -537,26 +559,33 @@ export default {
     detialValue() {
       this.detialId.id = this.$route.params.id;
       postD(matchShowMatchApi(), this.detialId).then((res) => {
-        var i = 0;
-        var s = i+1
-        var l = i+2
-        let Numberone = res.data.prize[i].amount;
-        let Numbertwo = res.data.prize[s].amount;
-        let Numberthree = res.data.prize[l].amount;
-        this.naberone = this.publicityValueList.slice(0, Numberone);
-        this.nabertwo = this.publicityValueList.slice(
-          Numberone,
-          Numbertwo + Numberone
-        );
-        this.naberthree = this.publicityValueList.slice(
-          Numbertwo + Numberone,
-          Numberthree + Numberone + Numbertwo
-        );
-        console.log(this.naberthree);
+        this.prices = res.data.prize;
+        // var i = 0;
+        // var s = i+1
+        // var l = i+2
+        // var f = i+3
+        // let Numberone = res.data.prize[i].amount;
+        // let Numbertwo = res.data.prize[s].amount;
+        // let Numberthree = res.data.prize[l].amount;
+        // let Numberthree = res.data.prize[l].amount;
+        // this.naberone = this.publicityValueList.slice(0, Numberone);
+        // this.nabertwo = this.publicityValueList.slice(
+        //   Numberone,
+        //   Numbertwo + Numberone
+        // );
+        // this.naberthree = this.publicityValueList.slice(
+        //   Numbertwo + Numberone,
+        //   Numberthree + Numberone + Numbertwo
+        // );
+        // console.log(this.naberthree);
 
         this.detialValueList = res.data;
         this.imagesValue = imgUrl();
         this.Nowtimes = new Date().valueOf();
+        this.signendtime =
+          Date.parse(this.detialValueList.sign_end_time) + 86399999;
+        this.signstarttime =
+          Date.parse(this.detialValueList.sign_start_time) + 86399999;
         this.votoEndtime =
           Date.parse(this.detialValueList.voto_end_time) + 86399999;
         this.exhendtime =

@@ -445,17 +445,6 @@ var routes = [{
       meta: {
         title: "稿件详情"
       }
-    }, {
-      path: "/match/platform",
-      name: "platform",
-      component: function component() {
-        return Promise.resolve().then(function () {
-          return _interopRequireWildcard(require("../components/EventManagement/PlatformEvents/PlatformEvents.vue"));
-        });
-      },
-      meta: {
-        title: "平台赛事"
-      }
     }]
   }, {
     path: "/brand",
@@ -588,6 +577,58 @@ var routes = [{
       },
       meta: {
         title: "付费列表"
+      }
+    }]
+  }, {
+    path: "/Platfrom",
+    name: "Platfrom",
+    component: function component() {
+      return Promise.resolve().then(function () {
+        return _interopRequireWildcard(require("../components/designer/designer.vue"));
+      });
+    },
+    meta: {
+      title: "官方赛事"
+    },
+    children: [{
+      path: "/Platfrom",
+      redirect: "/match/platform"
+    }, {
+      path: "/match/platform",
+      name: "platform",
+      component: function component() {
+        return Promise.resolve().then(function () {
+          return _interopRequireWildcard(require("../components/Platfrom/PlatformEvents/PlatformEvents.vue"));
+        });
+      },
+      meta: {
+        title: "平台赛事"
+      }
+    }]
+  }, {
+    path: "/enterprise",
+    name: "enterprise",
+    component: function component() {
+      return Promise.resolve().then(function () {
+        return _interopRequireWildcard(require("../components/enterprise/listenterprise.vue"));
+      });
+    },
+    meta: {
+      title: "企业赛事"
+    },
+    children: [{
+      path: "/enterprise",
+      redirect: "/match/enterprise"
+    }, {
+      path: "/match/enterprise",
+      name: "enterprise",
+      component: function component() {
+        return Promise.resolve().then(function () {
+          return _interopRequireWildcard(require("../components/enterprise/enterpriseEvents/enterpriseEvents.vue"));
+        });
+      },
+      meta: {
+        title: "企业赛事"
       }
     }]
   }]

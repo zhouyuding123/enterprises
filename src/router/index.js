@@ -461,7 +461,7 @@ const routes = [
       {
         path: "/Platfrom",
         name: "Platfrom",
-        component: () => import("../components/designer/designer.vue"),
+        component: () => import("../components/Platfrom/listPlatfrom.vue"),
         meta: {
           title: "官方赛事"
         },
@@ -476,6 +476,14 @@ const routes = [
             component: () => import("../components/Platfrom/PlatformEvents/PlatformEvents.vue"),
             meta: {
               title: "平台赛事"
+            },
+          },
+          {
+            path: "/match/oder/:accept_id/:match_id",
+            name: "oder",
+            component: () => import("../components/Platfrom/PlatformEvents/oder/addOder.vue"),
+            meta: {
+              title: "发起预购"
             },
           },
         ],

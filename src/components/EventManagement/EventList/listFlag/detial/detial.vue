@@ -374,8 +374,11 @@
               </div>
             </div>
             <div class="pubtitle2">
-              <div>
+              <div class="piao">
                 <span>{{ item.voto_count }}票</span>
+              </div>
+              <div class="order" @click="addOrder(item)">
+                <span>发起预购</span>
               </div>
             </div>
           </div>
@@ -694,6 +697,18 @@ export default {
       this.ScreeningId.id = this.$route.params.id;
       this.$router.push("/Match/works" + this.ScreeningId.id);
     },
+    addOrder(val) {
+      var ordermatch_id = this.$route.params.id;
+      var orderaccept_id = val.accept_id
+      this.$router.push({
+        name:"oder",
+        params: {
+          match_id:ordermatch_id,
+          accept_id:orderaccept_id
+        }
+      })
+      console.log(val);
+    }
   },
 };
 </script>

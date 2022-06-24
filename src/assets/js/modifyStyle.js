@@ -21,3 +21,30 @@ export function beforeAvatar(file) {
   }
   return isJPG && isLt2M;
 }
+
+export function matchType(name){
+  //后缀获取
+  let suffic = '';
+  //获取类型结果
+  let result = '';
+  try {
+    let fileArr = name.split('.');
+    suffic = fileArr[fileArr.length - 1]
+    // console.log('suffic',suffic);
+  } catch (error) {
+      suffic = ''
+  }
+  //图片格式
+  var imgList = ['png','jpg','jpeg','bmp','gif'];
+  //进行图片匹配
+  result = imgList.some(item=>{
+    return item === suffic
+  })
+  // console.log('结果',result);
+  if(result){
+    result = 'image';
+    // console.log('结果',result);
+    return result
+  }
+}
+

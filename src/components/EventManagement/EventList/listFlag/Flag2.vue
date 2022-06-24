@@ -42,7 +42,7 @@
                   class="thumbStyle"
                 />
               </div>
-              <div class="written">
+              <div class="written" @click="eveDetial(scoped.row.id)">
                 <div class="writtenLine1">
                   <div class="listTitle">
                     <span>{{ scoped.row.title }}</span>
@@ -218,8 +218,8 @@ export default {
       this.ScreeningId.id = data.id
       this.$router.push("/Match/works" + this.ScreeningId.id)
     }, 
-    eveDetial(val) {
-      this.$router.push("/match/detial" + val)
+     eveDetial(val) {
+      this.$router.push("/matchs/detialtwo" + val)
     }
   },
 };

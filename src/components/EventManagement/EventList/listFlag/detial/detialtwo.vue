@@ -266,7 +266,7 @@
       <div class="titleline3">
         <div
           class="titlevoto"
-          v-for="items in workvalue"
+          v-for="items in publicityValueList"
           :key="items.accept_id"
         >
           <div class="titleimg">
@@ -303,7 +303,7 @@
             </div>
             <div >
             <div class="votomuns">
-              <span>100票</span>
+              <span>{{items.voto_count}}票</span>
             </div>
             </div>
           </div>

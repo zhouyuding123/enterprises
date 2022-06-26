@@ -4,7 +4,7 @@
       :model="ruleForm"
       :rules="ruleFormRules"
       ref="ruleFormRef"
-      label-width="110px"
+      label-width="140px"
       hide-required-asterisk
     >
       <div class="line1">
@@ -14,7 +14,7 @@
             placeholder="标题示例：夏季新款 韩版碎花连衣裙"
           ></el-input>
         </el-form-item>
-        <el-form-item label="商品图片" prop="thumb">
+        <el-form-item label="商品主图" prop="thumb">
           <span>(最多9张图)</span>
           <el-upload
             action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
@@ -106,39 +106,124 @@
               <div class="colort">{{ item.color }}</div>
               <el-upload
                 action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
-                list-type="picture-card"
                 :data="{ fileType: fileType }"
-                :limit="1"
-                :on-success="handleAvatarSuccesser"
-                :before-upload="beforeAvatarUpload"
+                :on-success="handleAvatarSuccessers"
+                :before-upload="beforeAvatarUploads"
+                :show-file-list="false"
+                class="avatar-uploader"
               >
-                <i slot="default" class="el-icon-plus"></i>
-                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                <img v-if="imageUrls" :src="imageUrls" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </div>
           </div>
         </div>
       </div>
+      <div class="line3">
+        <el-form-item label="预购数量" prop="title">
+          <el-input v-model="config.max_count"></el-input>
+        </el-form-item>
+        <el-form-item label="最低预购数量" prop="title">
+          <el-input v-model="config.min_count"></el-input>
+        </el-form-item>
+        <div class="djbl">
+          <el-form-item label="定金比例" prop="title">
+            <el-input v-model="config.deposit_prop"></el-input>
+            <div class="bling">%</div>
+          </el-form-item>
+        </div>
+        <el-form-item label="交货日期" prop="title">
+          <el-input v-model="config.delivery_time"></el-input>
+        </el-form-item>
+        <el-form-item label="品牌选择" prop="title">
+          <el-select v-model="ruleForm.brand_id" placeholder="请选择">
+            <el-option
+              v-for="item in brand_idoptions"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="店铺中分类" prop="title">
+          <el-select v-model="ruleForm.custom_type" placeholder="请选择">
+            <el-option
+              v-for="item in custom_typeoptions"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="视频介绍" prop="title">
+          <ele-upload-video
+            :data="{
+              token: this.token,
+              fileType: this.fileTypes,
+            }"
+            :file-size="20"
+            :response-fn="handleResponse"
+            @error="handleUploadError"
+            style="margin: 50px"
+            action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+            v-model="video"
+          ></ele-upload-video>
+        </el-form-item>
+        <el-form-item label="新品推荐" prop="title">
+          <div class="is_new">
+            <el-select v-model="ruleForm.is_new" placeholder="请选择">
+            <el-option
+              v-for="item in is_newoptions"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          </div>
+        </el-form-item>
+      </div>
+      <div class="line4">
+        <my-editor @fwbHtml="change" />
+      </div>
     </el-form>
+    <div class="addygs">
+      <div class="addyg" @click="ygAdd"><span>发起预购</span></div>
+    </div>
   </div>
 </template>
 
 <script>
+import MyEditor from "./MyEditor.vue";
+import EleUploadVideo from "vue-ele-upload-video";
 import { imgUrl, beforeAvatar } from "@/assets/js/modifyStyle.js";
+import { brandGetListApi } from "@/urls/wsUrl.js";
+import { postD } from "@/api";
 const colors = ["黑色", "白色", "红色", "黄色", "蓝色", "绿色"];
 const sizes = ["XXS", "XS ", "S", "M", "L", "XL "];
 export default {
+  components: {
+    EleUploadVideo,
+    MyEditor
+  },
   data() {
     return {
       ruleForm: {
         title: "",
         thumb: "",
-        spec: [{ color: "" }, { spec: "" }, { price: "" }],
+        spec: "",
+        config: "",
+        brand_id: "",
+        is_new: "",
+        content:""
       },
       ruleFormRules: {},
       fileType: "images",
       fileTypes: "images",
       imageUrl: "",
+      imageUrls: "",
       thumbs: [],
       imageValue: "",
       //   颜色
@@ -154,16 +239,52 @@ export default {
       //   添加
       spec: [],
       speccolior: [],
+      // 商品配置
+      config: {
+        max_count: "",
+        min_count: "",
+        deposit_prop: "",
+        delivery_time: "",
+      },
+      // 品牌选择
+      brand_idoptions: [],
+      // 店铺分类
+      custom_typeoptions: [],
+      // 视频
+      token: "",
+      video: "",
+      fileTypes: "moves",
+      // 新品
+      is_newoptions: [
+        {
+          id: "0",
+          title: "非新品推荐 ",
+        },
+        {
+          id: "1",
+          title: "新品推荐 ",
+        },
+      ],
     };
   },
   created() {
     this.imageValue = imgUrl();
+    this.brandList();
+    this.custom_typeList();
+    this.token = localStorage.getItem("token", this.token);
   },
   methods: {
     handleAvatarSuccesser(res, file) {
       this.thumbs.push(res.url);
     },
+    handleAvatarSuccessers(res, file) {
+      this.imageUrls = URL.createObjectURL(file.raw);
+      this.thumbs.push(res.url);
+    },
     beforeAvatarUpload(file) {
+      return beforeAvatar(file);
+    },
+    beforeAvatarUploads(file) {
       return beforeAvatar(file);
     },
     // 颜色
@@ -220,6 +341,42 @@ export default {
     },
     delspec(index) {
       this.spec.splice(index, 1);
+    },
+    // 品牌选择
+    brandList() {
+      postD(brandGetListApi()).then((res) => {
+        this.brand_idoptions = res.list.filter((i) => i.status == "1");
+      });
+    },
+    // 店铺分类
+    custom_typeList() {
+      postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
+        (res) => {
+          this.custom_typeoptions = res.list;
+        }
+      );
+    },
+    // 视频介绍
+    handleUploadError(error) {
+      this.$notify.error({
+        title: "上传提示",
+        message: "测试环境无法上传文件",
+      });
+      console.log("error", error);
+    },
+    handleResponse(res, file) {
+      this.thumbs = res.url;
+      return URL.createObjectURL(file.raw);
+    },
+    // 富文本
+    async change(val) {
+      this.ruleForm.content = val;
+    },
+    ygAdd() {
+      this.ruleForm.thumb = this.thumbs;
+      this.ruleForm.spec = this.spec;
+      this.ruleForm.config = this.config;
+      console.log(this.ruleForm);
     },
   },
 };

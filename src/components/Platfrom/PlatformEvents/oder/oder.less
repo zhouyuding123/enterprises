@@ -35,6 +35,30 @@
     }
 }
 
+.line3 {
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+
+    .el-input {
+        text-align: left;
+
+        /deep/.el-input__inner {
+            width: 610px;
+            border: none;
+            background: #f5f5f5;
+        }
+    }
+
+}
+.line4 {
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+}
+
+
+
 .el-checkbox-group {
     display: flex;
 }
@@ -169,5 +193,60 @@
             color: #333333;
             line-height: 19px;
         }
+    }
+}
+
+.addygs {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.addyg {
+    cursor: pointer;
+    width: 300px;
+    height: 40px;
+    background: linear-gradient(180deg, #0C032E 0%, #5C5673 100%);
+    border-radius: 20px 20px 20px 20px;
+
+    span {
+        font-size: 14px;
+        font-family: PingFang SC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
+        line-height: 40px;
+    }
+}
+
+.djbl {
+    .el-input {
+        /deep/.el-input__inner {
+            width: 200px !important;
+            border: none;
+            background: #f5f5f5;
+        }
+    }
+
+}
+
+.bling {
+    position: absolute;
+    top: 1px;
+    left: 220px;
+}
+
+/deep/.el-form-item__content {
+    text-align: left;
+
+    .el-input__inner {
+        width: 610px;
+        height: 40px;
+        background: #F5F5F5;
+        border-radius: 6px 6px 6px 6px;
+    }
+}
+.is_new {
+    /deep/.el-input__inner {
+        width: 200px;
     }
 }

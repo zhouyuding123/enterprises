@@ -31,7 +31,8 @@
       </div>
       <div class="line2">
         <el-form-item label="颜色" prop="color" style="padding-top: 20px">
-          <el-checkbox-group v-model="color">
+          <div class="colors">
+            <el-checkbox-group v-model="color">
             <el-checkbox
               v-for="(item, index) in colorList"
               :key="index"
@@ -39,7 +40,6 @@
               @change="colorss(item)"
               border
               >{{ item }}
-              <div class="dels" @click="delitem(index)">x</div>
             </el-checkbox>
             <el-input
               placeholder="请输入"
@@ -49,9 +49,11 @@
             >
             </el-input>
           </el-checkbox-group>
+          </div>
         </el-form-item>
         <el-form-item label="尺寸" prop="size">
-          <el-checkbox-group v-model="size">
+          <div class="sizes">
+            <el-checkbox-group v-model="size">
             <el-checkbox
               v-for="(item, index) in sizeList"
               :key="index"
@@ -59,8 +61,9 @@
               @change="sizess(item)"
               border
             >
-              {{ item }}
-              <div class="dels" @click="delsize(index)">x</div>
+              <div>
+                {{ item }}
+              </div>
             </el-checkbox>
             <el-input
               placeholder="请输入"
@@ -70,6 +73,7 @@
             >
             </el-input>
           </el-checkbox-group>
+          </div>
         </el-form-item>
         <div class="addValues">
           <div @click="addInputHandle">
@@ -106,13 +110,14 @@
               <div class="colort">{{ item.color }}</div>
               <el-upload
                 action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
-                :data="{ fileType: fileType }"
+                :data="{ fileType: fileType}"
                 :on-success="handleAvatarSuccessers"
                 :before-upload="beforeAvatarUploads"
+             
                 :show-file-list="false"
                 class="avatar-uploader"
               >
-                <img v-if="imageUrls" :src="imageUrls" class="avatar" />
+                <img v-if="imageUrls != ''" :src="imageValue+imageUrls[index]" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </div>
@@ -174,14 +179,14 @@
         <el-form-item label="新品推荐" prop="title">
           <div class="is_new">
             <el-select v-model="ruleForm.is_new" placeholder="请选择">
-            <el-option
-              v-for="item in is_newoptions"
-              :key="item.id"
-              :label="item.title"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
+              <el-option
+                v-for="item in is_newoptions"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
           </div>
         </el-form-item>
       </div>
@@ -199,32 +204,43 @@
 import MyEditor from "./MyEditor.vue";
 import EleUploadVideo from "vue-ele-upload-video";
 import { imgUrl, beforeAvatar } from "@/assets/js/modifyStyle.js";
-import { brandGetListApi } from "@/urls/wsUrl.js";
+import { brandGetListApi,match_productAddProductApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 const colors = ["黑色", "白色", "红色", "黄色", "蓝色", "绿色"];
 const sizes = ["XXS", "XS ", "S", "M", "L", "XL "];
 export default {
   components: {
     EleUploadVideo,
-    MyEditor
+    MyEditor,
   },
   data() {
     return {
       ruleForm: {
+        match_id:"",
+        accept_id:"",
         title: "",
         thumb: "",
         spec: "",
         config: "",
         brand_id: "",
         is_new: "",
-        content:""
+        content: "",
       },
-      ruleFormRules: {},
+      ruleFormRules: {
+        title: [
+          {
+            required: true,
+            message: "请输入产品标题",
+            tirgger: "blur",
+          },
+        ]
+      },
       fileType: "images",
       fileTypes: "images",
       imageUrl: "",
-      imageUrls: "",
+      imageUrls: [],
       thumbs: [],
+      thumbs2: [],
       imageValue: "",
       //   颜色
       color: [],
@@ -265,6 +281,9 @@ export default {
           title: "新品推荐 ",
         },
       ],
+      // 视频富文本
+      content1: "",
+      content2: "",
     };
   },
   created() {
@@ -277,9 +296,9 @@ export default {
     handleAvatarSuccesser(res, file) {
       this.thumbs.push(res.url);
     },
-    handleAvatarSuccessers(res, file) {
-      this.imageUrls = URL.createObjectURL(file.raw);
-      this.thumbs.push(res.url);
+    handleAvatarSuccessers(res) {
+      this.imageUrls.push(res.url)
+      this.thumbs2.push(res.url)
     },
     beforeAvatarUpload(file) {
       return beforeAvatar(file);
@@ -321,9 +340,9 @@ export default {
       for (let i = 0; i < this.specColor.length; i++) {
         for (let j = 0; j < this.specSize.length; j++) {
           this.spec.push({
-            color: this.specColor[i],
-            spec: this.specSize[j],
-            price: "",
+            "color": this.specColor[i],
+            "spec": this.specSize[j],
+            "price": "",
           });
         }
       }
@@ -365,18 +384,32 @@ export default {
       console.log("error", error);
     },
     handleResponse(res, file) {
-      this.thumbs = res.url;
+      this.content1 = res.url;
       return URL.createObjectURL(file.raw);
     },
     // 富文本
     async change(val) {
-      this.ruleForm.content = val;
+      this.content2 = val;
     },
     ygAdd() {
-      this.ruleForm.thumb = this.thumbs;
-      this.ruleForm.spec = this.spec;
-      this.ruleForm.config = this.config;
-      console.log(this.ruleForm);
+      this.ruleForm.thumb = this.thumbs+this.thumbs2;
+      this.ruleForm.spec = JSON.stringify(this.spec)
+      this.ruleForm.config = JSON.stringify(this.config) ;
+      this.ruleForm.content = this.content1+ this.content2;
+      this.ruleForm.accept_id = this.$route.params.accept_id
+      this.ruleForm.match_id = this.$route.params.match_id
+      this.$refs.ruleFormRef.validate((v) => {
+        if (!v) return;
+        postD(match_productAddProductApi(),this.ruleForm).then(res=> {
+          if (res.code == "200") {
+            this.$message.success("预购商品成功");
+            this.$router.push("/match/detial" + this.ruleForm.match_id)
+            this.commodityValue();
+          } else {
+            this.$message.error("预购商品失败");
+          }
+        })
+      })
     },
   },
 };

@@ -441,6 +441,14 @@ const routes = [
             },
           },
           {
+            path:"/designer/myCenter/:name",
+            name:"designer/myCenter",
+            component:()=> import("../components/designer/free/freeDetil/myDetil/myDetil.vue"),
+            meta: {
+              title: "设计师信息"
+            },
+          },
+          {
             path: "/designer_works/getListMF/freeDetil:id",
             name: "freeDetil",
             component: () => import("../components/designer/free/freeDetil/freeDetil.vue"),
@@ -502,7 +510,7 @@ const routes = [
           },
           {
             path: "/match/enterprise",
-            name: "enterprise",
+            name: "match/enterprise",
             component: () => import("../components/enterprise/enterpriseEvents/enterpriseEvents.vue"),
             meta: {
               title: "企业赛事"

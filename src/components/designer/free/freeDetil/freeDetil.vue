@@ -2,7 +2,7 @@
   <div>
     <div class="worksBody">
       <div class="worksDiv">
-        <div class="headimagephoto">
+        <div class="headimagephoto" @click="goMyDetil(WorksShowData.username)">
           <el-image
             :src="imagesValue + WorksShowData.headimage"
             alt=""
@@ -10,7 +10,7 @@
           />
         </div>
         <div class="nicknameValue">
-          <div class="name_nickname">
+          <div class="name_nickname" @click="goMyDetil(WorksShowData.username)">
             <span class="nickname_span">{{ WorksShowData.nickname }}</span>
             <div class="top">
               <img src="@/assets/imgers/设计师等级.png" alt="" />
@@ -334,6 +334,9 @@ export default {
           this.$message.error("注册失败，账号已存在");
         }
       });
+    },
+    goMyDetil(val) {
+      this.$router.push("/designer/myCenter/"+val)
     },
   },
 };

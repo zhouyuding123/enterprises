@@ -94,5 +94,15 @@ export const MatchScreenApi = () => {
 export const brandGetListApi = () => {
     return "brand/getList"
 }
+// 添加预售商品
+export const match_productAddProductApi = () => {
+    return "match_product/addProduct"
+}
+
+// 设计师基本信息
+export const designerMyCenterApi = () => {
+    return "designer/myCenter"
+}
+
 
 

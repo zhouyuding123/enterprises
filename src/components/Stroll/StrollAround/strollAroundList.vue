@@ -285,8 +285,6 @@ import { postD } from "@/api";
 import {
   ForumListForumApi,
   CircleGetForumApi,
-  // ForumSetTopApi,
-  // ForumSetEssApi,
   ForumDelForumApi,
 } from "../strollUrl.js";
 import { imgUrl } from "@/assets/js/modifyStyle.js";
@@ -320,31 +318,6 @@ export default {
         limit: 10,
         totalResult: 0,
       },
-      //置顶
-      // Topids: [],
-      // TopidsL: {
-      //   forum_id: "",
-      //   is_top: "1",
-      // },
-      //选中时将对象保存到arrs中
-      // Toparrs: [],
-      // ToparrsValue: [],
-      // Top: {
-      //   forum_id: "",
-      //   is_top: "1",
-      // },
-      //精华
-      // Essids: [],
-      // EssidsL: {
-      //   forum_id: "",
-      //   is_ess: "1",
-      // },
-      //选中时将对象保存到arrs中
-      // EssarrsValue: [],
-      // Ess: {
-      //   forum_id: "",
-      //   is_ess: "1",
-      // },
       // 删除
       // 批量删除
       ids: [],
@@ -426,12 +399,6 @@ export default {
     Refresh() {
       this.Mystroll();
     },
-    // 批量获取
-    // checkboxChangeEvent(data) {
-    //   // this.ToparrsValue = data.records;
-    //   // this.EssarrsValue = data.records;
-    //   console.log(data);
-    // },
     async delsValue() {
       const delsValues = await this.$confirm(
         "此操作将永久删除, 是否继续?",
@@ -467,140 +434,6 @@ export default {
         });
       }
     },
-    // 批量置顶
-    // async SetAsTopS() {
-    //   const SetAsTopSValue = await this.$confirm(
-    //     "此操作将批量置顶, 是否继续?",
-    //     "提示",
-    //     {
-    //       confirmButtonText: "确定",
-    //       cancelButtonText: "取消",
-    //       type: "warning",
-    //     }
-    //   ).catch((err) => err);
-    //   if (SetAsTopSValue !== "confirm") {
-    //     return this.$message.info("取消置顶");
-    //   }
-    //   if (SetAsTopSValue === "confirm") {
-    //     this.ToparrsValue.forEach((v) => {
-    //       this.Topids.push(v.id);
-    //     });
-    //     this.TopidsL.forum_id = this.Topids.toString();
-    //     postD(ForumSetTopApi(), this.TopidsL).then((res) => {
-    //       if (res.code == "200") {
-    //         this.$message.success("状态修改成功");
-    //         this.Mystroll();
-    //       } else if (res.code == "-200") {
-    //         this.$message.error("参数错误，或暂无数据");
-    //       } else if (res.code == "-201") {
-    //         this.$message.error("未登陆");
-    //       } else if (res.code == "-203") {
-    //         this.$message.error("对不起，你没有此操作权限");
-    //       } else {
-    //         this.$message.error("注册失败，账号已存在");
-    //       }
-    //     });
-    //   }
-    // },
-    // 批量精华
-    // async SetAsEssence() {
-    //   const SetAsEssenceValue = await this.$confirm(
-    //     "此操作将选中内容设为精华, 是否继续?",
-    //     "提示",
-    //     {
-    //       confirmButtonText: "确定",
-    //       cancelButtonText: "取消",
-    //       type: "warning",
-    //     }
-    //   ).catch((err) => err);
-    //   if (SetAsEssenceValue !== "confirm") {
-    //     return this.$message.info("取消精华");
-    //   }
-    //   if (SetAsEssenceValue === "confirm") {
-    //     this.EssarrsValue.forEach((v) => {
-    //       this.Essids.push(v.id);
-    //     });
-    //     this.EssidsL.forum_id = this.Essids.toString();
-    //     postD(ForumSetEssApi(), this.EssidsL).then((res) => {
-    //       if (res.code == "200") {
-    //         this.$message.success("状态修改成功");
-    //         this.Mystroll();
-    //       } else if (res.code == "-200") {
-    //         this.$message.error("参数错误，或暂无数据");
-    //       } else if (res.code == "-201") {
-    //         this.$message.error("未登陆");
-    //       } else if (res.code == "-203") {
-    //         this.$message.error("对不起，你没有此操作权限");
-    //       } else {
-    //         this.$message.error("注册失败，账号已存在");
-    //       }
-    //     });
-    //   }
-    // },
-    // 单个置顶
-    // async SetAsTop(data) {
-    //   const SetAsTopValue = await this.$confirm(
-    //     "此操作将此条内容设为置顶, 是否继续?",
-    //     "提示",
-    //     {
-    //       confirmButtonText: "确定",
-    //       cancelButtonText: "取消",
-    //       type: "warning",
-    //     }
-    //   ).catch((err) => err);
-    //   if (SetAsTopValue !== "confirm") {
-    //     return this.$message.info("取消置顶");
-    //   }
-    //   if (SetAsTopValue === "confirm") {
-    //     this.Top.forum_id = data.id.toString();
-    //     postD(ForumSetTopApi(), this.Top).then((res) => {
-    //       if (res.code == "200") {
-    //         this.$message.success("状态修改成功");
-    //         this.Mystroll();
-    //       } else if (res.code == "-200") {
-    //         this.$message.error("参数错误，或暂无数据");
-    //       } else if (res.code == "-201") {
-    //         this.$message.error("未登陆");
-    //       } else if (res.code == "-203") {
-    //         this.$message.error("对不起，你没有此操作权限");
-    //       } else {
-    //         this.$message.error("注册失败，账号已存在");
-    //       }
-    //     });
-    //   }
-    // },
-    // 单个精华
-    // async SetAsEssencer(data) {
-    //   const SetAsEssenceOne = await this.$confirm(
-    //     "此操作将选中内容设为精华, 是否继续?",
-    //     "提示",
-    //     {
-    //       confirmButtonText: "确定",
-    //       cancelButtonText: "取消",
-    //       type: "warning",
-    //     }
-    //   ).catch((err) => err);
-    //   if (SetAsEssenceOne !== "confirm") {
-    //     return this.$message.info("取消精华");
-    //   }
-    //   if (SetAsEssenceOne === "confirm") {
-    //     this.Ess.forum_id = data.id.toString();
-    //     postD(ForumSetEssApi(), this.Ess).then((res) => {
-    //       if (res.code == "200") {
-    //         this.$message.success("状态修改成功");
-    //         this.Mystroll();
-    //       } else if (res.code == "-200") {
-    //         this.$message.error("参数错误，或暂无数据");
-    //       } else if (res.code == "-201") {
-    //         this.$message.error("未登陆");
-    //       } else if (res.code == "-203") {
-    //         this.$message.error("对不起，你没有此操作权限");
-    //       } else {
-    //         this.$message.error("注册失败，账号已存在");
-    //       }
-    //     });
-    //   }
-    // },
     // 删除
     async DeletePost(data) {
       const DeletePosts = await this.$confirm(

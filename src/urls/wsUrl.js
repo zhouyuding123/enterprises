@@ -103,6 +103,10 @@ export const match_productAddProductApi = () => {
 export const designerMyCenterApi = () => {
     return "designer/myCenter"
 }
+// 作品列表
+export const designerGetListApi = () => {
+    return "designer/getList"
+}
 
 
 

@@ -139,10 +139,4 @@ export default {
   color: #ffffff;
 }
 
-/deep/.el-radio-button__inner {
-  width: 100%;
-  height: 100%;
-  border-radius: 3px 3px 3px 3px;
-  line-height: 10px;
-}
 </style>

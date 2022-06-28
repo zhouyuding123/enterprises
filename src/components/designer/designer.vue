@@ -59,7 +59,7 @@ export default {
   methods: {
     screen() {
       this.drawer = true;
-      postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
+      postD("https://weisou.chengduziyi.com/designer/product_type/getList").then(
         (res) => {
           this.drawerValue = res.list;
         }
@@ -123,13 +123,11 @@ export default {
   display: flex;
   padding: 10px 20px;
 }
-.el-radio-button {
-  height: 30px;
+/deep/.el-radio-button {
   background: #5c5673;
   margin-left: 10px;
   border: 1px solid #5c5673;
   border-radius: 3px 3px 3px 3px;
-  width: 160px;
   height: 40px;
   background: linear-gradient(180deg, #0c032e 0%, #5c5673 100%);
   border-radius: 3px 3px 3px 3px;
@@ -137,6 +135,9 @@ export default {
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   color: #ffffff;
+  .el-radio-button__inner {
+    width: 160px;
+  }
 }
 
 </style>

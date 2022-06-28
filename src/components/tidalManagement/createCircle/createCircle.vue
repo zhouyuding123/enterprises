@@ -29,7 +29,7 @@
           <el-form-item label="圈子头像" prop="headimg">
             <el-upload
               class="avatar-uploader"
-              action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+              action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
@@ -51,7 +51,7 @@
           >
             <el-upload
               class="avatar-uploader"
-              action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+              action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
               :show-file-list="false"
               :on-success="handleAvatarSuccessthumb"
               :before-upload="beforeAvatarUploadthumb"

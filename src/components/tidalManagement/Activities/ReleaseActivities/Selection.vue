@@ -138,7 +138,7 @@
             <el-form-item label="活动封面" prop="thumb">
               <el-upload
                 class="avatar-uploader"
-                action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+                action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -154,7 +154,7 @@
             <el-form-item label="活动海报" prop="poster">
               <el-upload
                 class="avatar-uploader"
-                action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+                action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccessline2"
                 :before-upload="beforeAvatarUploadline2"

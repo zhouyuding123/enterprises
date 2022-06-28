@@ -20,7 +20,7 @@
         <el-form-item label="LOGO" prop="thumb">
           <el-upload
             class="avatar-uploader"
-            action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -38,7 +38,7 @@
         <el-form-item label="相关资料" prop="qualification">
           <el-upload
             class="avatar-uploader"
-            action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
             :show-file-list="false"
             :on-success="handleAvatarSuccessqualification"
             :before-upload="beforeAvatarUploadqualification"

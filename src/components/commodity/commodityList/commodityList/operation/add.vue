@@ -21,7 +21,7 @@
           <el-form-item label="产品图片" prop="thumb">
             <span>(最多9张图)</span>
             <el-upload
-              action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+              action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
               list-type="picture-card"
               :data="{ fileType: this.fileType }"
               :limit="9"
@@ -115,7 +115,7 @@
               :response-fn="handleResponse"
               @error="handleUploadError"
               style="margin: 50px"
-              action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+              action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
               v-model="video"
             ></ele-upload-video>
           </el-form-item>
@@ -136,7 +136,6 @@
 </template>
 
 <script>
-import MyEditor from "./MyEditor.vue";
 import EleUploadVideo from "vue-ele-upload-video";
 import {
   brandGetListApi,
@@ -149,7 +148,6 @@ export default {
   inject: ["commodityValue"],
   components: {
     EleUploadVideo,
-    MyEditor,
   },
   data() {
     return {
@@ -215,7 +213,7 @@ export default {
         this.options = res.list;
         this.imageValue =imgUrl()
       });
-      postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
+      postD("https://weisou.chengduziyi.com/designer/product_type/getList").then(
         (res) => {
           this.typeOptions = res.list;
         }

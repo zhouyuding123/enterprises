@@ -81,7 +81,7 @@
     <el-dialog title="插入图片" :visible.sync="dialogVisible" width="30%">
       <el-upload
         class="avatar-uploader"
-        action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+        action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
@@ -106,7 +106,7 @@
         :response-fn="handleResponse"
         @error="handleUploadError"
         style="margin: 50px"
-        action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+        action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
         v-model="video"
       ></ele-upload-video>
       <span slot="footer" class="dialog-footer">
@@ -153,7 +153,7 @@
                     <p :v-model="(item.is_img = '1')"></p>
                     <el-upload
                       class="avatar-uploader"
-                      action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+                      action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
                       :show-file-list="false"
                       :on-success="handleAvatarSuccessvoto"
                       :before-upload="beforeAvatarUpload"

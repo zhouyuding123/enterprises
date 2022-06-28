@@ -305,7 +305,7 @@ export default {
       postD(custypeGetListApi()).then((res) => {
         this.cusOptions = res.list;
       });
-       postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
+       postD("https://weisou.chengduziyi.com/designer/product_type/getList").then(
         (res) => {
           this.typeOptions = res.list;
         }

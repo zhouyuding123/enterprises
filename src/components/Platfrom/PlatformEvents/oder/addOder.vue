@@ -17,7 +17,7 @@
         <el-form-item label="商品主图" prop="thumb">
           <span>(最多9张图)</span>
           <el-upload
-            action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
             list-type="picture-card"
             :data="{ fileType: this.fileType }"
             :limit="9"
@@ -33,46 +33,46 @@
         <el-form-item label="颜色" prop="color" style="padding-top: 20px">
           <div class="colors">
             <el-checkbox-group v-model="color">
-            <el-checkbox
-              v-for="(item, index) in colorList"
-              :key="index"
-              :label="item"
-              @change="colorss(item)"
-              border
-              >{{ item }}
-            </el-checkbox>
-            <el-input
-              placeholder="请输入"
-              v-model="colorinput"
-              @blur="losecolor"
-              clearable
-            >
-            </el-input>
-          </el-checkbox-group>
+              <el-checkbox
+                v-for="(item, index) in colorList"
+                :key="index"
+                :label="item"
+                @change="colorss(item)"
+                border
+                >{{ item }}
+              </el-checkbox>
+              <el-input
+                placeholder="请输入"
+                v-model="colorinput"
+                @blur="losecolor"
+                clearable
+              >
+              </el-input>
+            </el-checkbox-group>
           </div>
         </el-form-item>
         <el-form-item label="尺寸" prop="size">
           <div class="sizes">
             <el-checkbox-group v-model="size">
-            <el-checkbox
-              v-for="(item, index) in sizeList"
-              :key="index"
-              :label="item"
-              @change="sizess(item)"
-              border
-            >
-              <div>
-                {{ item }}
-              </div>
-            </el-checkbox>
-            <el-input
-              placeholder="请输入"
-              v-model="sizeinpuit"
-              @blur="losesize"
-              clearable
-            >
-            </el-input>
-          </el-checkbox-group>
+              <el-checkbox
+                v-for="(item, index) in sizeList"
+                :key="index"
+                :label="item"
+                @change="sizess(item)"
+                border
+              >
+                <div>
+                  {{ item }}
+                </div>
+              </el-checkbox>
+              <el-input
+                placeholder="请输入"
+                v-model="sizeinpuit"
+                @blur="losesize"
+                clearable
+              >
+              </el-input>
+            </el-checkbox-group>
           </div>
         </el-form-item>
         <div class="addValues">
@@ -109,15 +109,18 @@
             >
               <div class="colort">{{ item.color }}</div>
               <el-upload
-                action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
-                :data="{ fileType: fileType}"
+                action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+                :data="{ fileType: fileType }"
                 :on-success="handleAvatarSuccessers"
                 :before-upload="beforeAvatarUploads"
-             
                 :show-file-list="false"
                 class="avatar-uploader"
               >
-                <img v-if="imageUrls != ''" :src="imageValue+imageUrls[index]" class="avatar" />
+                <img
+                  v-if="imageUrls != ''"
+                  :src="imageValue + imageUrls[index]"
+                  class="avatar"
+                />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </div>
@@ -172,7 +175,7 @@
             :response-fn="handleResponse"
             @error="handleUploadError"
             style="margin: 50px"
-            action="http://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
             v-model="video"
           ></ele-upload-video>
         </el-form-item>
@@ -191,7 +194,56 @@
         </el-form-item>
       </div>
       <div class="line4">
-        <my-editor @fwbHtml="change" />
+        <el-form-item label="商品介绍" prop="title">
+          <el-input
+            v-model="content2"
+            type="textarea"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="添加图片" prop="title">
+          <el-upload
+            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+            list-type="picture-card"
+            :auto-upload="false"
+            :on-progress="OKup"
+            :data="{ fileType: fileType }"
+          >
+            <i slot="default" class="el-icon-plus"></i>
+            <div slot="file" slot-scope="{ file }">
+              <img
+                class="el-upload-list__item-thumbnail"
+                :src="file.url"
+                alt=""
+              />
+              <span class="el-upload-list__item-actions">
+                <span
+                  class="el-upload-list__item-preview"
+                  @click="handlePictureCardPreview(file)"
+                >
+                  <i class="el-icon-zoom-in"></i>
+                </span>
+                <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleDownload(file)"
+                >
+                  <i class="el-icon-download"></i>
+                </span>
+                <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleRemove(file)"
+                >
+                  <i class="el-icon-delete"></i>
+                </span>
+              </span>
+            </div>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="" />
+          </el-dialog>
+        </el-form-item>
       </div>
     </el-form>
     <div class="addygs">
@@ -201,23 +253,21 @@
 </template>
 
 <script>
-import MyEditor from "./MyEditor.vue";
 import EleUploadVideo from "vue-ele-upload-video";
 import { imgUrl, beforeAvatar } from "@/assets/js/modifyStyle.js";
-import { brandGetListApi,match_productAddProductApi } from "@/urls/wsUrl.js";
+import { brandGetListApi, match_productAddProductApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 const colors = ["黑色", "白色", "红色", "黄色", "蓝色", "绿色"];
 const sizes = ["XXS", "XS ", "S", "M", "L", "XL "];
 export default {
   components: {
     EleUploadVideo,
-    MyEditor,
   },
   data() {
     return {
       ruleForm: {
-        match_id:"",
-        accept_id:"",
+        match_id: "",
+        accept_id: "",
         title: "",
         thumb: "",
         spec: "",
@@ -233,7 +283,7 @@ export default {
             message: "请输入产品标题",
             tirgger: "blur",
           },
-        ]
+        ],
       },
       fileType: "images",
       fileTypes: "images",
@@ -281,9 +331,12 @@ export default {
           title: "新品推荐 ",
         },
       ],
-      // 视频富文本
+      // 视频 商品介绍 添加图片
       content1: "",
       content2: "",
+      dialogImageUrl: "",
+      dialogVisible: false,
+      disabled: false,
     };
   },
   created() {
@@ -297,8 +350,8 @@ export default {
       this.thumbs.push(res.url);
     },
     handleAvatarSuccessers(res) {
-      this.imageUrls.push(res.url)
-      this.thumbs2.push(res.url)
+      this.imageUrls.push(res.url);
+      this.thumbs2.push(res.url);
     },
     beforeAvatarUpload(file) {
       return beforeAvatar(file);
@@ -340,9 +393,9 @@ export default {
       for (let i = 0; i < this.specColor.length; i++) {
         for (let j = 0; j < this.specSize.length; j++) {
           this.spec.push({
-            "color": this.specColor[i],
-            "spec": this.specSize[j],
-            "price": "",
+            color: this.specColor[i],
+            spec: this.specSize[j],
+            price: "",
           });
         }
       }
@@ -369,11 +422,11 @@ export default {
     },
     // 店铺分类
     custom_typeList() {
-      postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
-        (res) => {
-          this.custom_typeoptions = res.list;
-        }
-      );
+      postD(
+        "https://weisou.chengduziyi.com/designer/product_type/getList"
+      ).then((res) => {
+        this.custom_typeoptions = res.list;
+      });
     },
     // 视频介绍
     handleUploadError(error) {
@@ -387,29 +440,41 @@ export default {
       this.content1 = res.url;
       return URL.createObjectURL(file.raw);
     },
-    // 富文本
-    async change(val) {
-      this.content2 = val;
+    handleRemove(file) {
+      console.log(file);
     },
+    handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      handleDownload(res,file) {
+        console.log(file);
+        console.log(res);
+      },
+      OKup(res,file) {
+        console.log(res);
+        console.log(file);
+      },
     ygAdd() {
-      this.ruleForm.thumb = this.thumbs+this.thumbs2;
-      this.ruleForm.spec = JSON.stringify(this.spec)
-      this.ruleForm.config = JSON.stringify(this.config) ;
-      this.ruleForm.content = this.content1+ this.content2;
-      this.ruleForm.accept_id = this.$route.params.accept_id
-      this.ruleForm.match_id = this.$route.params.match_id
-      this.$refs.ruleFormRef.validate((v) => {
-        if (!v) return;
-        postD(match_productAddProductApi(),this.ruleForm).then(res=> {
-          if (res.code == "200") {
-            this.$message.success("预购商品成功");
-            this.$router.push("/match/detial" + this.ruleForm.match_id)
-            this.commodityValue();
-          } else {
-            this.$message.error("预购商品失败");
-          }
-        })
-      })
+      this.ruleForm.thumb = this.thumbs + this.thumbs2;
+      this.ruleForm.spec = JSON.stringify(this.spec);
+      this.ruleForm.config = JSON.stringify(this.config);
+      this.ruleForm.content = this.content1 + this.content2;
+      this.ruleForm.accept_id = this.$route.params.accept_id;
+      this.ruleForm.match_id = this.$route.params.match_id;
+      console.log(this.ruleForm.content);
+      // this.$refs.ruleFormRef.validate((v) => {
+      //   if (!v) return;
+      //   postD(match_productAddProductApi(),this.ruleForm).then(res=> {
+      //     if (res.code == "200") {
+      //       this.$message.success("预购商品成功");
+      //       this.$router.push("/match/detial" + this.ruleForm.match_id)
+      //       this.commodityValue();
+      //     } else {
+      //       this.$message.error("预购商品失败");
+      //     }
+      //   })
+      // })
     },
   },
 };

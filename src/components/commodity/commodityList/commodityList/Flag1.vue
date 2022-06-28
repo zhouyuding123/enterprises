@@ -369,7 +369,7 @@ export default {
   methods: {
     // 平台分类
     product_typeListValue() {
-      postD("http://weisou.chengduziyi.com/designer/product_type/getList").then(
+      postD("https://weisou.chengduziyi.com/designer/product_type/getList").then(
         (res) => {
           this.typeOptions = res.list;
         }

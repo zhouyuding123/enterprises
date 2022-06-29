@@ -15,18 +15,33 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="商品主图" prop="thumb">
-          <span>(最多9张图)</span>
+           <ele-upload-video
+            :data="{
+              token: this.token,
+              fileType: this.fileTypes,
+            }"
+            :file-size="20"
+            :response-fn="handleResponses"
+            @error="handleUploadError"
+            style="margin: 50px"
+            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+            v-model="videoone"
+          ></ele-upload-video>
+          <div style="margin-top:10px">
+            <span>(最多9张图)</span>
           <el-upload
             action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
             list-type="picture-card"
             :data="{ fileType: this.fileType }"
             :limit="9"
+            multiple
             :on-success="handleAvatarSuccesser"
             :before-upload="beforeAvatarUpload"
           >
             <i slot="default" class="el-icon-plus"></i>
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
           </el-upload>
+          </div>
         </el-form-item>
       </div>
       <div class="line2">
@@ -205,44 +220,15 @@
           <el-upload
             action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
             list-type="picture-card"
-            :auto-upload="false"
-            :on-progress="OKup"
-            :data="{ fileType: fileType }"
+            :data="{ fileType: this.fileType }"
+            :limit="9"
+            :on-success="contentPhoto"
+            :before-upload="beforeAvatarUpload"
+            multiple
           >
             <i slot="default" class="el-icon-plus"></i>
-            <div slot="file" slot-scope="{ file }">
-              <img
-                class="el-upload-list__item-thumbnail"
-                :src="file.url"
-                alt=""
-              />
-              <span class="el-upload-list__item-actions">
-                <span
-                  class="el-upload-list__item-preview"
-                  @click="handlePictureCardPreview(file)"
-                >
-                  <i class="el-icon-zoom-in"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleDownload(file)"
-                >
-                  <i class="el-icon-download"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-            </div>
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
           </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog>
         </el-form-item>
       </div>
     </el-form>
@@ -290,7 +276,9 @@ export default {
       imageUrl: "",
       imageUrls: [],
       thumbs: [],
+      thumbsVideo:'',
       thumbs2: [],
+      thumbs3: [],
       imageValue: "",
       //   颜色
       color: [],
@@ -319,6 +307,7 @@ export default {
       // 视频
       token: "",
       video: "",
+      videoone: "",
       fileTypes: "moves",
       // 新品
       is_newoptions: [
@@ -334,9 +323,6 @@ export default {
       // 视频 商品介绍 添加图片
       content1: "",
       content2: "",
-      dialogImageUrl: "",
-      dialogVisible: false,
-      disabled: false,
     };
   },
   created() {
@@ -347,11 +333,15 @@ export default {
   },
   methods: {
     handleAvatarSuccesser(res, file) {
+      console.log(res);
       this.thumbs.push(res.url);
     },
     handleAvatarSuccessers(res) {
       this.imageUrls.push(res.url);
       this.thumbs2.push(res.url);
+    },
+    contentPhoto(res,file) {
+      this.thumbs3.push(res.url)
     },
     beforeAvatarUpload(file) {
       return beforeAvatar(file);
@@ -440,41 +430,30 @@ export default {
       this.content1 = res.url;
       return URL.createObjectURL(file.raw);
     },
-    handleRemove(file) {
-      console.log(file);
+    handleResponses(res, file) {
+     this.thumbsVideo = res.url;
+      return URL.createObjectURL(file.raw);
     },
-    handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      },
-      handleDownload(res,file) {
-        console.log(file);
-        console.log(res);
-      },
-      OKup(res,file) {
-        console.log(res);
-        console.log(file);
-      },
     ygAdd() {
-      this.ruleForm.thumb = this.thumbs + this.thumbs2;
+      this.ruleForm.thumb = this.thumbsVideo + this.thumbs+this.thumbs2;
       this.ruleForm.spec = JSON.stringify(this.spec);
       this.ruleForm.config = JSON.stringify(this.config);
-      this.ruleForm.content = this.content1 + this.content2;
+      this.ruleForm.content = this.content1 + this.content2+this.thumbs3;
       this.ruleForm.accept_id = this.$route.params.accept_id;
       this.ruleForm.match_id = this.$route.params.match_id;
-      console.log(this.ruleForm.content);
-      // this.$refs.ruleFormRef.validate((v) => {
-      //   if (!v) return;
-      //   postD(match_productAddProductApi(),this.ruleForm).then(res=> {
-      //     if (res.code == "200") {
-      //       this.$message.success("预购商品成功");
-      //       this.$router.push("/match/detial" + this.ruleForm.match_id)
-      //       this.commodityValue();
-      //     } else {
-      //       this.$message.error("预购商品失败");
-      //     }
-      //   })
-      // })
+      console.log(this.ruleForm);
+      this.$refs.ruleFormRef.validate((v) => {
+        if (!v) return;
+        postD(match_productAddProductApi(),this.ruleForm).then(res=> {
+          if (res.code == "200") {
+            this.$message.success("预购商品成功");
+            this.$router.push("/match/detial" + this.ruleForm.match_id)
+            this.commodityValue();
+          } else {
+            this.$message.error("预购商品失败");
+          }
+        })
+      })
     },
   },
 };

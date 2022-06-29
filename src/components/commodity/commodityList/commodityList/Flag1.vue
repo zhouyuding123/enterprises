@@ -389,6 +389,7 @@ export default {
     },
     commodityValue() {
       postD(company_productGetListApi(), this.isRecycleBin).then((res) => {
+        console.log(res.list[0].thumb.split(',').slice(1));
         this.tableData = res.list;
         this.imagesValue = imgUrl();
         this.page1.totalResult = res.count;
@@ -446,7 +447,7 @@ export default {
       });
     },
     fulthumb(val) {
-      return val.split(",")[0];
+      return val.split(",").slice(1)[0];
     },
     searchOne(data) {
       this.custom_type = data.title;

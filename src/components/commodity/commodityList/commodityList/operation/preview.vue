@@ -5,12 +5,20 @@
       <div class="PreviewBody">
         <el-carousel indicator-position="outside">
           <el-carousel-item v-for="item in thumbs" :key="item">
-            <el-image
-              :src="imagesValue + item"
-              alt=""
-              :preview-src-list="[imagesValue + item]"
-              style="width: 750px; height: 300px"
-            />
+            <div v-if="(item.split('/')[0] == 'video')">
+              <video style="width: 750px; height: 300px;" controls>
+                <source :src="imagesValue + item" type="video/mp4" />
+                <source :src="imagesValue + item" type="video/ogg" />
+              </video>
+            </div>
+            <div v-if="(item.split('/')[0] == 'images')">
+              <el-image
+                :src="imagesValue + item"
+                alt=""
+                :preview-src-list="[imagesValue + item]"
+                style="width: 750px; height: 300px"
+              />
+            </div>
           </el-carousel-item>
         </el-carousel>
         <div class="line1">
@@ -37,8 +45,14 @@
                     100%正品
                   </span>
                 </div>
-                <div><img src="@/assets/imgers/七天.png" alt="" /><span>7天无理由退换</span></div>
-                <div><img src="@/assets/imgers/包邮.png" alt="" /><span>包邮</span></div>
+                <div>
+                  <img src="@/assets/imgers/七天.png" alt="" /><span
+                    >7天无理由退换</span
+                  >
+                </div>
+                <div>
+                  <img src="@/assets/imgers/包邮.png" alt="" /><span>包邮</span>
+                </div>
               </div>
             </div>
           </div>
@@ -46,7 +60,7 @@
         <div class="line2">
           <div class="details"><span>商品详情</span></div>
           <div class="htmlValue">
-            <div v-html="previewValueList.content" ></div>
+            <div v-html="previewValueList.content"></div>
           </div>
         </div>
       </div>
@@ -74,7 +88,11 @@ export default {
       },
       previewValueList: [],
       thumbs: [],
+      videos: "",
     };
+  },
+  created() {
+    this.imagesValue = imgUrl();
   },
   methods: {
     thisPreview() {
@@ -82,8 +100,8 @@ export default {
       this.PreviewId.id = this.previewValue.id;
       postD(company_productShowProductApi(), this.PreviewId).then((res) => {
         this.previewValueList = res.data;
-        this.thumbs = res.data.thumb.split(',')
-        this.imagesValue = imgUrl();
+        this.thumbs = res.data.thumb.split(",");
+        console.log(this.thumbs);
       });
     },
   },

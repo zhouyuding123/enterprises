@@ -38,6 +38,7 @@
                 list-type="picture-card"
                 :data="{ fileType: this.fileType }"
                 :limit="9"
+                multiple
                 :on-success="handleAvatarSuccesser"
                 :before-upload="beforeAvatarUpload"
               >
@@ -198,28 +199,28 @@
           </el-form-item>
         </div>
         <div class="line4">
-        <el-form-item label="商品介绍" prop="title">
-          <el-input
-            v-model="content2"
-            type="textarea"
-            placeholder="请输入内容"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="添加图片" prop="title">
-          <el-upload
-            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
-            list-type="picture-card"
-            :data="{ fileType: this.fileType }"
-            :limit="9"
-            :on-success="contentPhoto"
-            :before-upload="beforeAvatarUpload"
-            multiple
-          >
-            <i slot="default" class="el-icon-plus"></i>
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          </el-upload>
-        </el-form-item>
-      </div>
+          <el-form-item label="商品介绍" prop="title">
+            <el-input
+              v-model="content2"
+              type="textarea"
+              placeholder="请输入内容"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="添加图片" prop="title">
+            <el-upload
+              action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+              list-type="picture-card"
+              :data="{ fileType: this.fileType }"
+              :limit="9"
+              :on-success="contentPhoto"
+              :before-upload="beforeAvatarUpload"
+              multiple
+            >
+              <i slot="default" class="el-icon-plus"></i>
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            </el-upload>
+          </el-form-item>
+        </div>
       </el-form>
 
       <div style="padding-top: 15px">
@@ -302,12 +303,13 @@ export default {
       token: "",
       video: "",
       videoone: "",
-      thumbsVideo:"",
+      thumbsVideo: "",
       imageUrls: [],
-      thumbs2:[],
-      content1:"",
+      thumbs2: [],
+      content1: "",
       content2: "",
       thumbs3: [],
+      urls: "",
     };
   },
   methods: {
@@ -329,7 +331,7 @@ export default {
     handleAvatarSuccesser(res, file) {
       this.thumbs.push(res.url);
     },
-    handleAvatarSuccessers(res) {
+    handleAvatarSuccessers(res, file, fileList) {
       this.imageUrls.push(res.url);
       this.thumbs2.push(res.url);
     },
@@ -349,40 +351,60 @@ export default {
       });
       console.log("error", error);
     },
-     handleResponse(res, file) {
+    handleResponse(res, file) {
       this.content1 = res.url;
       return URL.createObjectURL(file.raw);
     },
     handleResponses(res, file) {
-     this.thumbsVideo = res.url;
+      this.thumbsVideo = res.url;
       return URL.createObjectURL(file.raw);
     },
-    contentPhoto(res,file) {
-      this.thumbs3.push(res.url)
+    contentPhoto(res, file) {
+      this.thumbs3.push(res.url);
     },
     dialogVisibleAdd() {
-      this.ruleForm.thumb = this.thumbsVideo+ ',' + this.thumbs+ ',' +this.thumbs2;
-      this.ruleForm.content = this.content1 + this.content2+this.thumbs3;
+      this.ruleForm.content = {
+        text: this.content2,
+        imgs: this.content1 + "," + this.thumbs3,
+      };
+      this.ruleForm.content = JSON.stringify(this.ruleForm.content);
+
+      var colorser = [];
+      for (let index = 0; index < this.speccolior.length; index++) {
+        // colorser  = this.speccolior[index];
+        let json={}
+        json.url = this.thumbs2[index]
+        json.color = this.speccolior[index].color
+        colorser.push(json)
+      }
+
+      console.log(colorser);
+
+      // this.ruleForm.thumb = {
+      //   thumbList: this.thumbsVideo + this.thumbs,
+      //   color: colorser,
+      // };
+      this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb);
       this.ruleForm.spec = JSON.stringify(this.spec);
-      console.log(this.ruleForm);
-      this.$refs.ruleFormRef.validate((v) => {
-        if (!v) return;
-        postD(company_productAddProductApi(), this.ruleForm).then((res) => {
-          if (res.code == "200") {
-            this.$message.success("添加成功");
-            this.dialogVisible = false;
-            this.commodityValue();
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("未登陆");
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
-          } else {
-            this.$message.error("注册失败，已存在");
-          }
-        });
-      });
+
+      // this.$refs.ruleFormRef.validate((v) => {
+      //   if (!v) return;
+      //   postD(company_productAddProductApi(), this.ruleForm).then((res) => {
+      //     if (res.code == "200") {
+      //       this.$message.success("添加成功");
+      //       this.dialogVisible = false;
+      //       this.commodityValue();
+      //     } else if (res.code == "-200") {
+      //       this.$message.error("参数错误，或暂无数据");
+      //     } else if (res.code == "-201") {
+      //       this.$message.error("未登陆");
+      //     } else if (res.code == "-203") {
+      //       this.$message.error("对不起，你没有此操作权限");
+      //     } else {
+      //       this.$message.error("注册失败，已存在");
+      //     }
+      //   });
+      // });
     },
     // 颜色
     colorss(val) {
@@ -421,6 +443,7 @@ export default {
             color: this.specColor[i],
             spec: this.specSize[j],
             price: "",
+            url: "",
           });
         }
       }
@@ -440,7 +463,7 @@ export default {
       this.spec.splice(index, 1);
     },
     handleResponses(res, file) {
-     this.thumbsVideo = res.url;
+      this.thumbsVideo = res.url;
       return URL.createObjectURL(file.raw);
     },
   },
@@ -485,149 +508,148 @@ export default {
 }
 .colors {
   .el-input {
-        width: 95px;
-        margin-left: 40px;
-        margin-top: -2px;
-    }
+    width: 95px;
+    margin-left: 40px;
+    margin-top: -2px;
+  }
 }
 .sizes {
   .el-input {
-        width: 95px;
-        margin-left: 40px;
-        margin-top: -2px;
-    }
+    width: 95px;
+    margin-left: 40px;
+    margin-top: -2px;
+  }
 }
 .addValues {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 
-    div {
-        cursor: pointer;
-        width: 200px;
-        height: 40px;
-        background: #FFFFFF;
-        border-radius: 3px 3px 3px 3px;
-        opacity: 1;
-        border: 1px solid #0C032E;
+  div {
+    cursor: pointer;
+    width: 200px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 3px 3px 3px 3px;
+    opacity: 1;
+    border: 1px solid #0c032e;
 
-        span {
-            font-size: 16px;
-            font-family: PingFang SC-Regular, PingFang SC;
-            color: #333333;
-            line-height: 40px;
-        }
+    span {
+      font-size: 16px;
+      font-family: PingFang SC-Regular, PingFang SC;
+      color: #333333;
+      line-height: 40px;
     }
+  }
 }
 .list3 {
-    display: flex;
-    border: 1px solid #DDDDDD;
+  display: flex;
+  border: 1px solid #dddddd;
 
-    div {
-        width: 500px;
-        height: 80px;
+  div {
+    width: 500px;
+    height: 80px;
 
-        span {
-            line-height: 80px;
-        }
+    span {
+      line-height: 80px;
     }
+  }
 }
 
 .list3list {
-    display: flex;
+  display: flex;
+  position: relative;
+
+  div:nth-child(1) {
+    width: 500px;
+    height: 80px;
+    border-left: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+
+    span {
+      line-height: 80px;
+    }
+  }
+
+  div:nth-child(2) {
+    width: 500px;
+    height: 80px;
+    border-bottom: 1px solid #dddddd;
+
+    span {
+      line-height: 80px;
+    }
+  }
+
+  div:nth-child(3) {
+    width: 500px;
+    height: 80px;
+    border-right: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
     position: relative;
 
-    div:nth-child(1) {
-        width: 500px;
-        height: 80px;
-        border-left: 1px solid #DDDDDD;
-        border-bottom: 1px solid #DDDDDD;
+    .el-input {
+      border: none;
+      width: auto;
 
-        span {
-            line-height: 80px;
-        }
+      /deep/.el-input__inner {
+        border: none;
+        margin-top: 20px;
+        background-color: #dddddd;
+      }
     }
-
-    div:nth-child(2) {
-        width: 500px;
-        height: 80px;
-        border-bottom: 1px solid #DDDDDD;
-
-        span {
-            line-height: 80px;
-        }
-    }
-
-    div:nth-child(3) {
-        width: 500px;
-        height: 80px;
-        border-right: 1px solid #DDDDDD;
-        border-bottom: 1px solid #DDDDDD;
-        position: relative;
-
-        .el-input {
-            border: none;
-            width: auto;
-
-            /deep/.el-input__inner {
-                border: none;
-                margin-top: 20px;
-                background-color: #DDDDDD;
-            }
-        }
-    }
-
+  }
 }
 .delspec {
-    position: absolute;
-    margin-top: 30px;
-    margin-left: 10px;
-    width: 20px;
-    height: 20px;
-    background: #FF0000;
-    border-radius: 50%;
-    color: white;
-    line-height: 20px;
-    cursor: pointer;
+  position: absolute;
+  margin-top: 30px;
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+  background: #ff0000;
+  border-radius: 50%;
+  color: white;
+  line-height: 20px;
+  cursor: pointer;
 }
 .listphoto {
-    text-align: left;
-    padding: 0 30px;
+  text-align: left;
+  padding: 0 30px;
 }
 
 .titlevalue {
-    font-size: 20px;
-    font-family: PingFang SC-Bold, PingFang SC;
-    font-weight: bold;
-    color: #333333;
+  font-size: 20px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #333333;
 }
 
 .titlevalueline2 {
-    display: flex;
-    justify-content: left;
-    flex-wrap: wrap;
-    margin-top: 30PX;
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  margin-top: 30px;
 
-    .titlevalueline2com {
-        width: 300px;
-        margin-left: 10px;
+  .titlevalueline2com {
+    width: 300px;
+    margin-left: 10px;
 
-        .colort {
-            font-size: 16px;
-            font-family: PingFang SC-Bold, PingFang SC;
-            font-weight: bold;
-            color: #333333;
-            line-height: 19px;
-        }
+    .colort {
+      font-size: 16px;
+      font-family: PingFang SC-Bold, PingFang SC;
+      font-weight: bold;
+      color: #333333;
+      line-height: 19px;
     }
+  }
 }
 .line4 {
-    margin-top: 20px;
-    background: white;
-    padding: 20px;
-    /deep/.el-textarea__inner {
-        width: 100% !important;
-        height: 120px !important;
-        background: #F5F5F5;
-    }
+  margin-top: 20px;
+  background: white;
+  padding: 20px;
+  /deep/.el-textarea__inner {
+    width: 100% !important;
+    height: 120px !important;
+    background: #f5f5f5;
+  }
 }
 </style>

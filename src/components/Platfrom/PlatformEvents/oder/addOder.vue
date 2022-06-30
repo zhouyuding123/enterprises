@@ -15,7 +15,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="商品主图" prop="thumb">
-           <ele-upload-video
+          <ele-upload-video
             :data="{
               token: this.token,
               fileType: this.fileTypes,
@@ -27,20 +27,20 @@
             action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
             v-model="videoone"
           ></ele-upload-video>
-          <div style="margin-top:10px">
+          <div style="margin-top: 10px">
             <span>(最多9张图)</span>
-          <el-upload
-            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
-            list-type="picture-card"
-            :data="{ fileType: this.fileType }"
-            :limit="9"
-            multiple
-            :on-success="handleAvatarSuccesser"
-            :before-upload="beforeAvatarUpload"
-          >
-            <i slot="default" class="el-icon-plus"></i>
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          </el-upload>
+            <el-upload
+              action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+              list-type="picture-card"
+              :data="{ fileType: this.fileType }"
+              :limit="9"
+              multiple
+              :on-success="handleAvatarSuccesser"
+              :before-upload="beforeAvatarUpload"
+            >
+              <i slot="default" class="el-icon-plus"></i>
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            </el-upload>
           </div>
         </el-form-item>
       </div>
@@ -276,7 +276,7 @@ export default {
       imageUrl: "",
       imageUrls: [],
       thumbs: [],
-      thumbsVideo:'',
+      thumbsVideo: "",
       thumbs2: [],
       thumbs3: [],
       imageValue: "",
@@ -333,15 +333,14 @@ export default {
   },
   methods: {
     handleAvatarSuccesser(res, file) {
-      console.log(res);
       this.thumbs.push(res.url);
     },
     handleAvatarSuccessers(res) {
       this.imageUrls.push(res.url);
       this.thumbs2.push(res.url);
     },
-    contentPhoto(res,file) {
-      this.thumbs3.push(res.url)
+    contentPhoto(res, file) {
+      this.thumbs3.push(res.url);
     },
     beforeAvatarUpload(file) {
       return beforeAvatar(file);
@@ -431,29 +430,36 @@ export default {
       return URL.createObjectURL(file.raw);
     },
     handleResponses(res, file) {
-     this.thumbsVideo = res.url;
+      this.thumbsVideo = res.url;
       return URL.createObjectURL(file.raw);
     },
     ygAdd() {
-      this.ruleForm.thumb = this.thumbsVideo + this.thumbs+this.thumbs2;
+      this.ruleForm.thumb = {
+        thumbList: this.thumbsVideo + this.thumbs,
+        color: this.thumbs2,
+      };
+      this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb);
       this.ruleForm.spec = JSON.stringify(this.spec);
       this.ruleForm.config = JSON.stringify(this.config);
-      this.ruleForm.content = this.content1 + this.content2+this.thumbs3;
+      this.ruleForm.content = {
+        text: this.content2,
+        imgs: this.content1 + "," + this.thumbs3,
+      };
       this.ruleForm.accept_id = this.$route.params.accept_id;
       this.ruleForm.match_id = this.$route.params.match_id;
-      console.log(this.ruleForm);
+      this.ruleForm.content = JSON.stringify(this.ruleForm.content);
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;
-        postD(match_productAddProductApi(),this.ruleForm).then(res=> {
+        postD(match_productAddProductApi(), this.ruleForm).then((res) => {
           if (res.code == "200") {
             this.$message.success("预购商品成功");
-            this.$router.push("/match/detial" + this.ruleForm.match_id)
+            this.$router.push("/match/detial" + this.ruleForm.match_id);
             this.commodityValue();
           } else {
             this.$message.error("预购商品失败");
           }
-        })
-      })
+        });
+      });
     },
   },
 };

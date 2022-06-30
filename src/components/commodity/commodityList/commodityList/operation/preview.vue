@@ -60,7 +60,21 @@
         <div class="line2">
           <div class="details"><span>商品详情</span></div>
           <div class="htmlValue">
-            <div v-html="previewValueList.content"></div>
+            <div>
+              <p>{{contentsText}}</p>
+              <p v-for="item in contentsImgs" :key="item">
+                <video style="width: 550px; height: 300px;" controls v-if="(item.split('/')[0] == 'video')">
+                <source :src="imagesValue + item" type="video/mp4" />
+                <source :src="imagesValue + item" type="video/ogg" />
+                </video>
+                <img v-if="(item.split('/')[0] == 'images')"
+                :src="imagesValue + item"
+                alt=""
+                :preview-src-list="[imagesValue + item]"
+                style="width: 550px; height: 300px"
+              />
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -89,6 +103,8 @@ export default {
       previewValueList: [],
       thumbs: [],
       videos: "",
+      contentsText:"",
+      contentsImgs:[]
     };
   },
   created() {
@@ -101,7 +117,10 @@ export default {
       postD(company_productShowProductApi(), this.PreviewId).then((res) => {
         this.previewValueList = res.data;
         this.thumbs = res.data.thumb.split(",");
-        console.log(this.thumbs);
+        this.contentsText = JSON.parse(res.data.content).text
+        this.contentsImgs = JSON.parse(res.data.content).imgs.split(',')
+        console.log(this.contentsText);
+        console.log(this.contentsImgs);
       });
     },
   },

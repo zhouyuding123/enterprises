@@ -417,6 +417,14 @@ const routes = [
             meta: {
               title: "服务列表"
             },
+          },
+          {
+            path: "/matchProduct/getListMy",
+            name: "matchProduct/getListMy",
+            component: () => import("../components/Preorderlist/PreorderList.vue"),
+            meta: {
+              title: "预购列表"
+            },
           }
         ]
       },

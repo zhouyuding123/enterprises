@@ -11,7 +11,9 @@
         </div>
         <div class="nicknameValue">
           <div class="name_nickname" @click="goMyDetil(WorksShowData.username)">
-            <span class="nickname_span">{{ WorksShowData.nickname }}</span>
+            <div class="nickname_span">
+              <span >{{ WorksShowData.nickname }}</span>
+            </div>
             <div class="top">
               <img src="@/assets/imgers/设计师等级.png" alt="" />
               <span>一级设计师</span>
@@ -52,7 +54,7 @@
           </div>
         </div>
         <div class="worksDiv2line2">
-          {{ WorksShowData.content }}
+          <span>{{ WorksShowDataContent.text }}</span>
         </div>
         <div v-for="item in imgs" :key="item.item" class="imgs">
           <img :src="imagesValue + item" alt="" />
@@ -230,6 +232,7 @@ export default {
         placehoder: "评论",
       },
       showInput: 0,
+      WorksShowDataContent:""
     };
   },
   created() {
@@ -240,10 +243,12 @@ export default {
       postD(designer_worksShowApi(), this.$route.params).then((res) => {
         this.WorksShowData = res.data;
         this.imagesValue = imgUrl();
-        var arr = this.WorksShowData.imgs.split(",");
+        var ss = JSON.parse(res.data.content)
+        var arr = ss.imgs.split(",");
         var arrs = this.WorksShowData.label.split(",");
         this.imgs = arr;
         this.labels = arrs;
+        this.WorksShowDataContent = ss
         var tmp = [];
         res.data.comment_list.forEach((item, i) => {
           if (item.fid == 0) {

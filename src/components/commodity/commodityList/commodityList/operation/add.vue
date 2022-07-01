@@ -298,7 +298,7 @@ export default {
       // 自定义
       custom_typeOptions: [],
       //   视频
-      fileTypes: "video",
+      fileTypes: "moves",
       // 验证
       token: "",
       video: "",
@@ -367,44 +367,38 @@ export default {
         text: this.content2,
         imgs: this.content1 + "," + this.thumbs3,
       };
-      this.ruleForm.content = JSON.stringify(this.ruleForm.content);
-
       var colorser = [];
       for (let index = 0; index < this.speccolior.length; index++) {
-        // colorser  = this.speccolior[index];
         let json={}
         json.url = this.thumbs2[index]
         json.color = this.speccolior[index].color
         colorser.push(json)
       }
-
-      console.log(colorser);
-
-      // this.ruleForm.thumb = {
-      //   thumbList: this.thumbsVideo + this.thumbs,
-      //   color: colorser,
-      // };
+      this.ruleForm.thumb = {
+        thumbList: this.thumbsVideo+"," + this.thumbs,
+        color: colorser,
+      };
       this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb);
       this.ruleForm.spec = JSON.stringify(this.spec);
-
-      // this.$refs.ruleFormRef.validate((v) => {
-      //   if (!v) return;
-      //   postD(company_productAddProductApi(), this.ruleForm).then((res) => {
-      //     if (res.code == "200") {
-      //       this.$message.success("添加成功");
-      //       this.dialogVisible = false;
-      //       this.commodityValue();
-      //     } else if (res.code == "-200") {
-      //       this.$message.error("参数错误，或暂无数据");
-      //     } else if (res.code == "-201") {
-      //       this.$message.error("未登陆");
-      //     } else if (res.code == "-203") {
-      //       this.$message.error("对不起，你没有此操作权限");
-      //     } else {
-      //       this.$message.error("注册失败，已存在");
-      //     }
-      //   });
-      // });
+      this.ruleForm.content = JSON.stringify(this.ruleForm.content);
+      this.$refs.ruleFormRef.validate((v) => {
+        if (!v) return;
+        postD(company_productAddProductApi(), this.ruleForm).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("添加成功");
+            this.dialogVisible = false;
+            this.commodityValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，已存在");
+          }
+        });
+      });
     },
     // 颜色
     colorss(val) {
@@ -443,7 +437,6 @@ export default {
             color: this.specColor[i],
             spec: this.specSize[j],
             price: "",
-            url: "",
           });
         }
       }
@@ -461,6 +454,7 @@ export default {
     },
     delspec(index) {
       this.spec.splice(index, 1);
+      this.speccolior.splice(index,1)
     },
     handleResponses(res, file) {
       this.thumbsVideo = res.url;

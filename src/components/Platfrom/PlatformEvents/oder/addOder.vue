@@ -402,6 +402,7 @@ export default {
     },
     delspec(index) {
       this.spec.splice(index, 1);
+      this.speccolior.splice(index,1)
     },
     // 品牌选择
     brandList() {
@@ -434,19 +435,26 @@ export default {
       return URL.createObjectURL(file.raw);
     },
     ygAdd() {
+      var colorser = [];
+      for (let index = 0; index < this.speccolior.length; index++) {
+        let json={}
+        json.url = this.thumbs2[index]
+        json.color = this.speccolior[index].color
+        colorser.push(json)
+      }
       this.ruleForm.thumb = {
-        thumbList: this.thumbsVideo + this.thumbs,
-        color: this.thumbs2,
+        thumbList: this.thumbsVideo+"," + this.thumbs,
+        color: colorser,
       };
-      this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb);
-      this.ruleForm.spec = JSON.stringify(this.spec);
-      this.ruleForm.config = JSON.stringify(this.config);
       this.ruleForm.content = {
         text: this.content2,
         imgs: this.content1 + "," + this.thumbs3,
       };
       this.ruleForm.accept_id = this.$route.params.accept_id;
       this.ruleForm.match_id = this.$route.params.match_id;
+      this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb);
+      this.ruleForm.spec = JSON.stringify(this.spec);
+      this.ruleForm.config = JSON.stringify(this.config);
       this.ruleForm.content = JSON.stringify(this.ruleForm.content);
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;

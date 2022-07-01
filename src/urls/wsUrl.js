@@ -107,6 +107,14 @@ export const designerMyCenterApi = () => {
 export const designerGetListApi = () => {
     return "designer/getList"
 }
+// 分类列表
+export const custypeGetListApi = () => {
+    return "custype/getList"
+}
+// 预售商品列表
+export const match_productGetListMyApi = () => {
+    return "match_product/getListMy"
+}
 
 
 

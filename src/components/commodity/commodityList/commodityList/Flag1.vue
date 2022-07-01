@@ -108,8 +108,8 @@
               <div class="marginOp">
                 <el-image
                   :src="imagesValue + fulthumb(scoped.row.thumb)"
-                  alt=""
                   :preview-src-list="[imagesValue + fulthumb(scoped.row.thumb)]"
+                  alt=""
                   style="
                     width: 100px;
                     height: 100px;

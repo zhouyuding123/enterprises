@@ -340,7 +340,7 @@ export default {
       });
     },
     fulthumb(val) {
-      return val.split(",")[0];
+      return val.split(",").slice(1)[0];
     },
     handleSelectionChange(val) {
       this.arrs = val;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="spanstyle" @click="editShow"><span>编辑</span></div>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="70%">
+    <el-dialog title="编辑" :visible.sync="dialogVisible" width="70%">
       <el-form
         :model="ruleForms"
         :rules="ruleFormsRules"
@@ -27,7 +27,7 @@
               @error="handleUploadError"
               style="margin: 50px"
               action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
-              v-model="thumbsVideo"
+              v-model="thumbsVideos"
             ></ele-upload-video>
             <div>
               <span>(最多9张图)</span>
@@ -37,10 +37,11 @@
                 list-type="picture-card"
                 :data="{ fileType: this.fileType }"
                 :limit="9"
+                multiple
                 :on-success="handleAvatarSuccesser"
                 :before-upload="beforeAvatarUpload"
               >
-                <img v-if="thumbs" :src="thumbs[0]" class="avatar" />
+                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
                 <i slot="default" class="el-icon-plus"></i>
               </el-upload>
             </div>
@@ -138,7 +139,7 @@
                 >
                   <img
                     v-if="imageUrls != ''"
-                    :src="imageValue + imageUrls[index]"
+                    :src="imagesValue + imageUrls[index]"
                     class="avatar"
                   />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -192,8 +193,31 @@
               @error="handleUploadError"
               style="margin: 50px"
               action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
-              v-model="video"
+              v-model="videos"
             ></ele-upload-video>
+          </el-form-item>
+        </div>
+        <div class="line4">
+          <el-form-item label="商品介绍" prop="title">
+            <el-input
+              v-model="content2"
+              type="textarea"
+              placeholder="请输入内容"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="添加图片" prop="title">
+            <el-upload
+              action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+              list-type="picture-card"
+              :data="{ fileType: this.fileType }"
+              :limit="9"
+              :on-success="contentPhoto"
+              :before-upload="beforeAvatarUpload"
+              multiple
+            >
+              <i slot="default" class="el-icon-plus"></i>
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            </el-upload>
           </el-form-item>
         </div>
       </el-form>
@@ -266,25 +290,27 @@ export default {
       },
       disabled: false,
       fileType: "images",
-      imageUrl: [],
+      imageUrl: "",
       fileList: [],
       // 品牌id
       options: [],
       //选择平台设置的商品类别
       typeOptions: [],
-      // 自定义
+      // 自定义z
       custom_typeOptions: [],
       //   视频
-      fileTypes: "video",
+      fileTypes: "moves",
       // 验证
       token: "",
       video: "",
+      videos: "",
       PreviewId: {
         id: "",
       },
       thumbs: [],
       videoone: "",
       thumbsVideo: "",
+      thumbsVideos: "",
       imageUrls: [],
       thumbs2: [],
       content1: "",
@@ -311,27 +337,46 @@ export default {
         this.imagesValue = imgUrl();
         this.ruleForms.brand_id = res.data.brand;
         this.ruleForms.thumb = res.data.thumb.split(",");
+        let values = JSON.parse(this.ruleForms.thumb).thumbList.split(",");
+        let colorvalue = JSON.parse(this.ruleForms.thumb).color;
+        colorvalue.forEach((v) => {
+          this.thumbs2.push(v.url);
+        });
+        this.imageUrls = this.thumbs2;
         let thumbList = [];
-        this.ruleForms.thumb.forEach((v) => {
-          thumbList.push(imgUrl() + v);
+        values.forEach((v) => {
+          thumbList.push(v);
         });
         this.thumbsVideo = thumbList[0];
+        this.thumbsVideos = this.imagesValue + thumbList[0];
         // 有问题
         this.thumbs = thumbList.slice(1);
         //
         this.ruleForms.title = res.data.title;
         this.spec = res.data.spec;
-        console.log(this.thumbs);
         let some = [];
-      this.spec.forEach((v) => {
-        if (!some.some((val) => val.color == v.color)) {
-          some.push(v);
-        }
-      });
-      this.speccolior = some;
+        this.spec.forEach((v) => {
+          if (!some.some((val) => val.color == v.color)) {
+            some.push(v);
+          }
+        });
+        this.speccolior = some;
         this.ruleForms.type = res.data.type;
         this.ruleForms.custom_type = res.data.custom_type;
-        this.ruleForms.content = res.data.content;
+        // this.ruleForms.content = JSON.parse(res.data.content).imgs.split(',');
+        let valueser = JSON.parse(res.data.content).imgs.split(",");
+
+        let imgser = [];
+        valueser.forEach((v) => {
+            imgser.push(v);
+        });
+        imgser = imgser.filter(val=>val)
+        
+        this.video = imgser[0];
+        this.videos = this.imagesValue + imgser[0];
+        this.content2 = JSON.parse(res.data.content).text;
+        this.thumbs3 = JSON.parse(res.data.content).imgs;
+
         this.ruleForms.id = res.data.id;
       });
     },
@@ -363,32 +408,42 @@ export default {
       return URL.createObjectURL(file.raw);
     },
     dialogVisibleAdd() {
-      // this.ruleForm.thumb = this.thumbsVideo+ ',' + this.thumbs+ ',' +this.thumbs2;
-      //   this.ruleForm.spec = JSON.stringify(this.spec);
-      //   this.ruleForm.content = {
-      //     text:this.content2,
-      //     imgs:this.content1+','+this.thumbs3
-      //   };
-      //  this.ruleForm.content = JSON.stringify(this.ruleForm.content)
-      console.log(this.ruleForms);
-      // this.$refs.ruleFormsRef.validate((v) => {
-      //   if (!v) return;
-      //   postD(company_productEditProductApi(), this.ruleForms).then((res) => {
-      //     if (res.code == "200") {
-      //       this.$message.success("修改成功");
-      //       this.dialogVisible = false;
-      //       this.commodityValue();
-      //     } else if (res.code == "-200") {
-      //       this.$message.error("参数错误，或暂无数据");
-      //     } else if (res.code == "-201") {
-      //       this.$message.error("未登陆");
-      //     } else if (res.code == "-203") {
-      //       this.$message.error("对不起，你没有此操作权限");
-      //     } else {
-      //       this.$message.error("注册失败，已存在");
-      //     }
-      //   });
-      // });
+      var colorser = [];
+      for (let index = 0; index < this.speccolior.length; index++) {
+        let json = {};
+        json.url = this.thumbs2[index];
+        json.color = this.speccolior[index].color;
+        colorser.push(json);
+      }
+      this.ruleForms.thumb = {
+        thumbList: this.thumbsVideo + "," + this.thumbs,
+        color: colorser,
+      };
+      this.ruleForms.spec = JSON.stringify(this.spec);
+      this.ruleForms.content = {
+        text: this.content2,
+        imgs: this.content1 + "," + this.thumbs3,
+      };
+      this.ruleForms.content = JSON.stringify(this.ruleForms.content);
+      this.ruleForms.thumb = JSON.stringify(this.ruleForms.thumb);
+      this.$refs.ruleFormsRef.validate((v) => {
+        if (!v) return;
+        postD(company_productEditProductApi(), this.ruleForms).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("修改成功");
+            this.dialogVisible = false;
+            this.commodityValue();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，已存在");
+          }
+        });
+      });
     },
     // 颜色
     colorss(val) {
@@ -444,10 +499,14 @@ export default {
     },
     delspec(index) {
       this.spec.splice(index, 1);
+      this.speccolior.splice(index, 1);
     },
     handleResponses(res, file) {
       this.thumbsVideo = res.url;
       return URL.createObjectURL(file.raw);
+    },
+    contentPhoto(res, file) {
+      this.thumbs3.push(res.url);
     },
   },
 };

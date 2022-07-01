@@ -24,8 +24,10 @@
 
 .nicknameValue {
     .name_nickname {
-        padding: 33px 0px;
-        position: relative;
+        // padding: 33px 0px;
+        // position: relative;
+        display: flex;
+        margin-top: 40px;
 
         .nickname_span {
             cursor: pointer;
@@ -33,14 +35,11 @@
             font-family: PingFang SC-Bold, PingFang SC;
             font-weight: bold;
             color: #333333;
-            line-height: 0px;
+            padding-right: 20px;
         }
 
         .top {
-            margin-left: 80px;
-            position: absolute;
-            top: 27px;
-            left: 0;
+            margin-top: -3px;
 
             img {
                 width: 90px;
@@ -63,6 +62,7 @@
 
 .fans_num {
     text-align: left;
+    margin-top: 5px;
 
     span {
         font-size: 14px;
@@ -183,15 +183,19 @@
     }
 
     .worksDiv2line2 {
-        padding: 40px 0px 40px 40px;
+        padding: 40px 0px 40px 50px;
         text-align: left;
+        width: 1150px;
+        overflow: hidden; //超出隐藏
+        word-wrap: break-word;
+        word-break: break-all;
     }
 
     .imgs {
         padding: 0px 40px 72px 40px;
 
         img {
-            width: 1200px;
+            width: 1150px;
             height: 812px;
         }
     }
@@ -452,6 +456,7 @@
 
 .reply {
     cursor: pointer;
+
     span {
         font-size: 14px;
         font-family: PingFang SC-Regular, PingFang SC;

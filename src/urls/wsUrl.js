@@ -127,6 +127,10 @@ export const match_productSelectSetDelApi = () => {
 export const match_productShowProductApi = () => {
     return "match_product/showProduct"
 }
+// 删除预售商品 可批量
+export const match_productSelectDelApi = () => {
+    return "match_product/selectDel"
+}
 
 
 

@@ -48,10 +48,10 @@
             <span>搜索</span>
           </div>
         </div>
-        <div class="selectDel">
+        <div class="selectDel" @click="delsValue">
           <span>批量还原</span>
         </div>
-        <div class="plsj">
+        <div class="plsj" @click="delsvalueser">
           <span>批量删除</span>
         </div>
         <div class="Res" @click="Refresh">
@@ -228,7 +228,9 @@
                 <div>
                   <span>{{ scoped.row.works.nickname }}</span>
                 </div>
-                <div class="clickcolor" @click="godesignermyCenter(scoped.row)">点击设计师查看设计师主页</div>
+                <div class="clickcolor" @click="godesignermyCenter(scoped.row)">
+                  点击设计师查看设计师主页
+                </div>
               </div>
             </template>
           </el-table-column>
@@ -243,6 +245,11 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" width="91" align="center">
+            <template v-slot="scoped">
+              <preview class="spanstyle" :preview="scoped.row" />
+              <outrecovery class="spanstyle" :havehs="scoped.row" />
+              <del-list class="spanstyle" :haveDel="scoped.row"  />
+            </template>
           </el-table-column>
         </el-table>
         <vxe-pager
@@ -270,16 +277,31 @@ import {
   custypeGetListApi,
   brandGetListApi,
   match_productGetListMyApi,
+  match_productSelectSetDelApi,
+  match_productSelectDelApi,
 } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
-import { imgUrl } from '@/assets/js/modifyStyle';
+import { imgUrl } from "@/assets/js/modifyStyle";
+import Preview from "./options/Preview.vue";
+import Outrecovery from "./recoveryoptions/outrecovery.vue";
+import delList from "./recoveryoptions/del.vue";
 export default {
+  components: {
+    Outrecovery,
+    Preview,
+    delList,
+  },
+  provide() {
+    return {
+      recycleBin: this.recycleBin,
+    };
+  },
   data() {
     return {
       InPreSale: {
         is_del: "1",
       },
-      tableData:[],
+      tableData: [],
       // 产品分类
       cusOptions: [],
       checkboxGroup1: {
@@ -310,13 +332,24 @@ export default {
         status: "",
         is_del: "1",
       },
+      // 批量操作
+      ids: [],
+      //选中时将对象保存到arrs中
+      arrs: [],
+      comDelsValues: {
+        id: "",
+        is_del: "0",
+      },
+      delsId: {
+        id: "",
+      },
     };
   },
   created() {
     this.custypeGetListValue();
     this.product_typeListValue();
     this.recycleBin();
-    this.imagesValue = imgUrl()
+    this.imagesValue = imgUrl();
   },
   methods: {
     // 产品分类
@@ -381,6 +414,78 @@ export default {
     },
     handleSelectionChange(val) {
       this.arrs = val;
+    },
+    // 批量还原
+    async delsValue() {
+      const delsValues = await this.$confirm(
+        "此操作将移出回收站, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (delsValues !== "confirm") {
+        return this.$message.info("取消操作");
+      }
+      if (delsValues === "confirm") {
+        this.arrs.forEach((v) => {
+          this.ids.push(v.id);
+        });
+        this.comDelsValues.id = this.ids.toString();
+        postD(match_productSelectSetDelApi(), this.comDelsValues).then(
+          (res) => {
+            if (res.code == "200") {
+              this.$message.success("已还原");
+              this.recycleBin();
+            } else if (res.code == "-200") {
+              this.$message.error("参数错误，或暂无数据");
+            } else if (res.code == "-201") {
+              this.$message.error("未登陆");
+            } else if (res.code == "-203") {
+              this.$message.error("对不起，你没有此操作权限");
+            } else {
+              this.$message.error("操作失败");
+            }
+          }
+        );
+      }
+    },
+    // 批量删除
+    async delsvalueser() {
+      const Delsvaluesser = await this.$confirm(
+        "此操作将批量删除产品, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (Delsvaluesser !== "confirm") {
+        return this.$message.info("取消删除");
+      }
+      if (Delsvaluesser === "confirm") {
+        this.arrs.forEach((v) => {
+          this.ids.push(v.id);
+        });
+        this.delsId.id = this.ids.toString();
+        postD(match_productSelectDelApi(), this.delsId).then((res) => {
+          if (res.code == "200") {
+            this.$message.success("已成功删除");
+            this.recycleBin();
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("操作失败");
+          }
+        });
+      }
     },
   },
 };

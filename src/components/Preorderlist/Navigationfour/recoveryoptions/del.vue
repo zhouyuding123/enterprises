@@ -1,24 +1,25 @@
 <template>
-  <div class="hs" @click="oneDle()">回收</div>
+  <div>
+    <div @click="oneDle()"><span>删除</span></div>
+  </div>
 </template>
 
 <script>
-import {match_productSelectSetDelApi} from "@/urls/wsUrl.js"
+import { match_productSelectDelApi } from "@/urls/wsUrl.js";
 import { postD } from '@/api';
 export default {
-  props: ["havehs"],
-  inject: ["PreOrder"],
+    props: ["haveDel"],
+  inject: ["recycleBin"],
   data() {
     return {
-      comDelId: {
-        id: "",
-        is_del: "1",
-      },
+        delId: {
+            id:""
+        }
     };
   },
   methods: {
-      async oneDle() {
-      this.comDelId.id = this.havehs.id;
+    async oneDle() {
+      this.delId.id = this.haveDel.id;
       const onecomDelList = await this.$confirm(
         "此操作将放商品入回收站, 是否继续?",
         "提示",
@@ -28,17 +29,14 @@ export default {
           type: "warning",
         }
       ).catch((err) => err);
-      if(onecomDelList === "confirm"&&this.havehs.status == '1' ) {
-        return this.$message.info("上架中的产品不能回收");
-      }
       if (onecomDelList !== "confirm") {
         return this.$message.info("取消放入回收站");
       }
-      if (onecomDelList === "confirm"&&this.havehs.status == '0') {
-        postD(match_productSelectSetDelApi(), this.comDelId).then((res) => {
+      if (onecomDelList === "confirm") {
+        postD(match_productSelectDelApi(), this.delId).then((res) => {
           if (res.code == "200") {
-            this.$message.success("成功放入回收站");
-            this.PreOrder();
+            this.$message.success("成功删除");
+            this.recycleBin();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
           } else if (res.code == "-201") {
@@ -54,9 +52,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.hs {
-  cursor: pointer;
-}
-</style>

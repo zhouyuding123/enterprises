@@ -242,7 +242,9 @@
                 <div>
                   <span>{{ scoped.row.works.nickname }}</span>
                 </div>
-                <div class="clickcolor" @click="godesignermyCenter(scoped.row)">点击设计师查看设计师主页</div>
+                <div class="clickcolor" @click="godesignermyCenter(scoped.row)">
+                  点击设计师查看设计师主页
+                </div>
               </div>
             </template>
           </el-table-column>
@@ -609,26 +611,36 @@ export default {
         return this.$message.info("取消操作");
       }
       if (delsValues === "confirm") {
+        let statusis = [];
         this.arrs.forEach((v) => {
           this.ids.push(v.id);
+          statusis.push(v.status);
         });
+
         this.comDelsValues.id = this.ids.toString();
-        postD(match_productSelectSetDelApi(), this.comDelsValues).then(
-          (res) => {
-            if (res.code == "200") {
-              this.$message.success("已成功放入回收站");
-              this.PreOrder();
-            } else if (res.code == "-200") {
-              this.$message.error("参数错误，或暂无数据");
-            } else if (res.code == "-201") {
-              this.$message.error("未登陆");
-            } else if (res.code == "-203") {
-              this.$message.error("对不起，你没有此操作权限");
-            } else {
-              this.$message.error("回收失败");
+        console.log(statusis.indexOf(1));
+        if (statusis.indexOf(1) == 0) { 
+          this.$message("含有上架中的产品，请下架后回收");
+          console.log(1);
+        } else  {
+
+          postD(match_productSelectSetDelApi(), this.comDelsValues).then(
+            (res) => {
+              if (res.code == "200") {
+                this.$message.success("已成功放入回收站");
+                this.PreOrder();
+              } else if (res.code == "-200") {
+                this.$message.error("参数错误，或暂无数据");
+              } else if (res.code == "-201") {
+                this.$message.error("未登陆");
+              } else if (res.code == "-203") {
+                this.$message.error("对不起，你没有此操作权限");
+              } else {
+                this.$message.error("回收失败");
+              }
             }
-          }
-        );
+          );
+        }
       }
     },
     // 去详情页
@@ -637,8 +649,8 @@ export default {
     },
     // 去设计师页
     godesignermyCenter(val) {
-        this.$router.push("/designer/myCenter/" + val.works.username);
-    }
+      this.$router.push("/designer/myCenter/" + val.works.username);
+    },
   },
 };
 </script>

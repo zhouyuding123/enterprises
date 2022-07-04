@@ -94,7 +94,6 @@ import { match_productShowProductApi } from "@/urls/wsUrl.js";
 import { imgUrl } from "@/assets/js/modifyStyle.js";
 export default {
   props: ["preview"],
-  inject: ["PreOrder"],
   data() {
     return {
       dialogVisible: false,
@@ -111,7 +110,6 @@ export default {
   },
   created() {
     this.imagesValue = imgUrl();
-    console.log(this.preview);
   },
   methods: {
     thisPreview() {

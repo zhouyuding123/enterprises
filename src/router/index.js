@@ -495,7 +495,7 @@ const routes = [
             },
           },
           {
-            path: "/match/oder/:accept_id/:match_id",
+            path: "/match/oder/:accept_id/:match_id/:works_id",
             name: "oder",
             component: () => import("../components/Platfrom/PlatformEvents/oder/addOder.vue"),
             meta: {

@@ -698,16 +698,18 @@ export default {
       this.$router.push("/Match/works" + this.ScreeningId.id);
     },
     addOrder(val) {
+      console.log(val);
       var ordermatch_id = this.$route.params.id;
       var orderaccept_id = val.accept_id
+      var orderworks_id = val.works_id
       this.$router.push({
         name:"oder",
         params: {
           match_id:ordermatch_id,
-          accept_id:orderaccept_id
+          accept_id:orderaccept_id,
+          works_id:orderworks_id
         }
       })
-      console.log(val);
     }
   },
 };

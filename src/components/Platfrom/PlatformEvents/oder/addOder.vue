@@ -241,7 +241,7 @@
 <script>
 import EleUploadVideo from "vue-ele-upload-video";
 import { imgUrl, beforeAvatar } from "@/assets/js/modifyStyle.js";
-import { brandGetListApi, match_productAddProductApi } from "@/urls/wsUrl.js";
+import { brandGetListApi, match_productAddProductApi,custypeGetListApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 const colors = ["黑色", "白色", "红色", "黄色", "蓝色", "绿色"];
 const sizes = ["XXS", "XS ", "S", "M", "L", "XL "];
@@ -261,6 +261,7 @@ export default {
         brand_id: "",
         is_new: "",
         content: "",
+        works_id: "",
       },
       ruleFormRules: {
         title: [
@@ -402,7 +403,7 @@ export default {
     },
     delspec(index) {
       this.spec.splice(index, 1);
-      this.speccolior.splice(index,1)
+      this.speccolior.splice(index, 1);
     },
     // 品牌选择
     brandList() {
@@ -412,9 +413,7 @@ export default {
     },
     // 店铺分类
     custom_typeList() {
-      postD(
-        "https://weisou.chengduziyi.com/designer/product_type/getList"
-      ).then((res) => {
+      postD(custypeGetListApi()).then((res) => {
         this.custom_typeoptions = res.list;
       });
     },
@@ -437,13 +436,13 @@ export default {
     ygAdd() {
       var colorser = [];
       for (let index = 0; index < this.speccolior.length; index++) {
-        let json={}
-        json.url = this.thumbs2[index]
-        json.color = this.speccolior[index].color
-        colorser.push(json)
+        let json = {};
+        json.url = this.thumbs2[index];
+        json.color = this.speccolior[index].color;
+        colorser.push(json);
       }
       this.ruleForm.thumb = {
-        thumbList: this.thumbsVideo+"," + this.thumbs,
+        thumbList: this.thumbsVideo + "," + this.thumbs,
         color: colorser,
       };
       this.ruleForm.content = {
@@ -452,17 +451,21 @@ export default {
       };
       this.ruleForm.accept_id = this.$route.params.accept_id;
       this.ruleForm.match_id = this.$route.params.match_id;
-      this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb);
+      this.ruleForm.works_id = this.$route.params.works_id;
+      this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb).toString();
+      console.log(this.ruleForm);
       this.ruleForm.spec = JSON.stringify(this.spec);
-      this.ruleForm.config = JSON.stringify(this.config);
-      this.ruleForm.content = JSON.stringify(this.ruleForm.content);
+      console.log(this.ruleForm.spec);
+      this.ruleForm.config = JSON.stringify(this.config).toString();
+      console.log(this.ruleForm.config);
+      this.ruleForm.content = JSON.stringify(this.ruleForm.content).toString();
+      console.log(this.ruleForm.content);
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;
         postD(match_productAddProductApi(), this.ruleForm).then((res) => {
           if (res.code == "200") {
             this.$message.success("预购商品成功");
             this.$router.push("/match/detial" + this.ruleForm.match_id);
-            this.commodityValue();
           } else {
             this.$message.error("预购商品失败");
           }

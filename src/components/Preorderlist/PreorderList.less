@@ -258,4 +258,61 @@
       white-space: pre-wrap; //中文
     }
   }
+  .el-form-item {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #EBEEF5;
+      width: 200px;
+  }
+  /deep/.el-table__expanded-cell {
+      padding: 0;
+  }
+  .el-form--inline .el-form-item {
+      margin-right: 0;
+      margin-bottom: 0;
+  }
+  .colorDiv {
+    text-align: center;
+    border-top: 1px solid #dfdfdf;
   
+    span {
+      line-height: 70px;
+    }
+  }
+  .colorDivs {
+      position: relative;
+      span {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%,100%);
+      }
+  }
+  /deep/.el-form-item__label{
+      text-align: center;
+      padding: 0;
+      border-bottom: #dfdfdf 1px solid;
+  }
+  .clickcolor {
+      color: red;
+      font-size: 12px;
+      cursor: pointer;
+  }
+  .colorDivsrq {
+    position: relative;
+    div {
+        position: absolute;
+        width: 145px;
+          left: 55%;
+          top: 50%;
+          transform: translate(-50%,100%);
+    }
+  }
+  .spanstyle {
+    cursor: pointer;
+    font-size: 14px;
+    font-family: PingFang SC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #0177d5;
+    margin-top: 10px;
+  }

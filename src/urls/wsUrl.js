@@ -115,6 +115,19 @@ export const custypeGetListApi = () => {
 export const match_productGetListMyApi = () => {
     return "match_product/getListMy"
 }
+// 商品上下架 可批量
+export const match_productSetStatusApi = () => {
+    return "match_product/setStatus"
+}
+// 进入回收站 可批量操作
+export const match_productSelectSetDelApi = () => {
+    return "match_product/selectSetDel"
+}
+//预算商品详情
+export const match_productShowProductApi = () => {
+    return "match_product/showProduct"
+}
+
 
 
 

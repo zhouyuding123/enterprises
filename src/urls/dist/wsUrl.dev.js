@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.match_productGetListMyApi = exports.custypeGetListApi = exports.designerGetListApi = exports.designerMyCenterApi = exports.match_productAddProductApi = exports.brandGetListApi = exports.MatchScreenApi = exports.MatchWorksListApi = exports.MatchSetVotoApi = exports.MatchVerVotoApi = exports.MatchWorksApi = exports.matchAddAccessApi = exports.matchListMacthApi = exports.users_companyLoginPWApi = exports.users_companyVerifyUsersApi = exports.users_companyRegisterApi = exports.BusinessDelBusinessApi = exports.designer_worksCommentApi = exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
+exports.match_productShowProductApi = exports.match_productSelectSetDelApi = exports.match_productSetStatusApi = exports.match_productGetListMyApi = exports.custypeGetListApi = exports.designerGetListApi = exports.designerMyCenterApi = exports.match_productAddProductApi = exports.brandGetListApi = exports.MatchScreenApi = exports.MatchWorksListApi = exports.MatchSetVotoApi = exports.MatchVerVotoApi = exports.MatchWorksApi = exports.matchAddAccessApi = exports.matchListMacthApi = exports.users_companyLoginPWApi = exports.users_companyVerifyUsersApi = exports.users_companyRegisterApi = exports.BusinessDelBusinessApi = exports.designer_worksCommentApi = exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
 
 var ForumReleaseApi = function ForumReleaseApi() {
   return "Forum/release";
@@ -202,6 +202,27 @@ exports.custypeGetListApi = custypeGetListApi;
 
 var match_productGetListMyApi = function match_productGetListMyApi() {
   return "match_product/getListMy";
-};
+}; // 商品上下架 可批量
+
 
 exports.match_productGetListMyApi = match_productGetListMyApi;
+
+var match_productSetStatusApi = function match_productSetStatusApi() {
+  return "match_product/setStatus";
+}; // 进入回收站 可批量操作
+
+
+exports.match_productSetStatusApi = match_productSetStatusApi;
+
+var match_productSelectSetDelApi = function match_productSelectSetDelApi() {
+  return "match_product/selectSetDel";
+}; //预算商品详情
+
+
+exports.match_productSelectSetDelApi = match_productSelectSetDelApi;
+
+var match_productShowProductApi = function match_productShowProductApi() {
+  return "match_product/showProduct";
+};
+
+exports.match_productShowProductApi = match_productShowProductApi;

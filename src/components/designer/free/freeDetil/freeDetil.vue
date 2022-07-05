@@ -244,7 +244,7 @@ export default {
         this.WorksShowData = res.data;
         this.imagesValue = imgUrl();
         var ss = JSON.parse(res.data.content)
-        var arr = ss.imgs.split(",");
+        var arr = ss.images.split(",");
         var arrs = this.WorksShowData.label.split(",");
         this.imgs = arr;
         this.labels = arrs;

@@ -156,7 +156,14 @@
           </el-form-item>
         </div>
         <el-form-item label="交货日期" prop="title">
-          <el-input v-model="config.delivery_time"></el-input>
+          <!-- <el-input v-model="config.delivery_time"></el-input> -->
+          <el-date-picker
+            v-model="timeser"
+            type="datetime"
+            placeholder="选择报名结束时间"
+            @change="gitTime"
+          >
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="品牌选择" prop="title">
           <el-select v-model="ruleForm.brand_id" placeholder="请选择">
@@ -241,10 +248,15 @@
 <script>
 import EleUploadVideo from "vue-ele-upload-video";
 import { imgUrl, beforeAvatar } from "@/assets/js/modifyStyle.js";
-import { brandGetListApi, match_productAddProductApi,custypeGetListApi } from "@/urls/wsUrl.js";
+import {
+  brandGetListApi,
+  match_productAddProductApi,
+  custypeGetListApi,
+} from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 const colors = ["黑色", "白色", "红色", "黄色", "蓝色", "绿色"];
 const sizes = ["XXS", "XS ", "S", "M", "L", "XL "];
+import {timestampToTime}from "@/assets/js/time.js"
 export default {
   components: {
     EleUploadVideo,
@@ -324,6 +336,8 @@ export default {
       // 视频 商品介绍 添加图片
       content1: "",
       content2: "",
+      // 时间
+      timeser:""
     };
   },
   created() {
@@ -433,6 +447,10 @@ export default {
       this.thumbsVideo = res.url;
       return URL.createObjectURL(file.raw);
     },
+    gitTime(date) {
+      let newDate=/\d{4}-\d{1,2}-\d{1,2}/g.exec(timestampToTime(date/1000))
+      this.config.delivery_time =newDate[0]
+    },
     ygAdd() {
       var colorser = [];
       for (let index = 0; index < this.speccolior.length; index++) {
@@ -453,13 +471,10 @@ export default {
       this.ruleForm.match_id = this.$route.params.match_id;
       this.ruleForm.works_id = this.$route.params.works_id;
       this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb).toString();
-      console.log(this.ruleForm);
       this.ruleForm.spec = JSON.stringify(this.spec);
-      console.log(this.ruleForm.spec);
       this.ruleForm.config = JSON.stringify(this.config).toString();
-      console.log(this.ruleForm.config);
       this.ruleForm.content = JSON.stringify(this.ruleForm.content).toString();
-      console.log(this.ruleForm.content);
+      console.log(this.ruleForm.config);
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;
         postD(match_productAddProductApi(), this.ruleForm).then((res) => {

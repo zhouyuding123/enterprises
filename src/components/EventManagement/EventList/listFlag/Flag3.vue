@@ -133,6 +133,7 @@ export default {
       page1: {
         offset: 1,
         limit: 10,
+        totalResult:""
       },
       reasonValueShow:false,
       reasonValueId: {

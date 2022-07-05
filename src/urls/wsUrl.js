@@ -131,6 +131,14 @@ export const match_productShowProductApi = () => {
 export const match_productSelectDelApi = () => {
     return "match_product/selectDel"
 }
+// 我冠名的赛事列表
+export const matchAccessListApi = () => {
+    return "match/accessList"
+}
+// 当前赛事剩余投票次数
+export const MatchVotoCountApi = () => {
+    return "Match/votoCount"
+}
 
 
 

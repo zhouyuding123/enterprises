@@ -1,6 +1,8 @@
 <template>
   <div class="detialBody">
-    <div class="titleValue"><span>{{ detialValueList.title }}</span></div>
+    <div class="titleValue">
+      <span>{{ detialValueList.title }}</span>
+    </div>
     <div class="detialImg">
       <img
         :src="imagesValue + detialValueList.poster"
@@ -28,10 +30,7 @@
     </div>
     <div
       class="eventbackground"
-      v-if="
-        Nowtimes > signstarttime &&
-        Nowtimes < signendtime
-      "
+      v-if="Nowtimes > signstarttime && Nowtimes < signendtime"
     >
       <div class="eventline1">
         <div class="eventline1_div1" @click="eveTheme('aa' + 1)">
@@ -206,19 +205,13 @@
           <span>{{ detialValueList.nickname }}</span>
         </div>
       </div>
-      <div class="Sponsor" v-if="detialValueList.access !==false">
+      <div class="Sponsor" v-if="detialValueList.access !== false">
         <div class="SponsorDiv">
           <span>{{ detialValueList.access.nickname }}</span>
         </div>
       </div>
     </div>
-    <div
-      class=""
-      v-if="
-        Nowtimes > votostarttime &&
-        Nowtimes < exhstarttime
-      "
-    >
+    <div class="" v-if="Nowtimes > votostarttime && Nowtimes < exhstarttime">
       <div class="titleline1">
         <div class="countSstyle">
           <div class="numbervalue">
@@ -287,7 +280,7 @@
               class="votonum"
               id="votonumvo"
               v-if="items.is_voto === 1"
-              @click="votonums(items.accept_id)"
+              @click="votonums(items)"
             >
               <span>投TA一票</span>
             </div>
@@ -298,20 +291,20 @@
         </div>
         <div class="pagers">
           <vxe-pager
-        :current-page="detialId.offset"
-        :page-size="detialId.limit"
-        :total="detialId.totalResult"
-        :layouts="[
-          'PrevPage',
-          'JumpNumber',
-          'NextPage',
-          'FullJump',
-          'Sizes',
-          'Total',
-        ]"
-        align="center"
-        @page-change="handlePageChangeActivity"
-      ></vxe-pager>
+            :current-page="detialId.offset"
+            :page-size="detialId.limit"
+            :total="detialId.totalResult"
+            :layouts="[
+              'PrevPage',
+              'JumpNumber',
+              'NextPage',
+              'FullJump',
+              'Sizes',
+              'Total',
+            ]"
+            align="center"
+            @page-change="handlePageChangeActivity"
+          ></vxe-pager>
         </div>
       </div>
     </div>
@@ -356,8 +349,34 @@
         </div>
       </div>
       <div class="ext">
-        <div class="extList" v-for="item in pricelist" :key="item.works_id">
-          <div class="RankStyle">第一名</div>
+        <div class="extList" v-for="(item, index) in pricelist" :key="index">
+          <div class="RankStyle" v-if="countValuenums[0] == index + 1">
+            {{ countValues[0] }}
+          </div>
+          <div
+            class="RankStyle"
+            v-else-if="countValuenums[1] >= index + 1 - countValuenums[0]"
+          >
+            {{ countValues[1] }}
+          </div>
+          <div
+            class="RankStyle"
+            v-else-if="countValuenums[2] >= index + 1 - countValuenums[2]"
+          >
+            {{ countValues[2] }}
+          </div>
+          <div
+            class="RankStyle"
+            v-else-if="countValuenums[3] >= index + 1 - countValuenums[3]"
+          >
+            {{ countValues[3] }}
+          </div>
+          <div
+            class="RankStyle"
+            v-else-if="countValuenums[4] >= index + 1 - countValuenums[4]"
+          >
+            {{ countValues[4] }}
+          </div>
           <div class="pubimg">
             <img :src="imagesValue + item.thumb" alt="" />
           </div>
@@ -460,6 +479,25 @@
         </span>
       </div>
     </el-dialog>
+    <el-dialog title="提示" :visible.sync="votoShow" width="30%">
+      <div class="votoOK">
+        <div><img src="@/assets/myimger/投票.png" alt="" /></div>
+        <div class="okvoto">
+          <span
+            >当前赛事可投票{{ votocountvalue }}次，且每个作品只可投票一次</span
+          >
+        </div>
+        <div style="padding-top: 20px">
+          <span>您确定要对该作品进行投票吗？</span>
+        </div>
+        <div style="padding-top: 48px">
+          <el-button type="primary" @click="vote">确 定</el-button>
+        </div>
+        <div class="jxyl" @click="votoShow = false">
+          <span>继续浏览</span>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -470,6 +508,7 @@ import {
   MatchWorksApi,
   MatchSetVotoApi,
   MatchWorksListApi,
+  MatchVotoCountApi,
 } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 import { imgUrl } from "@/assets/js/modifyStyle";
@@ -543,12 +582,19 @@ export default {
       votoid: {
         accept_id: "",
       },
+      votocount: {
+        match_id: "",
+      },
       publicityValueList: [],
       naberone: [],
       nabertwo: [],
       naberthree: [],
       prices: [],
       pricelist: [],
+      countValuenums: [],
+      countValues: [],
+      votoShow: false,
+      votocountvalue: "",
     };
   },
   watch: {
@@ -557,7 +603,6 @@ export default {
       newval.forEach((item, i) => {
         mapva.push(...this.publicityValueList.splice(0, item.amount));
       });
-      console.log(mapva);
       this.pricelist = mapva;
     },
   },
@@ -582,7 +627,17 @@ export default {
       this.detialId.id = this.$route.params.id;
       postD(matchShowMatchApi(), this.detialId).then((res) => {
         this.prices = res.data.prize;
-        
+
+        var countValue = [];
+        var countValuenum = [];
+        res.data.prize.forEach((v) => {
+          countValuenum.push(v.amount);
+          countValue.push(v.name);
+        });
+        this.countValuenums = countValuenum;
+        this.countValues = countValue;
+        console.log(this.countValuenums);
+
         // var i = 0;
         // var s = i+1
         // var l = i+2
@@ -631,7 +686,7 @@ export default {
       this.detialId.offset = currentPage;
       this.detialId.limit = pageSize;
       postD(MatchWorksApi(), this.detialId).then((res) => {
-        this.workvalue = res.list.reverse();;
+        this.workvalue = res.list.reverse();
         this.detialId.totalResult = res.accept_count;
       });
     },
@@ -671,19 +726,27 @@ export default {
     },
     // 投票
     votonums(val) {
-      this.votoid.accept_id = val;
+      this.votoid.accept_id = val.accept_id;
+      this.votocount.match_id = val.match_id;
+      this.votoShow = true;
+      postD(MatchVotoCountApi(), this.votocount).then((res) => {
+        this.votocountvalue = res.count;
+      });
+    },
+    vote() {
       postD(MatchSetVotoApi(), this.votoid).then((res) => {
         if (res.code == "200") {
           this.$message.success("投票成功");
           this.worksValue();
+          this.votoShow = false;
         } else if (res.code == "-200") {
-          this.$message.error("投票失败");
+          this.$message.error("投票失败或无次数");
         } else if (res.code == "-201") {
           this.$message.error("未登陆");
         } else if (res.code == "-203") {
           this.$message.error("对不起，你没有此操作权限");
         } else {
-          this.$message.error("注册失败，已存在");
+          this.$message.error("操作失败");
         }
       });
     },
@@ -700,17 +763,17 @@ export default {
     addOrder(val) {
       console.log(val);
       var ordermatch_id = this.$route.params.id;
-      var orderaccept_id = val.accept_id
-      var orderworks_id = val.works_id
+      var orderaccept_id = val.accept_id;
+      var orderworks_id = val.works_id;
       this.$router.push({
-        name:"oder",
+        name: "oder",
         params: {
-          match_id:ordermatch_id,
-          accept_id:orderaccept_id,
-          works_id:orderworks_id
-        }
-      })
-    }
+          match_id: ordermatch_id,
+          accept_id: orderaccept_id,
+          works_id: orderworks_id,
+        },
+      });
+    },
   },
 };
 </script>

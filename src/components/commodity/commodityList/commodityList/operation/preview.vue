@@ -25,34 +25,32 @@
           <div class="line1Value">
             <div class="line1one">
               <div class="priceValue">¥{{ previewspec.price }}</div>
-              <div class="Sold">已售123</div>
             </div>
             <div class="line1two">
               <span>{{ previewValueList.title }}</span>
             </div>
             <div class="line1treen">
-              <div><span>满400减50</span></div>
-              <div><span>满200减20</span></div>
+              <div><img src="@/assets/myimger/拇指.png" alt=""></div>
+              <div><span>最近有39人收藏过此服务</span></div>
+              <div><span>1547条评论 ></span></div>
             </div>
             <div class="line1four">
               <div class="line1fourValue">
                 <div>
-                  <img src="@/assets/imgers/正品.png" alt="" /><span>
-                    100%正品
+                  <span>
+                    服务
                   </span>
                 </div>
                 <div>
-                  <img src="@/assets/imgers/七天.png" alt="" /><span
-                    >7天无理由退换</span
+                 <span
+                    >免配送费丨损坏包赔</span
                   >
-                </div>
-                <div>
-                  <img src="@/assets/imgers/包邮.png" alt="" /><span>包邮</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="borderline2"></div>
         <div class="line2">
           <div class="details"><span>商品详情</span></div>
           <div class="htmlValue">

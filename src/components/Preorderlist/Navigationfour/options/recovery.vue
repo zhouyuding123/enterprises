@@ -3,8 +3,9 @@
 </template>
 
 <script>
-import {match_productSelectSetDelApi} from "@/urls/wsUrl.js"
-import { postD } from '@/api';
+import { match_productSelectSetDelApi } from "@/urls/wsUrl.js";
+import { postD } from "@/api";
+
 export default {
   props: ["havehs"],
   inject: ["PreOrder"],
@@ -17,7 +18,7 @@ export default {
     };
   },
   methods: {
-      async oneDle() {
+    async oneDle() {
       this.comDelId.id = this.havehs.id;
       const onecomDelList = await this.$confirm(
         "此操作将放商品入回收站, 是否继续?",
@@ -28,13 +29,13 @@ export default {
           type: "warning",
         }
       ).catch((err) => err);
-      if(onecomDelList === "confirm"&&this.havehs.status == '1' ) {
+      if (onecomDelList === "confirm" && this.havehs.status == "1") {
         return this.$message.info("上架中的产品不能回收");
       }
       if (onecomDelList !== "confirm") {
         return this.$message.info("取消放入回收站");
       }
-      if (onecomDelList === "confirm"&&this.havehs.status == '0') {
+      if (onecomDelList === "confirm" && this.havehs.status == "0") {
         postD(match_productSelectSetDelApi(), this.comDelId).then((res) => {
           if (res.code == "200") {
             this.$message.success("成功放入回收站");
@@ -51,7 +52,7 @@ export default {
         });
       }
     },
-  }
+  },
 };
 </script>
 

@@ -79,6 +79,7 @@
     </div>
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <img :src="imagesValue + code" alt="" />
+      <div>给你{{ times }}时间支付</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
@@ -90,9 +91,9 @@
 </template>
 
 <script>
-import { ordersAddVipApi, pay } from "@/urls/wsUrl.js";
+import { ordersAddVipApi, pay, ordersGetOrderStatApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
-import { imgUrl } from "@/assets/js/modifyStyle";
+import { imgUrls } from "@/assets/js/modifyStyle";
 export default {
   data() {
     return {
@@ -111,11 +112,12 @@ export default {
         order_no: "",
         type: "2",
       },
+      times: 60,
+      paymore:""
     };
   },
   created() {
-    this.imagesValue = imgUrl();
-    
+    this.imagesValue = imgUrls();
   },
   methods: {
     zxc() {
@@ -167,16 +169,30 @@ export default {
           this.payOver.order_no = res.data.order_no;
           postD(pay(), this.vipvalue).then((res) => {
             this.code = res.data.substring(10);
+            if (this.payOver.order_no != "") {
+              this.timer = setInterval(() => {
+                this.times--;
+                this.OneSecond();
+                if (this.times == 0) {
+                  clearInterval(this.timer);
+                  this.dialogVisible = false;
+                  this.$message.info("支付超时");
+                }
+                if (this.paymore == 1|| this.paymore == 3) {
+                  clearInterval(this.timer);
+                  this.dialogVisible = false;
+                  this.$message.success("恭喜你成为尊贵的会员");
+                }
+              }, 1000);
+            }
           });
         });
       }
-    //   if (this.payOver.order_no) {
-    //     setInterval(() => {
-    //       postD(ordersGetOrderStatApi(),this.payOver).then(res=> {
-    //           console.log(res);
-    //       });
-    //     }, 1000);
-    //   }
+    },
+    OneSecond() {
+      postD(ordersGetOrderStatApi(), this.payOver).then((res) => {
+        this.paymore = res.data.is_pay;
+      });
     },
   },
 };

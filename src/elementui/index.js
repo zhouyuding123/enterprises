@@ -48,10 +48,14 @@ import {
     RadioButton,
     Tabs,
     TabPane,
-    Drawer
+    Drawer,
+    Timeline,
+    TimelineItem
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(Timeline)
+        Vue.use(TimelineItem)
         Vue.use(Drawer)
         Vue.use(Tabs)
         Vue.use(TabPane)

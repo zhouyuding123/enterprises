@@ -139,6 +139,21 @@ export const matchAccessListApi = () => {
 export const MatchVotoCountApi = () => {
     return "Match/votoCount"
 }
+// 创建开通vip订单
+export const ordersAddVipApi = () => {
+    return "orders/addVip"
+}
+// pc-微信支付
+export const pay =() => {
+    return "https://weisou.chengduziyi.com/pay/Wxpay/pay"
+}
+// 读取订单明细
+export const ordersGetOrderStatApi =() => {
+    return "orders/getOrderStat"
+}
+
+
+
 
 
 

@@ -21,48 +21,141 @@
             </div>
           </el-carousel-item>
         </el-carousel>
-        <div class="line1">
-          <div class="line1Value">
-            <div class="line1one">
-              <div class="priceValue">¥{{ previewspec.price }}</div>
-              <div class="Sold">已售123</div>
+        <div class="backurls">
+          <div class="backurlsz">
+            <div class="backurlszdj">
+              定金￥<span>{{
+                Math.ceil((previewspec.price * configValue.deposit_prop) / 100)
+              }}</span>
             </div>
-            <div class="line1two">
-              <span>{{ previewValueList.title }}</span>
+            <div class="backurlszqk">
+              全款￥<span>{{ previewspec.price }}</span>
             </div>
-            <div class="line1treen">
-              <div><span>满400减50</span></div>
-              <div><span>满200减20</span></div>
+          </div>
+          <div class="backurlsy">
+            <div class="backurlsysw"><span>售完为止</span></div>
+            <div class="backurlsysl">
+              <span
+                >{{ configValue.max_count - configValue.count }}/{{
+                  configValue.max_count
+                }}</span
+              >
             </div>
-            <div class="line1four">
-              <div class="line1fourValue">
-                <div>
-                  <img src="@/assets/imgers/正品.png" alt="" /><span>
-                    100%正品
-                  </span>
-                </div>
-                <div>
-                  <img src="@/assets/imgers/七天.png" alt="" /><span
-                    >7天无理由退换</span
+          </div>
+        </div>
+        <div class="linetitle">
+          <div class="linetitleys">
+            <div class="linetitleystitle">
+              <span>[预售]{{ previewValueList.title }}</span>
+            </div>
+            <div class="linetitleysfw">
+              <div class="linetitleysfwval"><span>7天无理由</span></div>
+              <div class="linetitleysfwval"><span>免运费</span></div>
+            </div>
+          </div>
+          <div class="linetitlesc">
+            <img
+              src="@/assets/myimger/预售爱心.png"
+              style="width: 36px; height: 36px"
+              alt=""
+            />
+            <div>1.8万人收藏</div>
+          </div>
+        </div>
+        <div class="borderline2"></div>
+        <div class="brands">
+          <div class="brandsimg">
+            <img :src="imagesValue + previewValueList.brand_log" alt="" />
+          </div>
+          <div class="brandstitle">
+            <div class="brandstitlebrand">
+              <span>{{ previewValueList.brand }}</span>
+            </div>
+            <div class="brandstitlepeo">11.5万人关注</div>
+          </div>
+          <div class="brandsmore">
+            <img src="@/assets/myimger/more.png" alt="" />
+          </div>
+        </div>
+        <div class="borderline2"></div>
+        <div class="brands">
+          <div class="brandsimg">
+            <img :src="imagesValue + previewValueList.works_thumb" alt="" />
+          </div>
+          <div class="brandstitle">
+            <div class="brandstitlebrand">
+              <span>{{ previewValueList.brand }}</span>
+            </div>
+            <div class="brandstitlepeos">
+              <div class="brandsimg">
+                <img
+                  :src="imagesValue + previewValueList.designer_headimage"
+                  alt=""
+                />
+              </div>
+              <div class="brandsname">
+                {{ previewValueList.designer_nickname }}
+              </div>
+              <div class="brandsdj"><span>一星设计师</span></div>
+            </div>
+          </div>
+          <div class="brandsmore">
+            <img src="@/assets/myimger/more.png" alt="" />
+          </div>
+        </div>
+        <div class="borderline2"></div>
+        <div>
+          <div class="detils">
+            <div class="detilsz">选择</div>
+            <div class="detilsy">请选择型号</div>
+            <div></div>
+          </div>
+          <div class="detils">
+            <div class="detilsz">配送</div>
+            <div class="detilsy">鄞州区奥克斯大厦</div>
+          </div>
+          <div class="detils">
+            <div class="detilsz">定位</div>
+            <div class="detilsy">中国浙江省宁波市鄞州区南部商务区...</div>
+          </div>
+          <div class="detils">
+            <div class="detilsz" style="padding-top: 10px">商家服务</div>
+            <div class="detilss">七天无理由</div>
+          </div>
+        </div>
+        <div class="asd">
+          <div class="yslc">预售 流程</div>
+          <div class="Timeline">
+            <div class="timeaxis">
+              <div v-for="(item, i) in list" :key="i">
+                <div class="timeaxis-box">
+                  <div
+                    class="timeaxis-topText"
+                    :class="{ 'bd-empty': i == list.length - 1 }"
                   >
-                </div>
-                <div>
-                  <img src="@/assets/imgers/包邮.png" alt="" /><span>包邮</span>
+                    <div class="text">{{ item.warnname }}</div>
+                  </div>
+                  <div class="circular"></div>
+                  <div class="timeaxis-bootomText">
+                    <div class="text">{{ item.standard }}</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="borderline2"></div>
+
         <div class="line2">
           <div class="details"><span>商品详情</span></div>
           <div class="htmlValue">
             <div>
-              <p style="padding-bottom:50px">{{ contentsText }}</p>
+              <p style="padding-bottom: 50px">{{ contentsText }}</p>
               <p v-for="item in contentsImgs" :key="item">
                 <video
                   style="width: 550px; height: 300px"
                   controls
-                  v-if="item.split('/')[0] == 'video'"
+                  v-if="item.split('/')[0] == 'moves'"
                 >
                   <source :src="imagesValue + item" type="video/mp4" />
                   <source :src="imagesValue + item" type="video/ogg" />
@@ -96,6 +189,7 @@ export default {
   props: ["preview"],
   data() {
     return {
+      imagesValue: "",
       dialogVisible: false,
       PreviewId: {
         id: "",
@@ -106,6 +200,23 @@ export default {
       contentsText: "",
       contentsImgs: "",
       previewspec: [],
+      configValue: "",
+      jpgvalue: "",
+      reverse: true,
+      list: [
+        {
+          warnname: "预售开始",
+          standard: "2022.02.18",
+        },
+        {
+          warnname: "制作完成",
+          standard: "2022.02.18",
+        },
+        {
+          warnname: "到仓补款",
+          standard: "2022.02.18",
+        },
+      ],
     };
   },
   created() {
@@ -118,11 +229,14 @@ export default {
       postD(match_productShowProductApi(), this.PreviewId).then((res) => {
         this.previewValueList = res.data;
         this.thumbs = JSON.parse(res.data.thumb).thumbList.split(",");
-        this.previewspec = res.data.spec[0];
+        this.jpgvalue = this.thumbs.splice(1);
+        this.previewspec = res.data.spec.shift();
         var textimg = JSON.parse(res.data.content);
         this.contentsText = textimg.text;
         this.contentsImgs = textimg.imgs.split(",");
         this.contentsImgs = this.contentsImgs.filter((val) => val);
+        console.log(this.contentsImgs[0].split("/")[0]);
+        this.configValue = res.data.config;
       });
     },
   },
@@ -130,5 +244,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("@/components/commodity/commodityList/commodityList/operation/Preview.less");
+@import url("./Preview.less");
 </style>

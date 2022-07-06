@@ -51,6 +51,16 @@
           </div>
         </div>
         <div class="borderline2"></div>
+        <div class="lein3">
+          <div class="details"><span>服务内容</span></div>
+          <div class="detailss">改衣件数<span>2件</span></div>
+          <div class="detailss">衣物种类<span>支持所有衣服裤子类型</span></div>
+          <div class="detailss">衣物材质<span>全材料可改衣</span></div>
+          <div class="detailss">改衣时效<span>5-8天</span></div>
+          <div class="detailss">补价说明<span>奢侈品/羊绒类/真丝类改衣需额外沟通</span></div>
+          <div class="detailss">更多说明<span>由于疫情原因快递运输可能会有延期</span></div>
+        </div>
+        <div class="borderline2"></div>
         <div class="line2">
           <div class="details"><span>商品详情</span></div>
           <div class="htmlValue">
@@ -76,6 +86,7 @@
             </div>
           </div>
         </div>
+        <div class="borderline2"></div>
       </div>
       <div style="padding-top: 15px">
         <span>

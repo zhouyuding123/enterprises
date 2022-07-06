@@ -472,6 +472,14 @@ const routes = [
               title: "付费列表"
             },
           },
+          {
+            path:"/orders/addVip",
+            name:"addVip",
+            component:()=> import("../components/designer/addVip/addVip.vue"),
+            meta:{
+              title:"会员"
+            }
+          }
         ]
       },
       {

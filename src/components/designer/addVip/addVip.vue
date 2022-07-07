@@ -38,7 +38,7 @@
       <div class="xzadd">支付方式</div>
       <div class="addfzxx">
         <div>
-          <el-radio v-model="radio1" label="1" border>
+          <el-radio label="1" border>
             <img src="@/assets/myimger/支付宝.png" alt="" class="addimg" />
             <div class="zffs">支付宝支付</div>
           </el-radio>
@@ -46,7 +46,7 @@
             <img src="@/assets/myimger/微信.png" alt="" class="addimg" />
             <div class="zffs">微信支付</div>
           </el-radio>
-          <el-radio v-model="radio1" label="3" border>
+          <el-radio label="3" border>
             <img src="@/assets/myimger/银行卡.png" alt="" class="addimg" />
             <div class="zffs">银行卡支付</div>
           </el-radio>
@@ -77,14 +77,17 @@
         <span>立即开通</span>
       </div>
     </div>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-      <img :src="imagesValue + code" alt="" />
-      <div>给你{{ times }}时间支付</div>
+    <el-dialog title="微信支付" :visible.sync="dialogVisible" width="30%">
+      <div class="smalls">
+        <img src="@/assets/myimger/small微信.png" alt="" />
+        <div>使用微信扫一扫支付</div>
+      </div>
+      <img :src="imagesValue + code" alt="" style="margin-top: 42px" />
+      <div style="margin-top: 42px; font-size: 24px">
+        给你{{ times }}秒时间支付
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
       </span>
     </el-dialog>
   </div>
@@ -98,7 +101,7 @@ export default {
   data() {
     return {
       imagesValue: "",
-      radio1: "",
+      radio1: "2",
       checked: false,
       vip: {
         style_vip: "",
@@ -113,7 +116,7 @@ export default {
         type: "2",
       },
       times: 60,
-      paymore:""
+      paymore: "",
     };
   },
   created() {
@@ -126,7 +129,7 @@ export default {
       }
     },
     whole() {
-      this.$refs.wholes.style.backgroundColor = "#F0D3A9";
+      this.$refs.wholes.style.backgroundColor = "#FDFBED";
       this.$refs.wholes.style.color = "#905F12";
       this.$refs.wholess.style.color = "#905F12";
       this.$refs.PutOn.style.backgroundColor = "";
@@ -141,7 +144,7 @@ export default {
       this.$refs.wholes.style.backgroundColor = "";
       this.$refs.wholes.style.color = "";
       this.$refs.wholess.style.color = "";
-      this.$refs.PutOn.style.backgroundColor = "#F0D3A9";
+      this.$refs.PutOn.style.backgroundColor = "#FDFBED";
       this.$refs.PutOn.style.color = "#905F12";
       this.$refs.PutOns.style.color = "#905F12";
       this.$refs.Offtheshelf.style.backgroundColor = "";
@@ -156,7 +159,7 @@ export default {
       this.$refs.PutOn.style.backgroundColor = "";
       this.$refs.PutOn.style.color = "";
       this.$refs.PutOns.style.color = "";
-      this.$refs.Offtheshelf.style.backgroundColor = "#F0D3A9";
+      this.$refs.Offtheshelf.style.backgroundColor = "#FDFBED";
       this.$refs.Offtheshelf.style.color = "#905F12";
       this.$refs.Offtheshelfs.style.color = "#905F12";
       this.vip.style_vip = 3;
@@ -177,11 +180,31 @@ export default {
                   clearInterval(this.timer);
                   this.dialogVisible = false;
                   this.$message.info("支付超时");
+                  this.vipvalue.order_no = "";
+                  this.payOver.order_no = "";
+                  this.times=60
+                } else if (this.time < 0) {
+                  clearInterval(this.timer);
+                  this.dialogVisible = false;
+                  this.$message.info("支付超时");
+                  this.vipvalue.order_no = "";
+                  this.payOver.order_no = "";
+                  this.times=60
+
                 }
-                if (this.paymore == 1|| this.paymore == 3) {
+                if (this.dialogVisible == false) {
+                  clearInterval(this.timer);
+                  this.$message.info("支付失败");
+                  this.vipvalue.order_no = "";
+                  this.payOver.order_no = "";
+                  this.times=60
+
+                }
+                if (this.paymore == 1 || this.paymore == 3) {
                   clearInterval(this.timer);
                   this.dialogVisible = false;
                   this.$message.success("恭喜你成为尊贵的会员");
+                  this.$router.push('/vip')
                 }
               }, 1000);
             }

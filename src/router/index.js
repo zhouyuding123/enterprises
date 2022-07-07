@@ -32,6 +32,38 @@ const routes = [
         component: () => import("../components/homePage/homePage.vue"),
       },
       {
+        path: "/capital",
+        name: "capital",
+        component: () => import("../components/capital/capitals.vue"),
+        meta: {
+          title: "钱包",
+          requireAuth: true
+        },
+        children: [{
+          path: "/capital",
+          redirect: "/capital/capitalval",
+        },
+        {
+          path: "/capital/capitalval",
+          name: "capitalval",
+          component: () => import("../components/capital/capitalVal/capital.vue"),
+          meta: {
+            title: "钱包管理",
+            requireAuth: true
+          },
+        },
+        {
+          path: "/capital/addcard",
+          name: "addcard",
+          component: () => import("../components/capital/capitalVal/addcard.vue"),
+          meta: {
+            title: "银行卡",
+            requireAuth: true
+          },
+        }
+        ]
+      },
+      {
         path: "/Circle",
         name: "Circle",
         component: () => import("../components/tidalManagement/tidalList.vue"),
@@ -449,9 +481,9 @@ const routes = [
             },
           },
           {
-            path:"/designer/myCenter/:name",
-            name:"designer/myCenter",
-            component:()=> import("../components/designer/free/freeDetil/myDetil/myDetil.vue"),
+            path: "/designer/myCenter/:name",
+            name: "designer/myCenter",
+            component: () => import("../components/designer/free/freeDetil/myDetil/myDetil.vue"),
             meta: {
               title: "设计师信息"
             },
@@ -473,11 +505,11 @@ const routes = [
             },
           },
           {
-            path:"/orders/addVip",
-            name:"addVip",
-            component:()=> import("../components/designer/addVip/addVip.vue"),
-            meta:{
-              title:"会员"
+            path: "/orders/addVip",
+            name: "addVip",
+            component: () => import("../components/designer/addVip/addVip.vue"),
+            meta: {
+              title: "会员"
             }
           }
         ]
@@ -533,7 +565,8 @@ const routes = [
             },
           }
         ]
-      }
+      },
+
     ]
   },
   {
@@ -546,6 +579,11 @@ const routes = [
     name: "about",
     component: () => import("../views/About.vue"),
   },
+  {
+    path: "/vip",
+    name: "vip",
+    component: () => import("../views/vip.vue"),
+  }
 ];
 
 const router = new VueRouter({

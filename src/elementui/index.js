@@ -50,7 +50,7 @@ import {
     TabPane,
     Drawer,
     Timeline,
-    TimelineItem
+    TimelineItem,
 } from 'element-ui'
 export default {
     install(Vue) {

@@ -9,11 +9,20 @@
         <p class="headerP">{{ useNames }}</p>
         <el-dropdown>
           <img src="../../assets/imgers/点点.png" alt="" />
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
-          </el-dropdown-menu>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>我的主页</el-dropdown-item>
+              <el-dropdown-item>账号设置</el-dropdown-item>
+              <el-dropdown-item @click.native="gocapital"
+                >钱包管理</el-dropdown-item
+              >
+              <el-dropdown-item>平台服务</el-dropdown-item>
+              <el-dropdown-item>投诉建议</el-dropdown-item>
+              <el-dropdown-item @click.native="signOut"
+                >退出登录</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
         </el-dropdown>
       </el-header>
       <el-container>
@@ -60,7 +69,7 @@
                   :key="value.id"
                   :index="'/' + value.name"
                 >
-                  <div style="font-size: 12px;">
+                  <div style="font-size: 12px">
                     {{ value.title }}
                   </div></el-menu-item
                 >
@@ -109,6 +118,15 @@ export default {
     },
     useName() {
       this.useNames = localStorage.use;
+    },
+    // 退出功能
+    signOut() {
+      window.sessionStorage.clear();
+      //跳转到登录页
+      this.$router.push("/login");
+    },
+    gocapital() {
+      this.$router.push("/capital");
     },
   },
 };

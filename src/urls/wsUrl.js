@@ -152,7 +152,10 @@ export const ordersGetOrderStatApi =() => {
     return "orders/getOrderStat"
 }
 
-
+// 添加银行卡
+export const addBankApi =() => {
+    return "https://weisou.chengduziyi.com/user/users_bank/addBank"
+}
 
 
 

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addBankApi = exports.ordersGetOrderStatApi = exports.pay = exports.ordersAddVipApi = exports.MatchVotoCountApi = exports.matchAccessListApi = exports.match_productSelectDelApi = exports.match_productShowProductApi = exports.match_productSelectSetDelApi = exports.match_productSetStatusApi = exports.match_productGetListMyApi = exports.custypeGetListApi = exports.designerGetListApi = exports.designerMyCenterApi = exports.match_productAddProductApi = exports.brandGetListApi = exports.MatchScreenApi = exports.MatchWorksListApi = exports.MatchSetVotoApi = exports.MatchVerVotoApi = exports.MatchWorksApi = exports.matchAddAccessApi = exports.matchListMacthApi = exports.users_companyLoginPWApi = exports.users_companyVerifyUsersApi = exports.users_companyRegisterApi = exports.BusinessDelBusinessApi = exports.designer_worksCommentApi = exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
+exports.brandGetBrandApi = exports.getInfoApi = exports.getAuthApi = exports.editInfoApi = exports.setAuthApi = exports.listBankApi = exports.addBankApi = exports.ordersGetOrderStatApi = exports.pay = exports.ordersAddVipApi = exports.MatchVotoCountApi = exports.matchAccessListApi = exports.match_productSelectDelApi = exports.match_productShowProductApi = exports.match_productSelectSetDelApi = exports.match_productSetStatusApi = exports.match_productGetListMyApi = exports.custypeGetListApi = exports.designerGetListApi = exports.designerMyCenterApi = exports.match_productAddProductApi = exports.brandGetListApi = exports.MatchScreenApi = exports.MatchWorksListApi = exports.MatchSetVotoApi = exports.MatchVerVotoApi = exports.MatchWorksApi = exports.matchAddAccessApi = exports.matchListMacthApi = exports.users_companyLoginPWApi = exports.users_companyVerifyUsersApi = exports.users_companyRegisterApi = exports.BusinessDelBusinessApi = exports.designer_worksCommentApi = exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
 
 var ForumReleaseApi = function ForumReleaseApi() {
   return "Forum/release";
@@ -275,3 +275,44 @@ var addBankApi = function addBankApi() {
 };
 
 exports.addBankApi = addBankApi;
+
+var listBankApi = function listBankApi() {
+  return "https://weisou.chengduziyi.com/user/users_bank/listBank";
+}; // 上传企业认证信息
+
+
+exports.listBankApi = listBankApi;
+
+var setAuthApi = function setAuthApi() {
+  return "https://weisou.chengduziyi.com/company/users_company/setAuth";
+}; // 编辑基本信息
+
+
+exports.setAuthApi = setAuthApi;
+
+var editInfoApi = function editInfoApi() {
+  return "https://weisou.chengduziyi.com/company/users_company/editInfo";
+}; // 读取企业认证信息
+
+
+exports.editInfoApi = editInfoApi;
+
+var getAuthApi = function getAuthApi() {
+  return "https://weisou.chengduziyi.com/company/users_company/getAuth";
+}; // 读取指定企业得基本信息
+
+
+exports.getAuthApi = getAuthApi;
+
+var getInfoApi = function getInfoApi() {
+  return "https://weisou.chengduziyi.com/company/users_company/getInfo";
+}; // 指定企业的品牌列表
+
+
+exports.getInfoApi = getInfoApi;
+
+var brandGetBrandApi = function brandGetBrandApi() {
+  return "brand/getBrand";
+};
+
+exports.brandGetBrandApi = brandGetBrandApi;

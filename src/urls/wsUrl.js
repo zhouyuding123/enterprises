@@ -157,6 +157,31 @@ export const addBankApi =() => {
     return "https://weisou.chengduziyi.com/user/users_bank/addBank"
 }
 
+export const listBankApi =() => {
+    return "https://weisou.chengduziyi.com/user/users_bank/listBank"
+}
+// 上传企业认证信息
+export const setAuthApi =() => {
+    return "https://weisou.chengduziyi.com/company/users_company/setAuth"
+}
+// 编辑基本信息
+export const editInfoApi =() => {
+    return "https://weisou.chengduziyi.com/company/users_company/editInfo"
+}
+
+// 读取企业认证信息
+export const getAuthApi =() => {
+    return "https://weisou.chengduziyi.com/company/users_company/getAuth"
+}
+// 读取指定企业得基本信息
+export const getInfoApi =() => {
+    return "https://weisou.chengduziyi.com/company/users_company/getInfo"
+}
+// 指定企业的品牌列表
+export const brandGetBrandApi =() => {
+    return "brand/getBrand"
+}
+
 
 
 

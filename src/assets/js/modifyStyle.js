@@ -13,7 +13,7 @@ export function imgUrls() {
 }
 
 export function beforeAvatar(file) {
-  const isJPG = file.type === "image/jpeg";
+  const isJPG = file.type === "image/jpeg" || "image/gif" || "image/jpg" || "image/x-pn" || "image/png";
   const isLt2M = file.size / 1024 / 1024 < 2;
 
   if (!isJPG) {
@@ -25,7 +25,7 @@ export function beforeAvatar(file) {
   return isJPG && isLt2M;
 }
 
-export function matchType(name){
+export function matchType(name) {
   //后缀获取
   let suffic = '';
   //获取类型结果
@@ -35,16 +35,16 @@ export function matchType(name){
     suffic = fileArr[fileArr.length - 1]
     // console.log('suffic',suffic);
   } catch (error) {
-      suffic = ''
+    suffic = ''
   }
   //图片格式
-  var imgList = ['png','jpg','jpeg','bmp','gif'];
+  var imgList = ['png', 'jpg', 'jpeg', 'bmp', 'gif'];
   //进行图片匹配
-  result = imgList.some(item=>{
+  result = imgList.some(item => {
     return item === suffic
   })
   // console.log('结果',result);
-  if(result){
+  if (result) {
     result = 'image';
     // console.log('结果',result);
     return result

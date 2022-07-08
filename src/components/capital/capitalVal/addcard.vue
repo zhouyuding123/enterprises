@@ -5,8 +5,26 @@
         <img src="@/assets/myimger/加.png" alt="" />
       </div>
       <div class="addinputadd">添加银行卡</div>
-      <div>
-        
+    </div>
+    <div class="card_list">
+      <div class="cardStyle" v-for="item in Backlist" :key="item.id">
+        <div class="bank">
+          <div class="bankimg">
+            <img
+              :src="imagesValue + 'resource/back_icon/' + item.icon + '.png'"
+              alt=""
+            />
+          </div>
+          <div class="banktitle">
+            <span>
+              {{item.bank}}储蓄卡
+            </span>
+          </div>
+        </div>
+        <div class="bank_num">
+           <div class="bank_numx">****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;****</div>
+           <div class="bank_numfour">&nbsp;&nbsp;&nbsp;{{(item.bank_num).substr(-4)}}</div>
+        </div>
       </div>
     </div>
     <el-dialog title="添加银行卡" :visible.sync="dialogVisible" width="35%">
@@ -86,19 +104,21 @@
 
 <script>
 import Bin from "bankcardinfo";
-import { addBankApi } from "@/urls/wsUrl.js";
+import { addBankApi, listBankApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
+import { imgUrl } from "@/assets/js/modifyStyle";
 export default {
   components: { Bin },
   data() {
     return {
+      imagesValue: "",
       dialogVisible: false,
       addCards: {
         name: "",
         bank_num: "",
         tel: "",
         bank: "",
-        icon:""
+        icon: "",
       },
       addCardsrules: {
         name: [
@@ -145,7 +165,12 @@ export default {
       models: "1",
       addCardsyzm: {},
       addCardsyzmrules: {},
+      Backlist: [],
     };
+  },
+  created() {
+    this.listBankList();
+    this.imagesValue = imgUrl();
   },
   methods: {
     addCard() {
@@ -161,7 +186,7 @@ export default {
       Bin.getBankBin(this.addCards.bank_num)
         .then((res) => {
           this.addCards.bank = res.bankName;
-          this.addCards.icon = res.bankCode
+          this.addCards.icon = res.bankCode;
         })
         .catch((e) => {
           console.log(e);
@@ -173,7 +198,7 @@ export default {
       this.addCards.bank_num = "";
       this.addCards.bank = "";
       this.addCards.tel = "";
-       this.addCards.icon=""
+      this.addCards.icon = "";
     },
     addcardValue() {
       this.$refs.addCardsyzmruleForm.validate((v) => {
@@ -197,6 +222,12 @@ export default {
             this.models = 4;
           }
         });
+      });
+    },
+    listBankList() {
+      postD(listBankApi()).then((res) => {
+        console.log(res);
+        this.Backlist = res.list;
       });
     },
   },

@@ -51,9 +51,11 @@ import {
     Drawer,
     Timeline,
     TimelineItem,
+    Rate
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(Rate)
         Vue.use(Timeline)
         Vue.use(TimelineItem)
         Vue.use(Drawer)

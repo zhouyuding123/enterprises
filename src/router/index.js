@@ -566,7 +566,28 @@ const routes = [
           }
         ]
       },
-
+      {
+        path: "/users_company",
+        name: "users_company",
+        component: () => import("../components/Enterprisecertification/Enterprisecertification.vue"),
+        meta: {
+          title: "企业管理"
+        },
+        children: [
+          {
+            path: "/users_company",
+            redirect: "/users_company/getAuth"
+          },
+          {
+            path: "/users_company/getAuth",
+            name: "users_company/getAuth",
+            component: () => import("../components/Enterprisecertification/Enterprisecertificationval/Enterprisecertificationval.vue"),
+            meta: {
+              title: "企业认证"
+            },
+          }
+        ]
+      }
     ]
   },
   {

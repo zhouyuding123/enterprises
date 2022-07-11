@@ -259,7 +259,7 @@
         >
           <div class="titleimg">
             <span>{{ items.accept_id }}</span>
-            <img :src="imagesValue + items.thumb" alt="" />
+            <img :src="imagesValue + items.thumb" alt="" @click="goWorkShow(items)" />
           </div>
           <div class="titleTitle">
             <div class="titleValues">
@@ -595,6 +595,10 @@ export default {
       countValues: [],
       votoShow: false,
       votocountvalue: "",
+      worksId: {
+        works_id:"",
+
+      }
     };
   },
   watch: {
@@ -636,27 +640,6 @@ export default {
         });
         this.countValuenums = countValuenum;
         this.countValues = countValue;
-        console.log(this.countValuenums);
-
-        // var i = 0;
-        // var s = i+1
-        // var l = i+2
-        // var f = i+3
-        // let Numberone = res.data.prize[i].amount;
-        // let Numbertwo = res.data.prize[s].amount;
-        // let Numberthree = res.data.prize[l].amount;
-        // let Numberthree = res.data.prize[l].amount;
-        // this.naberone = this.publicityValueList.slice(0, Numberone);
-        // this.nabertwo = this.publicityValueList.slice(
-        //   Numberone,
-        //   Numbertwo + Numberone
-        // );
-        // this.naberthree = this.publicityValueList.slice(
-        //   Numbertwo + Numberone,
-        //   Numberthree + Numberone + Numbertwo
-        // );
-        // console.log(this.naberthree);
-
         this.detialValueList = res.data;
         this.imagesValue = imgUrl();
         this.Nowtimes = new Date().valueOf();
@@ -774,6 +757,15 @@ export default {
         },
       });
     },
+    goWorkShow(val) {
+      this.$router.push({
+        name: "worksShow",
+        params: {
+          works_id: val.works_id,
+          id: val.accept_id,
+        },
+      });
+    }
   },
 };
 </script>

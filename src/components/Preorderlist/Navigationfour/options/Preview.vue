@@ -78,13 +78,13 @@
           </div>
         </div>
         <div class="borderline2"></div>
-        <div class="brands">
+        <div class="brands" @click="gowork(previewValueList)">
           <div class="brandsimg">
             <img :src="imagesValue + previewValueList.works_thumb" alt="" />
           </div>
           <div class="brandstitle">
             <div class="brandstitlebrand">
-              <span>{{ previewValueList.brand }}</span>
+              <span>{{ previewValueList.works_title }}</span>
             </div>
             <div class="brandstitlepeos">
               <div class="brandsimg">
@@ -239,6 +239,16 @@ export default {
         this.configValue = res.data.config;
       });
     },
+    gowork(val) {
+      console.log(val);
+     this.$router.push({
+        name: "worksShow",
+        params: {
+          works_id: val.works_id,
+          id: val.accept_id,
+        },
+      });
+    }
   },
 };
 </script>

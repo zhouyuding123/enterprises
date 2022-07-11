@@ -7,7 +7,12 @@
       <div class="addinputadd">添加银行卡</div>
     </div>
     <div class="card_list">
-      <div class="cardStyle" v-for="item in Backlist" :key="item.id">
+      <div
+        class="cardStyle"
+        v-for="item in Backlist"
+        :key="item.id"
+        @click="delcard(item.id)"
+      >
         <div class="bank">
           <div class="bankimg">
             <img
@@ -16,14 +21,16 @@
             />
           </div>
           <div class="banktitle">
-            <span>
-              {{item.bank}}储蓄卡
-            </span>
+            <span> {{ item.bank }}储蓄卡 </span>
           </div>
         </div>
         <div class="bank_num">
-           <div class="bank_numx">****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;****</div>
-           <div class="bank_numfour">&nbsp;&nbsp;&nbsp;{{(item.bank_num).substr(-4)}}</div>
+          <div class="bank_numx">
+            ****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;****
+          </div>
+          <div class="bank_numfour">
+            &nbsp;&nbsp;&nbsp;{{ item.bank_num.substr(-4) }}
+          </div>
         </div>
       </div>
     </div>
@@ -99,12 +106,59 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog title="卡管理" :visible.sync="delcardlist" width="30%">
+      <div
+        style="justify-content: center;
+    display: flex;
+}"
+      >
+        <div class="cardStyles">
+          <div class="bank">
+            <div class="bankimg">
+              <img
+                :src="
+                  imagesValue + 'resource/back_icon/' + delValue.icon + '.png'
+                "
+                alt=""
+              />
+            </div>
+            <div class="banktitle">
+              <span> {{ delValue.bank }}储蓄卡 </span>
+            </div>
+          </div>
+          <div class="bank_nums">
+            <div class="bank_numxs">
+              ****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;****
+            </div>
+            <div class="bank_numfours">&nbsp;&nbsp;&nbsp;{{ delnum }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="footers" style="padding-top: 20px">
+        <el-button @click="Unbind(delValue.id)"
+          ><span>解除绑定</span></el-button
+        >
+      </div>
+    </el-dialog>
+    <el-dialog title="解除绑定" :visible.sync="UnbindShow" width="30%">
+      <div style="padding-top: 50px">
+        <span>亲，确定要解绑此张银行卡吗？</span>
+      </div>
+      <div style="padding-top: 78px">
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="edlUnbind">仍要解绑</el-button>
+          <el-button type="primary" @click="UnbindShow = false"
+            >保持绑定</el-button
+          >
+        </span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Bin from "bankcardinfo";
-import { addBankApi, listBankApi } from "@/urls/wsUrl.js";
+import { addBankApi, listBankApi, showBankApi,delBankApi  } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 import { imgUrl } from "@/assets/js/modifyStyle";
 export default {
@@ -166,6 +220,16 @@ export default {
       addCardsyzm: {},
       addCardsyzmrules: {},
       Backlist: [],
+      delId: {
+        id: "",
+      },
+      delcardlist: false,
+      delValue: "",
+      delnum: "",
+      UnbindShow: false,
+      edlUnbindId: {
+        id: "",
+      },
     };
   },
   created() {
@@ -207,7 +271,7 @@ export default {
           if (res.code == "200") {
             this.$message.success("添加成功");
             this.models = 3;
-            this.serviceList();
+            this.listBankList();
           } else if (res.code == "-200") {
             this.$message.error("参数错误，或暂无数据");
             this.models = 4;
@@ -226,8 +290,31 @@ export default {
     },
     listBankList() {
       postD(listBankApi()).then((res) => {
-        console.log(res);
         this.Backlist = res.list;
+      });
+    },
+    delcard(val) {
+      this.delcardlist = true;
+      this.delId.id = val;
+      postD(showBankApi(), this.delId).then((res) => {
+        this.delValue = res.data;
+        this.delnum = this.delValue.bank_num.substr(-4);
+      });
+    },
+    Unbind(val) {
+      this.edlUnbindId.id = val;
+      this.delcardlist = false;
+      this.UnbindShow = true;
+    },
+    edlUnbind() {
+      postD(delBankApi(), this.edlUnbindId).then((res) => {
+        if (res.code == "200") {
+          this.$message.success("银行卡解绑成功");
+          this.UnbindShow = false;
+          this.listBankList();
+        } else {
+          this.$message.error("银行卡解绑失败");
+        }
       });
     },
   },

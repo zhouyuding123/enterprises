@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.brandGetBrandApi = exports.getInfoApi = exports.getAuthApi = exports.editInfoApi = exports.setAuthApi = exports.listBankApi = exports.addBankApi = exports.ordersGetOrderStatApi = exports.pay = exports.ordersAddVipApi = exports.MatchVotoCountApi = exports.matchAccessListApi = exports.match_productSelectDelApi = exports.match_productShowProductApi = exports.match_productSelectSetDelApi = exports.match_productSetStatusApi = exports.match_productGetListMyApi = exports.custypeGetListApi = exports.designerGetListApi = exports.designerMyCenterApi = exports.match_productAddProductApi = exports.brandGetListApi = exports.MatchScreenApi = exports.MatchWorksListApi = exports.MatchSetVotoApi = exports.MatchVerVotoApi = exports.MatchWorksApi = exports.matchAddAccessApi = exports.matchListMacthApi = exports.users_companyLoginPWApi = exports.users_companyVerifyUsersApi = exports.users_companyRegisterApi = exports.BusinessDelBusinessApi = exports.designer_worksCommentApi = exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
+exports.businessShopListApi = exports.brandGetBrandApi = exports.getInfoApi = exports.getAuthApi = exports.editInfoApi = exports.setAuthApi = exports.delBankApi = exports.showBankApi = exports.listBankApi = exports.addBankApi = exports.ordersGetOrderStatApi = exports.pay = exports.ordersAddVipApi = exports.MatchVotoCountApi = exports.matchAccessListApi = exports.match_productSelectDelApi = exports.match_productShowProductApi = exports.match_productSelectSetDelApi = exports.match_productSetStatusApi = exports.match_productGetListMyApi = exports.custypeGetListApi = exports.designerGetListApi = exports.designerMyCenterApi = exports.match_productAddProductApi = exports.brandGetListApi = exports.MatchScreenApi = exports.MatchWorksListApi = exports.MatchSetVotoApi = exports.MatchVerVotoApi = exports.MatchWorksApi = exports.matchAddAccessApi = exports.matchListMacthApi = exports.users_companyLoginPWApi = exports.users_companyVerifyUsersApi = exports.users_companyRegisterApi = exports.BusinessDelBusinessApi = exports.designer_worksCommentApi = exports.designer_worksShowApi = exports.designer_worksGetListApi = exports.matchShowMatchApi = exports.ForumSetEssApi = exports.ForumSetTopApi = exports.ForumDelForumApi = exports.CircleGetForumApi = exports.ForumListForumApi = exports.Forum_themeGetListApi = exports.CircleGetCircleShowApi = exports.ForumReleaseApi = void 0;
 
 var ForumReleaseApi = function ForumReleaseApi() {
   return "Forum/release";
@@ -278,10 +278,24 @@ exports.addBankApi = addBankApi;
 
 var listBankApi = function listBankApi() {
   return "https://weisou.chengduziyi.com/user/users_bank/listBank";
-}; // 上传企业认证信息
+}; // 查看银行卡详情
 
 
 exports.listBankApi = listBankApi;
+
+var showBankApi = function showBankApi() {
+  return "https://weisou.chengduziyi.com/user/users_bank/showBank";
+}; // 删除银行卡
+
+
+exports.showBankApi = showBankApi;
+
+var delBankApi = function delBankApi() {
+  return "https://weisou.chengduziyi.com/user/users_bank/delBank";
+}; // 上传企业认证信息
+
+
+exports.delBankApi = delBankApi;
 
 var setAuthApi = function setAuthApi() {
   return "https://weisou.chengduziyi.com/company/users_company/setAuth";
@@ -313,6 +327,13 @@ exports.getInfoApi = getInfoApi;
 
 var brandGetBrandApi = function brandGetBrandApi() {
   return "brand/getBrand";
-};
+}; // 商品列表
+
 
 exports.brandGetBrandApi = brandGetBrandApi;
+
+var businessShopListApi = function businessShopListApi() {
+  return "business/shopList";
+};
+
+exports.businessShopListApi = businessShopListApi;

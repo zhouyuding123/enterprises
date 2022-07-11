@@ -319,6 +319,28 @@ const routes = [
             meta: {
               title: "门店列表"
             },
+          },
+        ]
+      },
+      {
+        path: "/StoreArea",
+        name: "StoreArea",
+        component: () => import("../components/Storearea/StoreArea.vue"),
+        meta: {
+          title: "门店专区"
+        },
+        children:[
+          {
+            path: "/StoreArea",
+            redirect: "/business/getList",
+          },
+          {
+            path:"/business/getList",
+            name:"getList",
+            component:()=> import("../components/Storearea/StoreAreaList/StoreAreaList.vue"),
+            meta: {
+              title: "门店列表"
+            },
           }
         ]
       },
@@ -398,7 +420,7 @@ const routes = [
           },
           {
             path: "/brand/getList",
-            name: "getList",
+            name: "brand/getList",
             component: () => import("../components/BrandManagement/BrandList/BrandList.vue"),
             meta: {
               title: "品牌列表"

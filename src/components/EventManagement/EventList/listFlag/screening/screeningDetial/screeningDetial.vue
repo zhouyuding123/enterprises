@@ -14,10 +14,6 @@
           <div class="name_nickname">
             <span class="nickname_span">{{ WorksShowData.nickname }}</span>
             <div class="top">
-              <img
-                src="../../../../../../assets/imgers/设计师等级.png"
-                alt=""
-              />
               <span>一级设计师</span>
             </div>
           </div>
@@ -59,10 +55,18 @@
           </div>
         </div>
         <div class="worksDiv2line2">
-          {{ WorksShowData.content }}
+          {{ WorksShowDataContent.text }}
         </div>
         <div v-for="item in imgs" :key="item.item" class="imgs">
-          <img :src="imagesValue + item" alt="" />
+          <img
+            :src="imagesValue + item"
+            alt=""
+            v-if="item.split('/')[0] == 'images'"
+          />
+          <video v-if="item.split('/')[0] == 'moves'" controls style="width:100%">
+            <source :src="imagesValue + item" type="video/mp4" />
+            <source :src="imagesValue + item" type="video/ogg" />
+          </video>
         </div>
       </div>
       <div class="worksDiv3">
@@ -126,8 +130,9 @@ export default {
       routeId: "",
       WorksShowData: [],
       imagesValue: "",
-      imgs: "",
+      imgs: [],
       labels: "",
+      WorksShowDataContent: "",
     };
   },
   created() {
@@ -139,21 +144,20 @@ export default {
       postD(MatchWorksShowApi(), this.routeId).then((res) => {
         this.WorksShowData = res.data;
         this.imagesValue = imgUrl();
-        var arr = this.WorksShowData.imgs.split(",");
-        var arrs = this.WorksShowData.label.split(",");
-        this.imgs = arr;
-        this.labels = arrs;
+        var ss = JSON.parse(res.data.content);
+        this.WorksShowDataContent = ss;
+        this.imgs = this.WorksShowDataContent.images.split(",");
       });
     },
     fullTime(val) {
       return timestampToTime(val);
     },
     Superior() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     zxc() {
       console.log(123);
-    }
+    },
   },
 };
 </script>

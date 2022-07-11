@@ -15,7 +15,6 @@
               <span >{{ WorksShowData.nickname }}</span>
             </div>
             <div class="top">
-              <img src="@/assets/imgers/设计师等级.png" alt="" />
               <span>一级设计师</span>
             </div>
           </div>
@@ -57,7 +56,15 @@
           <span>{{ WorksShowDataContent.text }}</span>
         </div>
         <div v-for="item in imgs" :key="item.item" class="imgs">
-          <img :src="imagesValue + item" alt="" />
+           <img
+            :src="imagesValue + item"
+            alt=""
+            v-if="item.split('/')[0] == 'images'"
+          />
+          <video v-if="item.split('/')[0] == 'moves'" controls style="width:100%">
+            <source :src="imagesValue + item" type="video/mp4" />
+            <source :src="imagesValue + item" type="video/ogg" />
+          </video>
         </div>
       </div>
       <div class="worksDiv3">

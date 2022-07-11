@@ -161,7 +161,6 @@ export default {
     this.myValue();
     this.imagesValue = imgUrl();
     this.myworkList();
-    // this.myworkListtwo();
   },
   methods: {
     myValue() {

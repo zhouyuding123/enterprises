@@ -97,9 +97,10 @@
     display: flex;
     flex-wrap: wrap;
     margin-left: -76px;
-} 
+}
 
 .cardStyle {
+    cursor: pointer;
     width: 350px;
     margin-bottom: 40px;
     height: 160px;
@@ -144,6 +145,7 @@
         font-weight: bold;
         color: #FCFCFC;
     }
+
     .bank_numfour {
         font-size: 28px;
         font-family: PingFang SC-Bold, PingFang SC;
@@ -151,4 +153,72 @@
         color: #FCFCFC;
         margin-top: -5px;
     }
+}
+
+.cardStyles {
+    width: 340px;
+    height: 120px;
+    background: linear-gradient(90deg, #D9AF6D 0%, #E0BB7A 50%, #E9C789 100%);
+    box-shadow: 0px 0px 8px 1px rgba(230, 195, 132, 0.5400);
+    border-radius: 4px 4px 4px 4px;
+
+    .bank {
+        display: flex;
+        padding: 20px;
+        justify-content: left;
+
+        .bankimg {
+            img {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .banktitle {
+            margin-left: 10px;
+
+            span {
+                font-size: 16px;
+                font-family: PingFang SC-Bold, PingFang SC;
+                font-weight: bold;
+                color: #FCFCFC;
+            }
+        }
+
+    }
+}
+
+.bank_nums {
+    display: flex;
+    justify-content: center;
+    margin-top: 17px;
+
+    .bank_numxs {
+        font-size: 24px;
+        font-family: PingFang SC-Bold, PingFang SC;
+        font-weight: bold;
+        color: #FCFCFC;
+    }
+
+    .bank_numfours {
+        font-size: 24px;
+        font-family: PingFang SC-Bold, PingFang SC;
+        font-weight: bold;
+        color: #FCFCFC;
+        margin-top: -5px;
+    }
+}
+
+/deep/.el-button--default {
+    width: 160px;
+    height: 40px;
+    background: #FFFFFF;
+    border-radius: 20px 20px 20px 20px;
+}
+
+/deep/.el-button--primary {
+    width: 160px;
+    height: 40px;
+    background: linear-gradient(180deg, #0C032E 0%, #5C5673 100%);
+    border-radius: 20px 20px 20px 20px;
 }

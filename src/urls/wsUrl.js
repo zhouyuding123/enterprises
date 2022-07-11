@@ -160,6 +160,14 @@ export const addBankApi =() => {
 export const listBankApi =() => {
     return "https://weisou.chengduziyi.com/user/users_bank/listBank"
 }
+// 查看银行卡详情
+export const showBankApi =() => {
+    return "https://weisou.chengduziyi.com/user/users_bank/showBank"
+}
+// 删除银行卡
+export const delBankApi =() => {
+    return "https://weisou.chengduziyi.com/user/users_bank/delBank"
+}
 // 上传企业认证信息
 export const setAuthApi =() => {
     return "https://weisou.chengduziyi.com/company/users_company/setAuth"
@@ -180,6 +188,10 @@ export const getInfoApi =() => {
 // 指定企业的品牌列表
 export const brandGetBrandApi =() => {
     return "brand/getBrand"
+}
+// 商品列表
+export const businessShopListApi =() => {
+    return "business/shopList"
 }
 
 

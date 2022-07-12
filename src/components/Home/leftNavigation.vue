@@ -12,7 +12,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>我的主页</el-dropdown-item>
-              <el-dropdown-item>账号设置</el-dropdown-item>
+              <el-dropdown-item @click.native="goAccount">账号设置</el-dropdown-item>
               <el-dropdown-item @click.native="gocapital"
                 >钱包管理</el-dropdown-item
               >
@@ -128,6 +128,10 @@ export default {
     gocapital() {
       this.$router.push("/capital");
     },
+    goAccount() {
+      this.$router.push("/personal");
+
+    }
   },
 };
 </script>

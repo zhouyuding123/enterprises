@@ -64,6 +64,30 @@ const routes = [
         ]
       },
       {
+        path: "/personal",
+        name: "personal",
+        component: () => import("../components/personal/personal.vue"),
+        meta: {
+          title: "个人中心",
+          requireAuth: true
+        },
+        children: [
+          {
+            path: "/personal",
+            redirect: "/personal/personallist",
+          },
+          {
+            path: "/personal/personallist",
+            name: "personallist",
+            component: () => import("../components/personal/personallist/personallist.vue"),
+            meta: {
+              title: "账号设置",
+              requireAuth: true
+            },
+          }
+        ]
+      },
+      {
         path: "/Circle",
         name: "Circle",
         component: () => import("../components/tidalManagement/tidalList.vue"),
@@ -329,15 +353,15 @@ const routes = [
         meta: {
           title: "门店专区"
         },
-        children:[
+        children: [
           {
             path: "/StoreArea",
             redirect: "/business/getList",
           },
           {
-            path:"/business/getList",
-            name:"getList",
-            component:()=> import("../components/Storearea/StoreAreaList/StoreAreaList.vue"),
+            path: "/business/getList",
+            name: "getList",
+            component: () => import("../components/Storearea/StoreAreaList/StoreAreaList.vue"),
             meta: {
               title: "门店列表"
             },

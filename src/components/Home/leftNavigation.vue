@@ -1,7 +1,7 @@
 <template>
   <div class="divBody">
     <el-container>
-      <el-header style="height: 80px">
+      <el-header style="height: 60px">
         <div class="logoImg">
           <img src="@/assets/imgers/logo.png" alt="" />
         </div>
@@ -28,7 +28,7 @@
       <el-container>
         <el-aside
           style="
-            width: 279px;
+            width: 220px;
             background: linear-gradient(180deg, #0b022d 0%, #5c5572 100%);
             overflow: hidden;
           "
@@ -142,13 +142,13 @@ export default {
       background: #0c032e;
       text-align: right;
       .el-dropdown {
-        line-height: 90px;
+        top: -42px;
       }
       a {
         width: 40px;
         height: 40px;
         position: absolute;
-        top: 20px;
+        top: 10px;
         right: 150px;
         img {
           width: 40px;
@@ -161,7 +161,7 @@ export default {
       position: absolute;
       color: white;
       right: 65px;
-      top: 30px;
+      top: 22px;
     }
   }
 }
@@ -175,7 +175,7 @@ export default {
 }
 .el-submenu {
   text-align: left;
-  width: 279px;
+  width: 218px;
   i {
     padding-left: 10px;
     color: white;
@@ -222,11 +222,15 @@ export default {
   border-right: 2px black solid;
 }
 .logoImg {
-  position: absolute;
+  // position: absolute;
+  display: flex;
   margin-left: 30px;
   margin-top: 10px;
   img {
-    width: 150px;
+    width: 120px;
   }
+}
+.el-submenu .el-menu-item {
+  min-width: 185px;
 }
 </style>

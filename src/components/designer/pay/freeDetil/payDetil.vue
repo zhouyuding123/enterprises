@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="golist" @click="gofreelist">返回免费列表</div>
+    <div class="golist" @click="gopaylist">返回付费列表</div>
     <div class="worksBody">
       <div class="worksDiv">
         <div class="headimagephoto" @click="goMyDetil(WorksShowData.username)">
@@ -351,8 +351,8 @@ export default {
     goMyDetil(val) {
       this.$router.push("/designer/myCenter/"+val)
     },
-    gofreelist() {
-      this.$router.push("/designer_works/getListMF")
+    gopaylist() {
+      this.$router.push("/designer_works/getListFF")
     }
   },
 };

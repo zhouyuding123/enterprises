@@ -19,7 +19,7 @@
         </el-menu>
       </div>
       <div class="paddingStyle" v-if="this.flag == 1">
-        <ul style="margin-left: 20px">
+        <ul>
           <li
             class="listCircle"
             v-for="item in listValue"
@@ -154,6 +154,14 @@ export default {
 }
 .paddingStyle {
   padding: 30px;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    li {
+      width: 25%;
+    }
+  }
 }
 .addCircle {
   width: 460px;
@@ -203,7 +211,7 @@ export default {
 }
 .Release {
   position: absolute;
-  top: 80px;
+  top: 60px;
   right: 0;
   padding: 20px 30px;
   display: flex;

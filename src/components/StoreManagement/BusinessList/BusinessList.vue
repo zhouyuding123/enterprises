@@ -222,7 +222,8 @@ export default {
 
 <style lang="less" scoped>
 .Release {
-  top: 0;
+  top: -160px;
+  position: relative;
 }
 .storeBody {
   padding: 20px 30px;

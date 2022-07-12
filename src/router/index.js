@@ -527,6 +527,14 @@ const routes = [
             },
           },
           {
+            path: "/designer_works/getListMF/payDetil:id",
+            name: "payDetil",
+            component: () => import("../components/designer/pay/freeDetil/payDetil.vue"),
+            meta: {
+              title: "付费作品"
+            },
+          },
+          {
             path: "/orders/addVip",
             name: "addVip",
             component: () => import("../components/designer/addVip/addVip.vue"),

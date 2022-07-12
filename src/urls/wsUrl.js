@@ -193,6 +193,10 @@ export const brandGetBrandApi =() => {
 export const businessShopListApi =() => {
     return "business/shopList"
 }
+// 创建付费作品订单
+export const addWorksApi =() => {
+    return "https://weisou.chengduziyi.com/company/orders/addWorks"
+}
 
 
 

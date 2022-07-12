@@ -86,18 +86,6 @@
                     label="tab1"
                     content="全部"
                   ></vxe-radio-button>
-                  <!-- <vxe-radio-button
-                    label="tab2"
-                    content="热门"
-                  ></vxe-radio-button>
-                  <vxe-radio-button
-                    label="tab3"
-                    content="最新"
-                  ></vxe-radio-button>
-                  <vxe-radio-button
-                    label="tab4"
-                    content="精华"
-                  ></vxe-radio-button> -->
                   <div class="listRight">
                     <el-button @click="SetAsTopS">设为置顶</el-button>
                     <el-button @click="SetAsEssence">设为精华</el-button>

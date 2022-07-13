@@ -39,10 +39,20 @@
           <el-form-item label="企业电话">
             <el-input v-model="valueData.tel"></el-input>
           </el-form-item>
-          <el-form-item label="企业地址">
-            <el-input
-              v-model="valueData.province + valueData.city + valueData.area"
-            ></el-input>
+          <div class="asdasdsa">
+            <el-form-item label="企业地址" v-if="selectedOptionsshow == 1">
+            <el-input v-model="selectedOptionss" ></el-input><div class="xg" @click="asd">修改 </div>
+          </el-form-item>
+          </div>
+          <el-form-item label="企业地址" prop="address" v-if="selectedOptionsshow == 2">
+            <el-cascader
+              size="large"
+              :options="options"
+              v-model="selectedOptions"
+              @change="handleChange"
+
+            >
+            </el-cascader>
           </el-form-item>
           <el-form-item label="详细地址">
             <el-input v-model="valueData.detail"></el-input>
@@ -78,6 +88,7 @@
 import { getInfoApi, editInfoApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 import { imgUrl } from "@/assets/js/modifyStyle";
+import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
   data() {
     return {
@@ -104,6 +115,11 @@ export default {
           video: "",
         },
       },
+        options: regionData,
+        selectedOptions: [],
+        selectedOptionss: "",
+        address: "",
+        selectedOptionsshow:"1"
     };
   },
   created() {
@@ -122,6 +138,12 @@ export default {
         this.valueData.area = res.data.area;
         this.valueData.detail = res.data.detail;
         this.valueData.description = JSON.parse(res.data.description);
+        this.selectedOptionss =
+          this.valueData.province +
+          "/" +
+          this.valueData.city +
+          "/" +
+          this.valueData.area;
       });
     },
     handleAvatarSuccesser(res, file) {
@@ -151,9 +173,13 @@ export default {
         this.personalruleForm.description = JSON.stringify(
           this.personalruleForm.description
         );
+        this.personalruleForm.province = this.address.split("/")[0];
+        this.personalruleForm.city = this.address.split("/")[1];
+        this.personalruleForm.area = this.address.split("/")[2];
         postD(editInfoApi(), this.personalruleForm).then((res) => {
           if (res.code == "200") {
             this.$message.success("保存成功");
+            this.selectedOptionsshow =1
             this.myUser();
           } else {
             this.$message.error("保存时出现问题");
@@ -161,6 +187,30 @@ export default {
         });
       });
     },
+    //省市区三级联动事件
+    handleChange(value) {
+      if (value[1] != null && value[2] != null) {
+        var dz =
+          CodeToText[value[0]] +
+          "/" +
+          CodeToText[value[1]] +
+          "/" +
+          CodeToText[value[2]];
+        this.addressid = value[2];
+      } else {
+        if (value[1] != null) {
+          dz = CodeToText[value[0]] + "/" + CodeToText[value[1]];
+          this.addressid = value[1];
+        } else {
+          dz = CodeToText[value[0]];
+          this.addressid = value[0];
+        }
+      }
+      this.address = dz;
+    },
+    asd() {
+      this.selectedOptionsshow =2
+    }
   },
 };
 </script>

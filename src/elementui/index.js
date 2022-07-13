@@ -51,10 +51,12 @@ import {
     Drawer,
     Timeline,
     TimelineItem,
-    Rate
+    Rate,
+    cascader
 } from 'element-ui'
 export default {
     install(Vue) {
+        Vue.use(cascader)
         Vue.use(Rate)
         Vue.use(Timeline)
         Vue.use(TimelineItem)

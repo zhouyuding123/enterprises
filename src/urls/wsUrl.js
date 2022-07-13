@@ -197,6 +197,11 @@ export const businessShopListApi =() => {
 export const addWorksApi =() => {
     return "https://weisou.chengduziyi.com/company/orders/addWorks"
 }
+// 企业账号密码登陆
+export const loginPWApi =() => {
+    return "https://weisou.chengduziyi.com/company/users_company/loginPW"
+}
+
 
 
 

@@ -1,14 +1,16 @@
 .perpdding {
     padding: 20px 180px;
+
     .line1 {
         width: 100%;
         background-color: white;
         padding-left: 40px;
         padding-top: 20px;
         padding-bottom: 20px;
-        
+
     }
 }
+
 /deep/.el-tabs__nav-wrap::after {
     content: "";
     position: absolute;
@@ -50,4 +52,82 @@
 
 .lineone {
     margin-top: 20px;
+    width: 100%;
+    background: white;
+
+    .lineongpadding {
+        padding: 40px 70px;
+        text-align: left;
+    }
+}
+
+/deep/.el-form-item__label {
+    font-size: 14px;
+    font-family: PingFang SC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #999999;
+}
+
+.avatar {
+    border-radius: 50%;
+    margin-left: 40px;
+}
+
+/deep/.el-input__inner {
+    width: 540px;
+    height: 40px;
+    background: #F5F5F5;
+    border-radius: 6px 6px 6px 6px;
+    margin-left: 20px;
+}
+
+.typetext {
+    /deep/.el-textarea__inner {
+        width: 540px;
+        height: 120px;
+        background: #F5F5F5;
+        border-radius: 6px 6px 6px 6px;
+        margin-left: 20px;
+    }
+}
+
+.vx {
+    margin-left: 20px;
+
+    .vxgr {
+        margin-left: 5px;
+    }
+
+    .ljbd {
+        font-size: 14px;
+        font-family: PingFang SC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #FF0000;
+        margin-top: -10px;
+    }
+}
+
+.bc {
+
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+
+    div {
+        width: 200px;
+        height: 40px;
+        background: #1677FF;
+        border-radius: 4px 4px 4px 4px;
+        cursor: pointer;
+
+        span {
+            font-size: 16px;
+            font-family: PingFang SC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #FFFFFF;
+            line-height: 40px;
+        }
+    }
+
+
 }

@@ -88,8 +88,8 @@ export default {
     account() {
       this.loginFrom.username = this.getCookie("username");
       this.loginFrom.password = this.getCookie("password");
-      if(this.loginFrom.username&& this.loginFrom.password) {
-        this.checked =true
+      if (this.loginFrom.username && this.loginFrom.password) {
+        this.checked = true;
       }
     },
     getCookie(name) {
@@ -120,6 +120,7 @@ export default {
       this.$router.replace("/register");
     },
     loginer() {
+      
       this.$refs.loginRef.validate((valid) => {
         if (!valid) return;
         postD(users_companyLoginPWApi(), this.loginFrom)
@@ -128,6 +129,7 @@ export default {
             this.$message.success("登入成功");
             localStorage.setItem("token", res.token);
             localStorage.setItem("use", res.data.username);
+            localStorage.setItem("work", this.loginFrom.password);
             this.$router.push("/home");
             if (this.checked == true) {
               //存入cookie

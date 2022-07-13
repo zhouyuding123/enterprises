@@ -2,10 +2,10 @@ const { defineConfig } = require("@vue/cli-service");
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 module.exports = defineConfig({
   transpileDependencies: true,
-  lintOnSave:false,
-  assetsDir: 'static',
+  lintOnSave: false,
+  parallel: false,
   publicPath: '',
-  configureWebpack:  {
+  configureWebpack: {
     resolve: {
       fallback: {
         fs: false,

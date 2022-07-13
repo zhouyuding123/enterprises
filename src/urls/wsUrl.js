@@ -170,20 +170,20 @@ export const delBankApi =() => {
 }
 // 上传企业认证信息
 export const setAuthApi =() => {
-    return "https://weisou.chengduziyi.com/company/users_company/setAuth"
+    return "users_company/setAuth"
 }
 // 编辑基本信息
 export const editInfoApi =() => {
-    return "https://weisou.chengduziyi.com/company/users_company/editInfo"
+    return "users_company/editInfo"
 }
 
 // 读取企业认证信息
 export const getAuthApi =() => {
-    return "https://weisou.chengduziyi.com/company/users_company/getAuth"
+    return "users_company/getAuth"
 }
 // 读取指定企业得基本信息
 export const getInfoApi =() => {
-    return "https://weisou.chengduziyi.com/company/users_company/getInfo"
+    return "users_company/getInfo"
 }
 // 指定企业的品牌列表
 export const brandGetBrandApi =() => {
@@ -195,11 +195,11 @@ export const businessShopListApi =() => {
 }
 // 创建付费作品订单
 export const addWorksApi =() => {
-    return "https://weisou.chengduziyi.com/company/orders/addWorks"
+    return "orders/addWorks"
 }
 // 企业账号密码登陆
 export const loginPWApi =() => {
-    return "https://weisou.chengduziyi.com/company/users_company/loginPW"
+    return "users_company/loginPW"
 }
 
 

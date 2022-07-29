@@ -461,11 +461,12 @@ export default {
       }
       this.ruleForm.thumb = {
         thumbList: this.thumbsVideo + "," + this.thumbs,
-        color: colorser,
+        colorList: colorser,
+        videoList: this.thumbsVideo
       };
       this.ruleForm.content = {
         text: this.content2,
-        imgs: this.content1 + "," + this.thumbs3,
+        images: this.content1 + "," + this.thumbs3,
       };
       this.ruleForm.accept_id = this.$route.params.accept_id;
       this.ruleForm.match_id = this.$route.params.match_id;

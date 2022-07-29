@@ -82,10 +82,6 @@
             <div class="listFelt">
               <p style="height: 50px">
                 <vxe-radio-group v-model="selectTab">
-                  <vxe-radio-button
-                    label="tab1"
-                    content="全部"
-                  ></vxe-radio-button>
                   <div class="listRight">
                     <el-button @click="SetAsTopS">设为置顶</el-button>
                     <el-button @click="SetAsEssence">设为精华</el-button>
@@ -274,16 +270,6 @@
                   ]"
                   @page-change="handlePageChangeActivity"
                 ></vxe-pager>
-              </div>
-
-              <div v-show="selectTab === 'tab2'">
-                <circle-list />
-              </div>
-              <div v-show="selectTab === 'tab3'">
-                <latest-circle-list />
-              </div>
-              <div v-show="selectTab === 'tab4'">
-                <essence-circle-list />
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="margin: 5px 0 5px 0">
-      {{ "二维码剩余有效时间" + times + "秒" }}
+      {{  + times + "秒回登入界面" }}
     </div>
   </div>
 </template>

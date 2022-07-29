@@ -18,7 +18,7 @@
       <div class="loginline3">
         <el-form :model="ruleForm" :rules="ruleFormrules" ref="ruleFormRef">
           <el-form-item label="登入账号" prop="username">
-            <el-input v-model="ruleForm.username"></el-input>
+            <el-input v-model="username"></el-input>
           </el-form-item>
           <el-form-item label="登入密码" prop="password">
             <el-input v-model="ruleForm.password">

@@ -17,8 +17,16 @@
         <el-form-item label="联系电话" prop="tel">
           <el-input v-model="editruleForm.tel"></el-input>
         </el-form-item>
-        <el-form-item label="主营项目" prop="company_main">
-          <el-input v-model="editruleForm.company_main"></el-input>
+        <el-form-item label="主营项目">
+          <el-select v-model="editruleForm.company_main" placeholder="请选择">
+            <el-option
+              v-for="item in companymain"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </div>
       <div class="editline2">
@@ -129,17 +137,22 @@ export default {
             tirgger: "blur",
           },
         ],
-        company_main: [
-          {
-            required: true,
-            message: "请输入主营项目",
-            tirgger: "blur",
-          },
-        ],
       },
+      companymain: [],
     };
   },
+  created() {
+    this.getListvalue();
+  },
   methods: {
+    getListvalue() {
+      postD(
+        "https://weisou.chengduziyi.com/designer/product_type/getList"
+      ).then((res) => {
+        console.log(res);
+        this.companymain = res.list;
+      });
+    },
     // 上传图片
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
@@ -186,11 +199,11 @@ export default {
       console.log(this.description);
       postD(editInfoApi(), this.editruleForm).then((res) => {
         if (res.code == "200") {
-            this.$message.success("编辑基本信息成功");
-            this.reload();
-          } else {
-            this.$message.error("编辑基本信息失败");
-          }
+          this.$message.success("编辑基本信息成功");
+          this.reload();
+        } else {
+          this.$message.error("编辑基本信息失败");
+        }
       });
     },
   },

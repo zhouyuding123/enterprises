@@ -365,18 +365,19 @@ export default {
     dialogVisibleAdd() {
       this.ruleForm.content = {
         text: this.content2,
-        imgs: this.content1 + "," + this.thumbs3,
+        images: this.content1 + "," + this.thumbs3,
       };
       var colorser = [];
       for (let index = 0; index < this.speccolior.length; index++) {
-        let json={}
-        json.url = this.thumbs2[index]
-        json.color = this.speccolior[index].color
-        colorser.push(json)
+        let json = {};
+        json.url = this.thumbs2[index];
+        json.color = this.speccolior[index].color;
+        colorser.push(json);
       }
       this.ruleForm.thumb = {
-        thumbList: this.thumbsVideo+"," + this.thumbs,
-        color: colorser,
+        thumbList: this.thumbsVideo + "," + this.thumbs,
+        colorList: colorser,
+        videoList:this.thumbsVideo
       };
       this.ruleForm.thumb = JSON.stringify(this.ruleForm.thumb);
       this.ruleForm.spec = JSON.stringify(this.spec);
@@ -454,7 +455,7 @@ export default {
     },
     delspec(index) {
       this.spec.splice(index, 1);
-      this.speccolior.splice(index,1)
+      this.speccolior.splice(index, 1);
     },
     handleResponses(res, file) {
       this.thumbsVideo = res.url;

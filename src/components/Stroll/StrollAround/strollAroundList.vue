@@ -293,13 +293,12 @@ import { styleModify, styleModifytwo } from "@/assets/js/modifyStyle.js";
 export default {
   data() {
     return {
-      activeName: "second",
+      activeName: "first",
       strollList: [],
       imagesValue: "",
       strollListImg: [],
       styleId: {
         style: "2",
-        own: "1",
       },
       page1: {
         style: "2",

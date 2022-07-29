@@ -20,23 +20,6 @@
             >
           </el-radio-group>
         </div>
-        <!-- <div class="filterValueline2">
-          <div class="ptfl">平台分类</div>
-          <el-radio-group
-            v-model="PTcheckboxGroup1.type"
-            fill="#5C5673"
-            @change="PTcheckoxId"
-          >
-            <el-radio-button border> 不限 </el-radio-button>
-            <el-radio-button
-              border
-              v-for="item in typeOptions"
-              :label="item.id"
-              :key="item.id"
-              >{{ item.title }}</el-radio-button
-            >
-          </el-radio-group>
-        </div> -->
         <div class="filterValueline3">
           <div class="ppfl">品牌分类</div>
           <el-radio-group

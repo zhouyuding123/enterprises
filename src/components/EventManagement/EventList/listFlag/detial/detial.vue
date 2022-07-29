@@ -619,7 +619,7 @@ export default {
     judgmentb() {
       this.Nowtimes = new Date().valueOf();
       this.votoEndtime =
-        Date.parse(this.detialValueList.voto_end_time) + 86399999;
+        Date.parse(this.detialValueList.voto_end_time) ;
       if (
         this.detialValueList.access !== false &&
         this.votoEndtime <= this.Nowtimes
@@ -644,21 +644,22 @@ export default {
         this.imagesValue = imgUrl();
         this.Nowtimes = new Date().valueOf();
         this.signendtime =
-          Date.parse(this.detialValueList.sign_end_time) + 86399999;
+          Date.parse(this.detialValueList.sign_end_time) ;
         this.signstarttime =
-          Date.parse(this.detialValueList.sign_start_time) + 86399999;
+          Date.parse(this.detialValueList.sign_start_time) ;
         this.votoEndtime =
-          Date.parse(this.detialValueList.voto_end_time) + 86399999;
+          Date.parse(this.detialValueList.voto_end_time) ;
         this.exhendtime =
-          Date.parse(this.detialValueList.exh_end_time) + 86399999;
+          Date.parse(this.detialValueList.exh_end_time) ;
         this.exhstarttime =
-          Date.parse(this.detialValueList.exh_start_time) + 86399999;
+          Date.parse(this.detialValueList.exh_start_time) ;
         this.votostarttime =
-          Date.parse(this.detialValueList.voto_start_time) + 86399999;
+          Date.parse(this.detialValueList.voto_start_time) ;
       });
     },
     worksValue() {
       postD(MatchWorksApi(), this.detialId).then((res) => {
+        console.log(res);
         this.workvalues = res;
         this.workvalue = res.list.reverse();
         this.detialId.totalResult = res.accept_count;

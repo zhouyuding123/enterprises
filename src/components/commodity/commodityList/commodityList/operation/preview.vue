@@ -102,8 +102,6 @@ export default {
         console.log(this.previewValueList);
         var textimg = JSON.parse(res.data.content);
         this.contentsText = textimg.text;
-        // this.contentsImgs = textimg.imgs.split(",");
-        // this.contentsImgs = this.contentsImgs.filter((val) => val);
       });
     },
   },

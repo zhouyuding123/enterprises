@@ -107,6 +107,7 @@ export default {
             message: "请输入圈子标题",
             tirgger: "blur",
           },
+          { min: 5,  message: '长度不小于5', trigger: 'blur' }
         ],
         description: [
           {
@@ -164,6 +165,7 @@ export default {
            if (!v) return;
         postD(CircleCreateCircleApi(),this.ruleForm)
         .then(res =>　{
+          console.log(res);
             if (res.code == "200") {
             this.$message.success("状态修改成功");
           } else if (res.code == "-200") {

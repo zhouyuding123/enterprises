@@ -8,6 +8,10 @@ import "@/assets/font_nslx23r4lvg/iconfont.css"
 import 'xe-utils'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
+//main.js
+import ECharts from "vue-echarts";
+Vue.component('v-chart', ECharts)//全局注册
+
 
 Vue.use(VXETable)
 Vue.use(elementui)

@@ -5,7 +5,7 @@
       <div class="sjs">
         <div class="vip"><img src="@/assets/imgers/vip.png" alt="" /></div>
         <div class="Open" @click="goaddvip"><span>开通设计师专区VIP</span></div>
-        <div class="bd"><img src="@/assets/imgers/榜单.png" alt="" /></div>
+        <div class="bd" @click="gophb"><img src="@/assets/imgers/榜单.png" alt="" /></div>
         <div class="sx" @click="screen" :v-model="direction">
           <img src="@/assets/imgers/筛选.png" alt="" />
         </div>
@@ -73,6 +73,9 @@ export default {
     },
     goaddvip () {
       this.$router.push("/orders/addVip")
+    },
+    gophb() {
+      this.$router.push("/Ranking")
     },
   },
 };

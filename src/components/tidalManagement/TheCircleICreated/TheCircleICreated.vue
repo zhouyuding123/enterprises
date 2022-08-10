@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="Release" @click="goactivities">
-      <p>发布活动</p>
-    </div>
     <div class="thumbBody">
       <div class="thumbbool">
         <el-image :src="imagesValue + CircleShowValue.thumb"> </el-image>
@@ -991,9 +988,6 @@ export default {
     },
     goPosts() {
       this.$router.push("/Circle/getCircleForum" + this.paramsId.id);
-    },
-    goactivities() {
-      this.$router.push("/Activity/release");
     },
     moreValue() {
       this.$router.push("/circle_notice/getList" + this.paramsId.id);

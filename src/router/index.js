@@ -565,6 +565,14 @@ const routes = [
             meta: {
               title: "会员"
             }
+          },
+          {
+            path:"/Ranking",
+            name:"Ranking",
+            component:()=>import("../components/designer/Ranking/Ranking.vue"),
+            meta: {
+              title: "排行榜"
+            },
           }
         ]
       },

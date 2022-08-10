@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="Release">
-      <p>发布活动</p>
-    </div>
     <el-form
       :model="ruleForm"
       :rules="ruleFormRules"

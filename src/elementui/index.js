@@ -52,7 +52,7 @@ import {
     Timeline,
     TimelineItem,
     Rate,
-    cascader
+    cascader,
 } from 'element-ui'
 export default {
     install(Vue) {

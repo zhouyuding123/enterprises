@@ -1,9 +1,5 @@
 <template>
   <div>
-    <div class="Release">
-      <p @click="goAddcreate" class="activities">创建圈子</p>
-      <p class="activities" @click="goActivities">发布活动</p>
-    </div>
     <div>
       <div class="borderStyle"></div>
       <div>
@@ -19,35 +15,33 @@
         </el-menu>
       </div>
       <div class="paddingStyle" v-if="this.flag == 1">
-        <ul>
-          <li
-            class="listCircle"
-            v-for="item in listValue"
-            :key="item.id"
-            @click="thisCirle(item.id)"
-          >
+        <div
+          class="listCircle"
+          v-for="item in listValue"
+          :key="item.id"
+          @click="thisCirle(item.id)"
+        >
+          <div>
+            <el-image
+              class="headimgStyle"
+              :src="imgValue + item.headimg"
+              alt=""
+            />
+          </div>
+          <div class="titleStyle">{{ item.title }}</div>
+          <div class="titleStyles">
             <div>
-              <el-image
-                class="headimgStyle"
-                :src="imgValue + item.headimg"
-                alt=""
-              />
+              <img src="../../../assets/imgers/组 11937.png" alt="" /><span>{{
+                item.member_count
+              }}</span>
             </div>
-            <div class="titleStyle">{{ item.title }}</div>
-            <div class="titleStyles">
-              <div>
-                <img src="../../../assets/imgers/组 11937.png" alt="" /><span>{{
-                  item.member_count
-                }}</span>
-              </div>
-              <div>
-                <img src="../../../assets/imgers/组 11938.png" alt="" /><span>{{
-                  item.forum_count
-                }}</span>
-              </div>
+            <div>
+              <img src="../../../assets/imgers/组 11938.png" alt="" /><span>{{
+                item.forum_count
+              }}</span>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
       <div v-if="this.flag == 2" class="paddingStyle">
         <ul style="margin-left: 20px">
@@ -134,16 +128,11 @@ export default {
     cjqzs() {
       this.flag = 2;
     },
-    goAddcreate() {
-      this.$router.push("/Circle/createCircle");
-    },
+
     thisCirle(index) {
       this.CircleId.id = index;
       this.$router.push("/Circle/getCircleShow" + index);
     },
-    goActivities(){
-      this.$router.push("/Activity/release");
-    }
   },
 };
 </script>
@@ -153,15 +142,11 @@ export default {
   border: 1px solid #dddddd;
 }
 .paddingStyle {
-  padding: 30px;
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    li {
-      width: 25%;
-    }
-  }
+  width: 1660px;
+  height: auto;
+  margin: 20px 60px;
+  display: flex;
+  flex-wrap: wrap;
 }
 .addCircle {
   width: 460px;
@@ -173,12 +158,13 @@ export default {
   }
 }
 .listCircle {
+  position: relative;
   width: 450px;
   height: 180px;
   background: #ffffff;
   border-radius: 6px 6px 6px 6px;
   margin-left: 15px;
-  margin-right: 40px;
+  margin-right: 80px;
   margin-top: 20px;
   float: left;
   display: flex;
@@ -192,11 +178,13 @@ export default {
 }
 .titleStyle {
   padding: 40px 20px;
+  text-align: left;
 }
 .titleStyles {
-  text-align: left;
-  margin-left: -95px;
-  padding-top: 120px;
+  display: flex;
+  position: absolute;
+  left: 200px;
+  top: 120px;
   div {
     display: inline-block;
     position: relative;
@@ -255,6 +243,6 @@ export default {
 }
 .activities {
   cursor: pointer;
-  z-index: 9999;
+  z-index: 999;
 }
 </style>

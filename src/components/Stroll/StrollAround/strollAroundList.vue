@@ -1,9 +1,6 @@
 <template>
   <div class="strollStyle">
-    <div class="fb">
-      <div class="tz" @click="addrelease"><span>发表帖子</span></div>
-      <div class="hd" @click="goactivities"><span>发布活动</span></div>
-    </div>
+    
     <div class="strollDiv">
       <el-tabs v-model="activeName">
         <el-tab-pane label="逛逛帖子" name="first">
@@ -467,12 +464,7 @@ export default {
       }
     },
 
-    goactivities() {
-      this.$router.push("/Activity/release");
-    },
-    addrelease() {
-      this.$router.push("/Circles/release");
-    },
+   
     strollDetial(val) {
       this.$router.push("/Forum/showForum" + val);
     },

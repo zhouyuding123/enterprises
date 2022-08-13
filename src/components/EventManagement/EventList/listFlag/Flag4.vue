@@ -3,7 +3,7 @@
     <div class="matchBody">
       <div class="matchframe">
         <div cclass="matchcontent">
-          <el-row :gutter="20">
+          <el-row :gutter="19">
             <el-col :span="5"
               ><div>
                 <el-input

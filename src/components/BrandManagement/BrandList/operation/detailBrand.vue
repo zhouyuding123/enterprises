@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="operationdel" @click="BrandDetails">
-      <img src="../../../../assets/imgers/删除.png" alt="" />
       <p>详情</p>
     </div>
     <el-dialog title="品牌详情" :visible.sync="dialogVisible" width="70%">

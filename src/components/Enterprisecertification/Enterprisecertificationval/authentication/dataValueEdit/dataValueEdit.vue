@@ -31,7 +31,7 @@
       </div>
       <div class="editline2">
         <el-form-item label="企业照片">
-          <el-upload
+          <!-- <el-upload
             class="avatar-uploader"
             action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
             :show-file-list="false"
@@ -39,8 +39,26 @@
             :before-upload="beforeAvatarUpload"
             :data="{ fileType: this.fileType }"
           >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <img v-if="description.photo" :src="imagesValue+description.photo" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload> -->
+          <el-upload
+            class="avatar-uploader"
+            action="https://weisou.chengduziyi.com/admin/Uploads/uploadFile"
+            :data="{ fileType: this.fileType }"
+            multiple
+            list-type="picture-card"
+            :limit="100"
+            :on-success="handleAvatarSuccess"
+            :file-list="imageList2"
+            :on-preview="handlePictureCardPreview"
+            :before-upload="beforeAvatarUpload"
+            :on-remove="fileRemove2"
+          >
+            <i
+              class="el-icon-picture-outline"
+              style="background-color: #f5f5f5"
+            ></i>
           </el-upload>
         </el-form-item>
       </div>
@@ -72,7 +90,7 @@
             :before-upload="beforeAvatarUpload"
             :data="{ fileType: this.fileType }"
           >
-            <img v-if="imageUrls" :src="imageUrls" class="avatar" />
+            <img v-if="description.qualifications" :src="imagesValue+description.qualifications" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -87,8 +105,9 @@
 
 <script>
 import EleUploadVideo from "vue-ele-upload-video";
-import { editInfoApi } from "@/urls/wsUrl.js";
+import { editInfoApi, getInfoApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
+import { imgUrl } from "@/assets/js/modifyStyle";
 export default {
   components: {
     EleUploadVideo,
@@ -96,6 +115,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      imagesValue: "",
       editruleForm: {
         nickname: "",
         tel: "",
@@ -139,12 +159,61 @@ export default {
         ],
       },
       companymain: [],
+      imageList2: [],
+      dialogImageUrl: "",
+      dialogVisibles: false,
+      videosrc1: "",
     };
   },
   created() {
+    this.getInfo();
     this.getListvalue();
+    this.imagesValue = imgUrl();
   },
   methods: {
+    getInfo() {
+      var name = {
+        username: localStorage.getItem("use"),
+      };
+      postD(getInfoApi(), name).then((res) => {
+        this.editruleForm.nickname = res.data.nickname || "";
+        this.editruleForm.tel = res.data.tel || "";
+        this.editruleForm.company_main = res.data.company_main || "";
+        this.editruleForm.detail = res.data.detail || "";
+        let info = JSON.parse(res.data.description);
+        console.log(info);
+        if (info.photo != "" && info.photo != null) {
+          info.photo.forEach((item, i) => {
+            if (info.photo.indexOf(",") > -1) {
+              this.imageList2.push({
+                response: {
+                  url: item,
+                },
+                url: this.imagesValue + item,
+              });
+            } else {
+              this.imageList2.push({
+                response: {
+                  url: item,
+                },
+                url: this.imagesValue + item,
+              });
+            }
+          });
+        }
+        this.description.introduce = info.introduce;
+        this.description.qualifications = info.qualifications;
+        
+        console.log(info);
+        let video = info.video;
+        if (video != "") {
+          if (video.indexOf("moves") > -1) {
+            this.video = this.imagesValue + video;
+            this.videosrc1 = video;
+          }
+        }
+      });
+    },
     getListvalue() {
       postD(
         "https://weisou.chengduziyi.com/designer/product_type/getList"
@@ -154,9 +223,10 @@ export default {
       });
     },
     // 上传图片
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.description.photo = res.url;
+    handleAvatarSuccess(res, file, fileList) {
+      // this.imageUrl = URL.createObjectURL(file.raw);
+      // this.description.photo = res.url;
+      this.imageList2 = fileList;
     },
     handleAvatarSuccesstwo(res, file) {
       this.imageUrls = URL.createObjectURL(file.raw);
@@ -179,8 +249,9 @@ export default {
       }
       return isJPG && isLt2M;
     },
-    handleResponse(res, file) {
-      this.description.video = res.url;
+    handleResponse(response, file) {
+      this.video = response.url;
+      this.videosrc1 = response.url;
       return URL.createObjectURL(file.raw);
     },
     // 视频介绍
@@ -195,16 +266,30 @@ export default {
       this.reload();
     },
     preservation() {
+      var imgslist = [];
+      this.imageList2.forEach((item, i) => {
+        imgslist.push(item.response.url);
+        console.log(item.response.url);
+      });
+      console.log(imgslist);
+      this.description.photo = imgslist;
       this.editruleForm.description = JSON.stringify(this.description);
       console.log(this.description);
-      postD(editInfoApi(), this.editruleForm).then((res) => {
-        if (res.code == "200") {
-          this.$message.success("编辑基本信息成功");
-          this.reload();
-        } else {
-          this.$message.error("编辑基本信息失败");
-        }
-      });
+      // postD(editInfoApi(), this.editruleForm).then((res) => {
+      //   if (res.code == "200") {
+      //     this.$message.success("编辑基本信息成功");
+      //     this.reload();
+      //   } else {
+      //     this.$message.error("编辑基本信息失败");
+      //   }
+      // });
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    fileRemove2(file, fileList) {
+      this.imageList2 = fileList;
     },
   },
 };

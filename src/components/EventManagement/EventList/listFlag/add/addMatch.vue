@@ -25,7 +25,21 @@
                 :prop="`prize.${index}.name`"
                 :rules="ruleFormRules.name"
               >
-                <el-input v-model="item.name" style="width: 95%"></el-input>
+                <!-- <el-input v-model="item.name" style="width: 95%"></el-input> -->
+                <el-select
+                  v-model="item.name"
+                  value-key="name"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in rankList"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.title"
+                    @click.native="changerankList(item.title)"
+                  >
+                  </el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="7" class="prizeBody">
@@ -164,7 +178,7 @@
         </el-form-item>
       </div>
       <div class="line5">
-        <el-form-item label="奖金设置" required>
+        <el-form-item label="评选标准" required>
           <div v-for="(item, index) in ruleForm.standard" :key="index">
             <el-col :span="7" class="prizeBody">
               <el-form-item
@@ -260,8 +274,8 @@
 <script>
 import { timestampToTime } from "@/assets/js/time.js";
 import { beforeAvatar } from "@/assets/js/modifyStyle.js";
-import {matchReleaseApi} from "../matchUrl.js"
-import { postD } from '@/api/index.js';
+import { matchReleaseApi } from "../matchUrl.js";
+import { postD } from "@/api/index.js";
 export default {
   data() {
     return {
@@ -273,6 +287,8 @@ export default {
             name: "",
             amount: "",
             item: "",
+            name_id: "",
+            prize_sort: "",
           },
         ],
         sign_start_time: "",
@@ -293,7 +309,7 @@ export default {
         notice: "",
         thumb: "",
         poster: "",
-        condition:"1"
+        condition: "1",
       },
       // 图片
       imageUrl: "",
@@ -421,11 +437,58 @@ export default {
           },
         ],
       },
+      rankList: [],
     };
   },
+  created() {
+    this.ranklist();
+  },
   methods: {
+    ranklist() {
+      postD("https://weisou.chengduziyi.com/admin/prize/getLists").then(
+        (res) => {
+          this.rankList = res.list;
+        }
+      );
+    },
+    changerankList(e) {
+      this.rankList.map((item, i) => {
+        if (item.title == e) {
+          console.log(item);
+          this.ruleForm.prize.forEach((v, is) => {
+            if (v.name == item.title) {
+              v.name_id = item.id;
+              v.prize_sort = item.sort;
+            }
+          });
+        }
+      });
+    },
     addInputHandle() {
-      this.ruleForm.prize.push({ name: "", amount: "", item: "" });
+      let i = [];
+      this.ruleForm.prize.forEach((v, i) => {
+        i = i;
+        if (v.amount) {
+          this.rankList = this.rankList.filter((item) => item.title != v.name);
+        }
+      });
+      let b = [];
+      for (var a in this.ruleForm.prize) {
+        b.push(this.ruleForm.prize[a]);
+      }
+      if (this.ruleForm.prize[a].name !== "" &&
+        this.ruleForm.prize[a].amount !== "" &&
+        this.ruleForm.prize[a].item !== "" &&
+        this.ruleForm.prize[a].name_id !== "" &&
+        this.ruleForm.prize[a].prize_sort !== "" && a < 4) {
+        this.ruleForm.prize.push({
+          name: "",
+          amount: "",
+          item: "",
+          name_id: "",
+          prize_sort: "",
+        });
+      }
     },
     delInputHandle(index) {
       this.ruleForm.prize.splice(index, 1);
@@ -471,20 +534,20 @@ export default {
     addRelease() {
       this.$refs.ruleFormRef.validate((valid) => {
         if (!valid) return;
-        postD(matchReleaseApi(),this.ruleForm).then(res=> {
+        postD(matchReleaseApi(), this.ruleForm).then((res) => {
           if (res.code == "200") {
-              this.$message.success("发布赛事成功");
-              this.$router.push("/match/listMacthMF")
-            } else if (res.code == "-200") {
-              this.$message.error("参数错误，或暂无数据");
-            } else if (res.code == "-201") {
-              this.$message.error("未登陆");
-            } else if (res.code == "-203") {
-              this.$message.error("对不起，你没有此操作权限");
-            } else {
-              this.$message.error("注册失败，账号已存在");
-            }
-        })
+            this.$message.success("发布赛事成功");
+            this.$router.push("/match/listMacthMF");
+          } else if (res.code == "-200") {
+            this.$message.error("参数错误，或暂无数据");
+          } else if (res.code == "-201") {
+            this.$message.error("未登陆");
+          } else if (res.code == "-203") {
+            this.$message.error("对不起，你没有此操作权限");
+          } else {
+            this.$message.error("注册失败，账号已存在");
+          }
+        });
       });
     },
   },

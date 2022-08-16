@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="operationEdit" @click="EditShow">
-      <img src="../../../../assets/imgers/编辑.png" alt="" />
       <p>编辑</p>
     </div>
     <el-dialog title="提示" :visible.sync="dialogVisible" width="70%">
@@ -188,7 +187,7 @@ export default {
     font-size: 14px;
     font-family: PingFang SC-Regular, PingFang SC;
     font-weight: 400;
-    color: #00b567;
+    color: #0177D5;
     line-height: 19px;
   }
 }

@@ -52,11 +52,13 @@ import {
     Timeline,
     TimelineItem,
     Rate,
+    Tooltip,
     cascader,
 } from 'element-ui'
 export default {
     install(Vue) {
         Vue.use(cascader)
+        Vue.use(Tooltip)
         Vue.use(Rate)
         Vue.use(Timeline)
         Vue.use(TimelineItem)

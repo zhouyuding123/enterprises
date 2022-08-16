@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="operationdel" @click="oneCompany">
-      <img src="../../../../assets/imgers/删除.png" alt="" />
       <p>删除</p>
     </div>
   </div>
@@ -70,7 +69,7 @@ export default {
     font-size: 14px;
     font-family: PingFang SC-Regular, PingFang SC;
     font-weight: 400;
-    color: #ff2659;
+    color: #0177D5;
     line-height: 19px;
   }
 }

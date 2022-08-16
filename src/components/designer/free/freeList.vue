@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:1600px;margin:20px auto">
     <div>
       <div class="Opens">
         <div v-for="item in freeListValue" :key="item.id">

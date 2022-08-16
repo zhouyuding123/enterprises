@@ -327,7 +327,7 @@ export default {
       // 平台
       typeOptions: [],
       PTcheckboxGroup1: {
-        type:"",
+        type: "",
         is_del: "0",
       },
       PTcheckboxGroup2: {
@@ -339,9 +339,9 @@ export default {
         brand_id: "",
         is_del: "0",
       },
-      OptionsValue2:{
+      OptionsValue2: {
         is_del: "0",
-      }
+      },
     };
   },
   created() {
@@ -352,11 +352,11 @@ export default {
   methods: {
     // 平台分类
     product_typeListValue() {
-      postD("https://weisou.chengduziyi.com/designer/product_type/getList").then(
-        (res) => {
-          this.typeOptions = res.list;
-        }
-      );
+      postD(
+        "https://weisou.chengduziyi.com/designer/product_type/getList"
+      ).then((res) => {
+        this.typeOptions = res.list;
+      });
     },
     // 产品分类
     custypeGetListValue() {

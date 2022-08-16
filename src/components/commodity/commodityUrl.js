@@ -46,10 +46,6 @@ export const company_productShowProductApi = () => {
 export const company_productEditProductApi = () => {
     return "company_product/editProduct"
 }
-
-
-
-
 // 选择品牌
 export const brandGetListApi = () => {
     return "brand/getList"

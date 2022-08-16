@@ -321,7 +321,10 @@ export default {
   methods: {
     editShow() {
       this.dialogVisible = true;
-      postD(brandGetListApi()).then((res) => {
+      var pp = {
+        status:"1"
+      }
+      postD(brandGetListApi(),pp).then((res) => {
         this.options = res.list;
       });
       postD(

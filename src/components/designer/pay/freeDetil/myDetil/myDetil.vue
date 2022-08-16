@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:1700px;margin:20px auto">
     <div class="worksBody">
       <div class="worksDiv">
         <div class="headimagephoto">

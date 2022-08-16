@@ -36,12 +36,15 @@
       <div class="Authline2">
         <div class="Authline2title">企业照片</div>
         <div class="Authline2title_Img">
-          <el-image
+          <!-- <div v-for="(item,index) in des.photo" :key="index"> 
+             <el-image
             style="width: 280px; height: 200px"
-            :src="imagesValue + getAuthValues.shop_img"
-            :preview-src-list="[imagesValue + getAuthValues.shop_img]"
+            :src="imagesValue + item"
+            :preview-src-list="[imagesValue + item]"
           >
           </el-image>
+          </div> -->
+         
         </div>
       </div>
       <div class="Authline3">
@@ -126,6 +129,7 @@ export default {
     getInfoValue() {
       this.info.username = localStorage.use;
       postD(getInfoApi(), this.info).then((res) => {
+        console.log(res);
         this.infoValue = res.data;
         var des = res.data.description;
         var desjs = JSON.parse(des);

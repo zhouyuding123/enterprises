@@ -159,6 +159,7 @@ export default {
 .addBody {
   padding: 20px 30px;
   .addsurface {
+    padding: 20px 30px;
     background-color: white;
   }
 }
@@ -179,5 +180,14 @@ export default {
     color: #ffffff;
     line-height: 40px;
   }
+}
+/deep/.avatar-uploader {
+  display: flex;
+}
+/deep/.avatar-uploader .el-upload {
+  background: #f5f5f5;
+}
+/deep/.el-input__inner {
+  background: #f5f5f5;
 }
 </style>

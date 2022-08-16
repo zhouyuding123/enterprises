@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:1700px;margin:0 auto">
     <div class="brandBody">
       <div class="brandadd" @click="addBrand">
         <span>添加</span>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:1700px;margin:20px auto">
     <div class="golist" @click="gopaylist">返回付费列表</div>
     <div class="worksBody">
       <div class="worksDiv">

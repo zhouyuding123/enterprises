@@ -2,7 +2,7 @@
   <div>
     <div class="postBody">
       <div>
-        <el-input v-model="seatch.keyword" placeholder="请输入内容"></el-input>
+        <el-input v-model="Myid.keyword" placeholder="请输入内容"></el-input>
       </div>
       <div class="seatchDiv" @click="seatchValue"><span>搜索</span></div>
       <div class="dels" @click="canDels"><span>批量删除</span></div>
@@ -115,9 +115,9 @@
         </vxe-column>
       </vxe-table>
       <vxe-pager
-        :current-page="page1.offset"
-        :page-size="page1.limit"
-        :total="page1.totalResult"
+        :current-page="Myid.offset"
+        :page-size="Myid.limit"
+        :total="Myid.totalResult"
         :layouts="[
           'PrevPage',
           'JumpNumber',
@@ -141,10 +141,11 @@ export default {
   data() {
     return {
       Myid: {
-        own: "1",
-      },
-      seatch: {
         keyword: "",
+        own: "1",
+        offset: 1,
+        limit: 10,
+        totalResult: 0,
       },
       tableData: [],
       imagesValue: "",
@@ -157,12 +158,6 @@ export default {
       DeletePostValue: {
         id: "",
       },
-      page1: {
-        offset: 1,
-        limit: 10,
-        totalResult: 0,
-        own: "1",
-      },
     };
   },
   created() {
@@ -173,7 +168,7 @@ export default {
       postD(CircleGetForumApi(), this.Myid).then((res) => {
         this.tableData = res.list;
         this.imagesValue = imgUrl();
-        this.page1.totalResult = res.count;
+        this.Myid.totalResult = res.count;
       });
     },
     funTime(val) {
@@ -183,6 +178,10 @@ export default {
       this.$router.push("/Forum/showForum" + data);
     },
     refh() {
+      this.Myid.own="1"
+      this.Myid.offset=1
+      this.Myid.limit=10
+      this.Myid.keyword=""
       this.myList();
     },
     checkboxChangeEvent(data) {
@@ -256,17 +255,17 @@ export default {
       }
     },
     handlePageChangeActivity({ currentPage, pageSize }) {
-      this.page1.offset = currentPage;
-      this.page1.limit = pageSize;
-      postD(CircleGetForumApi(), this.page1).then((res) => {
+      this.Myid.offset = currentPage;
+      this.Myid.limit = pageSize;
+      postD(CircleGetForumApi(), this.Myid).then((res) => {
         this.tableData = res.list;
-        this.page1.totalResult = res.count;
+        this.Myid.totalResult = res.count;
       });
     },
     seatchValue() {
-      postD(CircleGetForumApi(), this.seatch).then((res) => {
+      postD(CircleGetForumApi(), this.Myid).then((res) => {
         this.tableData = res.list;
-        this.page1.totalResult = res.count;
+        this.Myid.totalResult = res.count;
       });
     },
   },

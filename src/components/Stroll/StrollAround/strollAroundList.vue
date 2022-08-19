@@ -111,7 +111,7 @@
           <div class="MYstr">
             <div>
               <el-input
-                v-model="seatch.keyword"
+                v-model="styleId.keyword"
                 placeholder="请输入内容"
               ></el-input>
             </div>
@@ -296,6 +296,10 @@ export default {
       strollListImg: [],
       styleId: {
         style: "2",
+        offset: 1,
+        limit: 10,
+        totalResult: 0,
+         keyword: "",
       },
       page1: {
         style: "2",
@@ -304,15 +308,13 @@ export default {
         totalResult: 0,
       },
       seatch: {
-        keyword: "",
+       
       },
       allAlign: null,
       tableData: [],
       page2: {
         style: "2",
-        offset: 1,
-        limit: 10,
-        totalResult: 0,
+        
       },
       // 删除
       // 批量删除
@@ -375,24 +377,29 @@ export default {
     Mystroll() {
       postD(CircleGetForumApi(), this.styleId).then((res) => {
         this.tableData = res.list;
-        this.page2.totalResult = res.count;
+        this.styleId.totalResult = res.count;
       });
     },
     handlePageChangeActivityTwo({ currentPage, pageSize }) {
-      this.page2.offset = currentPage;
-      this.page2.limit = pageSize;
-      postD(CircleGetForumApi(), this.page2).then((res) => {
+      this.styleId.offset = currentPage;
+      this.styleId.limit = pageSize;
+      postD(CircleGetForumApi(), this.styleId).then((res) => {
         this.tableData = res.list;
-        this.page2.totalResult = res.count;
+        this.styleId.totalResult = res.count;
       });
     },
     SeatchValue() {
-      postD(CircleGetForumApi(), this.seatch).then((res) => {
+      postD(CircleGetForumApi(), this.styleId).then((res) => {
         this.tableData = res.list;
-        this.page2.totalResult = res.count;
+        this.styleId.totalResult = res.count;
       });
     },
     Refresh() {
+      this.styleId.style ="1"
+      this.styleId.own ="1"
+      this.styleId.offset =1
+      this.styleId.limit =10
+      this.styleId.keyword =""
       this.Mystroll();
     },
     async delsValue() {

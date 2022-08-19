@@ -35,21 +35,25 @@
       </div>
       <div class="Authline2">
         <div class="Authline2title">企业照片</div>
-        <div class="Authline2title_Img">
-          <!-- <div v-for="(item,index) in des.photo" :key="index"> 
-             <el-image
-            style="width: 280px; height: 200px"
-            :src="imagesValue + item"
-            :preview-src-list="[imagesValue + item]"
-          >
-          </el-image>
-          </div> -->
-         
+        <div class="Authline2title_Img dis" v-if="desphoto !== ''">
+          <div v-for="(item, index) in desphoto.slice(0, 4)" :key="index">
+            <el-image
+              style="width: 280px; height: 200px"
+              :src="imagesValue + item"
+              :preview-src-list="desphotos"
+            >
+            </el-image>
+          </div>
+        </div>
+        <div class="Authline2title_Img dis" v-else>
+          <div class="Authline2title_Imgwu">
+            <img src="@/assets/imgers/等待上传.png" alt="">
+          </div>
         </div>
       </div>
       <div class="Authline3">
         <div class="Authline3title">品牌展示</div>
-        <div class="Authline3title_Img">
+        <div class="Authline3title_Img" v-if="brandGetBrandlist">
           <div v-for="item in brandGetBrandlist" :key="item.id" class="pp">
             <div class="pp_img">
               <el-image
@@ -63,27 +67,49 @@
             </div>
           </div>
         </div>
+        <div class="Authline3title_Img" v-else>
+          <div class="Authline2title_Imgwu">
+            <img src="@/assets/imgers/等待上传.png" alt="">
+          </div>
+        </div>
       </div>
       <div class="Authline4">
         <div class="Authline4title">企业介绍</div>
-        <div class="Authline4des">
+        <div class="Authline4des" v-if="des.introduce != ''">
           {{ des.introduce }}
         </div>
-        <div style="padding-left: 50px; padding-top: 20px">
-          <video style="width: 100%; height: 300px" controls :src="imagesValue + des.video"></video>
+        <div class="Authline4des" v-else>
+          企业暂未上传简介
+        </div>
+        <div
+          style="padding-left: 50px; padding-top: 20px"
+          v-if="des.video != ''"
+        >
+          <video
+            style="width: 100%; height: 300px"
+            controls
+            :src="imagesValue + des.video"
+          ></video>
         </div>
       </div>
       <div class="Authline5">
         <div class="Authline5title">企业资质</div>
-        <div class="pps">
+        <div class="pps" v-if="qualifications != ''">
           <div class="pp_imgs">
             <div class="Authline3title_Img">
               <el-image
-                :src="imagesValue + des.qualifications"
-                :preview-src-list="[imagesValue + des.qualifications]"
+                :src="imagesValue + qualifications"
+                :preview-src-list="[imagesValue + qualifications]"
               />
             </div>
           </div>
+        </div>
+        <div class="pps" v-else>
+     
+          
+              <img src="@/assets/imgers/等待上传.png" alt="">
+        
+        
         </div>
       </div>
       <div class="Authline6">
@@ -117,6 +143,9 @@ export default {
       imagesValue: "",
       edits: "1",
       des: "",
+      desphoto: "",
+      desphotos: [],
+      qualifications: [],
     };
   },
   created() {
@@ -134,6 +163,21 @@ export default {
         var des = res.data.description;
         var desjs = JSON.parse(des);
         this.des = desjs;
+        if (desjs.photo == "" || desjs.photo == null) {
+          this.desphoto = "";
+        } else if (desjs.photo.length >= 1) {
+          this.desphoto = desjs.photo;
+          this.desphoto.forEach((v) => {
+            this.desphotos.push(this.imagesValue + v);
+          });
+        } else if (desjs.photo.length < 1) {
+          this.desphoto = desjs.photo;
+        }
+        if (desjs.qualifications == "" || desjs.qualifications == null) {
+          this.qualifications = "";
+        } else {
+          this.qualifications = desjs.qualifications;
+        }
       });
     },
     getAuthValue() {
@@ -143,6 +187,7 @@ export default {
     },
     brandGetBrand() {
       postD(brandGetBrandApi(), this.info).then((res) => {
+        console.log(res);
         this.brandGetBrandlist = res.list;
       });
     },

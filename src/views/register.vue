@@ -21,54 +21,62 @@
             <el-input v-model="username"></el-input>
           </el-form-item>
           <el-form-item label="登入密码" prop="password">
-            <el-input v-model="ruleForm.password">
-            </el-input>
+            <el-input v-model="ruleForm.password"> </el-input>
             <div class="intensity">
-          <span class="psdText">密码强度</span>
-          <span
-            class="line"
-            :class="[level.includes('low') ? 'low' : '']"
-          ></span>
-          <span
-            class="line"
-            :class="[level.includes('middle') ? 'middle' : '']"
-          ></span>
-          <span
-            class="line"
-            :class="[level.includes('high') ? 'high' : '']"
-          ></span>
-        </div>
+              <span class="psdText">密码强度</span>
+              <span
+                class="line"
+                :class="[level.includes('low') ? 'low' : '']"
+              ></span>
+              <span
+                class="line"
+                :class="[level.includes('middle') ? 'middle' : '']"
+              ></span>
+              <span
+                class="line"
+                :class="[level.includes('high') ? 'high' : '']"
+              ></span>
+            </div>
           </el-form-item>
-          
+
           <el-form-item label="再次确认密码" prop="passwords">
             <el-input v-model="ruleForm.passwords"></el-input>
           </el-form-item>
           <el-form-item label="企业名称" prop="nickname">
-              <el-input v-model="ruleForm.nickname"></el-input>
-            </el-form-item>
-            <el-form-item label="企业电话" prop="tel">
+            <el-input v-model="ruleForm.nickname"></el-input>
+          </el-form-item>
+          <div class="dis ws">
+            <el-form-item label="联系电话" prop="tel">
+            <div class="dis">
               <el-input v-model="ruleForm.tel"></el-input>
-            </el-form-item>
-             <el-form-item label="邀请码" prop="code">
-              <el-input v-model="ruleForm.code"></el-input>
-            </el-form-item>
+            </div>
+          </el-form-item>
+          <el-form-item label="验证码" prop="tel">
+            <div class="yzm">
+              <el-input v-model="ruleForm.yzm"></el-input>
+              <el-button type="primary">获取验证码</el-button>
+              
+            </div>
+          </el-form-item>
+          </div>
+          <el-form-item label="邀请码" prop="code">
+            <el-input v-model="ruleForm.code"></el-input>
+          </el-form-item>
         </el-form>
-          <div class="checkedStyle">
-            <el-checkbox v-model="checked"></el-checkbox>
-            <span
-              >创建账户即表示您同意我们的:
-              <span @click="yp" class="xy">《衣品入微圈子服务协议》</span>
-              <span class="xy" @click="PrivacyShow"
-                >《隐私服务协议》</span
-              ></span
-            >
-          </div>
-          <div class="Register_now" @click="registerNow" v-if="checked == true">
-            <span>立即注册</span>
-          </div>
-          <div class="Register_nows" v-if="checked == false">
-            <span>立即注册</span>
-          </div>
+        <div class="checkedStyle">
+          <el-checkbox v-model="checked"></el-checkbox>
+          <span
+            >创建账户即表示您同意我们的:
+            <span @click="yp" class="xy">《衣品入微圈子服务协议》</span>
+            <span class="xy" @click="PrivacyShow">《隐私服务协议》</span></span
+          >
+        </div>
+        <div class="Register_now" @click="registerNow" v-if="checked == true">
+          <span>立即注册</span>
+        </div>
+        <div class="Register_nows" v-if="checked == false">
+          <span>立即注册</span>
+        </div>
       </div>
     </div>
   </div>
@@ -91,56 +99,56 @@ export default {
       callback();
     };
     var passwordV = (rule, value, callback) => {
-      this.level = []
+      this.level = [];
       if (!value) {
-        return callback('密码不能为空')
+        return callback("密码不能为空");
       }
       if (value.length < 5) {
-        return callback('密码不少于8位')
+        return callback("密码不少于8位");
       }
       if (value.length > 16) {
-        return callback('密码不大于16位')
+        return callback("密码不大于16位");
       }
       // 校验是数字
-      const regex1 = /^\d+$/
+      const regex1 = /^\d+$/;
       // 校验字母
-      const regex2 = /^[A-Za-z]+$/
+      const regex2 = /^[A-Za-z]+$/;
       // 校验符号
       const regex3 =
-        /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]+$/
+        /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]+$/;
       if (regex1.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (regex2.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (regex3.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (/^[A-Za-z\d]+$/.test(value)) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
         /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、\d]+$/.test(
           value
         )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
         /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、A-Za-z]+$/.test(
           value
         )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
         /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、A-Za-z\d]+$/.test(
           value
         )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
-        this.level.push('high')
+        this.level.push("low");
+        this.level.push("middle");
+        this.level.push("high");
       }
-      return callback()
+      return callback();
     };
     var passwordVs = (rule, value, callback) => {
       if (value == "") {
@@ -172,6 +180,7 @@ export default {
         tel: "",
         code: "",
         passwords: "",
+        yzm: "",
       },
       username: "",
       ruleFormrules: {

@@ -270,6 +270,7 @@ export default {
             message: "请输入标题",
             tirgger: "blur",
           },
+          {min:5,message:"不小于5",tirgger:"blur"}
         ],
         description: [
           {

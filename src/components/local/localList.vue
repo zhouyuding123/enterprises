@@ -24,7 +24,7 @@ export default {
       this.$router.push("/Activity/release");
     },
     addrelease() {
-      this.$router.push("/Circles/release");
+      this.$router.push("/Local/release");
     },
   },
 };

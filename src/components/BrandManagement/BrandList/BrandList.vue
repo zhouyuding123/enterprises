@@ -22,7 +22,7 @@
       >
         <vxe-column
           align="center"
-          type="checkbox"
+          
           width="50"
           class="linker"
         ></vxe-column>
@@ -67,21 +67,6 @@
           </template>
         </vxe-column>
       </vxe-table>
-      <vxe-pager
-        :current-page="page1.offset"
-        :page-size="page1.limit"
-        :total="page1.totalResult"
-        :layouts="[
-          'PrevPage',
-          'JumpNumber',
-          'NextPage',
-          'FullJump',
-          'Sizes',
-          'Total',
-        ]"
-        @page-change="handlePageChangeActivity"
-        align="center"
-      ></vxe-pager>
     </div>
   </div>
 </template>
@@ -105,11 +90,6 @@ export default {
       tableData: [],
       allAlign: null,
       imagesValue: "",
-      page1: {
-        offset: 1,
-        limit: 10,
-        totalResult: 0,
-      },
     };
   },
   created() {
@@ -144,14 +124,6 @@ export default {
     },
     addBrand() {
       this.$router.push("/brand/addOp");
-    },
-    handlePageChangeActivity({ currentPage, pageSize }) {
-      this.page1.offset = currentPage;
-      this.page1.limit = pageSize;
-      postD(brandGetListApi(), this.page1).then((res) => {
-        this.tableData = res.list;
-        this.page1.totalResult = res.count;
-      });
     },
   },
 };

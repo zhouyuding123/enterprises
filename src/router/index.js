@@ -211,7 +211,7 @@ const routes = [
             },
           },
           {
-            path: "/Activity/release",
+            path: "/Activity/release:style",
             name: "Activity/release",
             component: () => import("../components/tidalManagement/Activities/Activities.vue"),
             meta: {

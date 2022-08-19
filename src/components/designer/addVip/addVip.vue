@@ -3,19 +3,37 @@
     <div class="addline1">
       <div class="xzadd">套餐选择</div>
       <div class="addxx">
-        <div class="addxx1" @click="whole()" ref="wholes">
+        <div
+          class="addxx1 yk"
+          @click="whole()"
+          ref="wholes"
+          @mousemove="zxcsss"
+          @mouseout="zxcssss"
+        >
           <div class="addk" ref="wholes">月卡会员</div>
           <div class="addq" ref="wholess">￥<span>888</span>/ 250 次</div>
           <div class="addqyq">￥10000000000</div>
           <div class="addcs">仅需3.5元/次</div>
         </div>
-        <div class="addxx1" @click="onTheShelf()" ref="PutOn">
+        <div
+          class="addxx1 jk"
+          @click="onTheShelf()"
+          ref="PutOn"
+          @mousemove="zxcjk"
+          @mouseout="zxcssjk"
+        >
           <div class="addk" ref="PutOn">季卡会员</div>
           <div class="addq" ref="PutOns">￥<span>888</span>/ 250 次</div>
           <div class="addqyq">￥10000000000000</div>
           <div class="addcs">仅需3.5元/次</div>
         </div>
-        <div class="addxx1" @click="underShelfx()" ref="Offtheshelf">
+        <div
+          class="addxx1 nk"
+          @click="underShelfx()"
+          ref="Offtheshelf"
+          @mousemove="zxcnk"
+          @mouseout="zxcssnk"
+        >
           <div class="addk" ref="Offtheshelf">年卡会员</div>
           <div class="addq" ref="Offtheshelfs">￥<span>888</span>/ 250 次</div>
           <div class="addqyq">￥100000000000000</div>
@@ -96,7 +114,7 @@
 <script>
 import { ordersAddVipApi, pay, ordersGetOrderStatApi } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
-import { imgUrls } from "@/assets/js/modifyStyle";
+import { imgUrls, debounce } from "@/assets/js/modifyStyle";
 export default {
   data() {
     return {
@@ -123,6 +141,30 @@ export default {
     this.imagesValue = imgUrls();
   },
   methods: {
+    zxcsss() {
+      const addxx1 = document.querySelector(".yk");
+      addxx1.style.transform = "scale(1.1)";
+    },
+    zxcssss() {
+      const addxx1 = document.querySelector(".yk");
+      addxx1.style.transform = "scale(1)";
+    },
+    zxcjk() {
+      const addxx1 = document.querySelector(".jk");
+      addxx1.style.transform = "scale(1.1)";
+    },
+    zxcssjk() {
+      const addxx1 = document.querySelector(".jk");
+      addxx1.style.transform = "scale(1)";
+    },
+    zxcnk() {
+      const addxx1 = document.querySelector(".nk");
+      addxx1.style.transform = "scale(1.1)";
+    },
+    zxcssnk() {
+      const addxx1 = document.querySelector(".nk");
+      addxx1.style.transform = "scale(1)";
+    },
     zxc() {
       if (this.checked == true) {
         this.vip.style_vip = 4;
@@ -182,29 +224,27 @@ export default {
                   this.$message.info("支付超时");
                   this.vipvalue.order_no = "";
                   this.payOver.order_no = "";
-                  this.times=60
+                  this.times = 60;
                 } else if (this.time < 0) {
                   clearInterval(this.timer);
                   this.dialogVisible = false;
                   this.$message.info("支付超时");
                   this.vipvalue.order_no = "";
                   this.payOver.order_no = "";
-                  this.times=60
-
+                  this.times = 60;
                 }
                 if (this.dialogVisible == false) {
                   clearInterval(this.timer);
                   this.$message.info("支付失败");
                   this.vipvalue.order_no = "";
                   this.payOver.order_no = "";
-                  this.times=60
-
+                  this.times = 60;
                 }
                 if (this.paymore == 1 || this.paymore == 3) {
                   clearInterval(this.timer);
                   this.dialogVisible = false;
                   this.$message.success("恭喜你成为尊贵的会员");
-                  this.$router.push('/vip')
+                  this.$router.push("/vip");
                 }
               }, 1000);
             }

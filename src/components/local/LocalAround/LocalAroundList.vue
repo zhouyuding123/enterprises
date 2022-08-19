@@ -115,7 +115,7 @@
           <div class="MYstr">
             <div>
               <el-input
-                v-model="seatch.keyword"
+                v-model="styleId.keyword"
                 placeholder="请输入内容"
               ></el-input>
             </div>
@@ -124,15 +124,6 @@
             <div class="refresh" @click="Refresh"><span>刷新</span></div>
           </div>
           <div>
-            <!-- <div class="SetAs">
-              <div class="Topping" @click="SetAsTopS">
-                <span>设为置顶</span>
-              </div>
-              <div class="Topping" @click="SetAsEssence">
-                <span>设为精华</span>
-              </div>
-              <div class="Topping"><span>删除帖子</span></div>
-            </div> -->
             <div class="Mylist">
               <el-checkbox
                 :indeterminate="isIndeterminate"
@@ -259,9 +250,9 @@
                 </el-checkbox>
               </el-checkbox-group>
               <vxe-pager
-                :current-page="page2.offset"
-                :page-size="page2.limit"
-                :total="page2.totalResult"
+                :current-page="styleId.offset"
+                :page-size="styleId.limit"
+                :total="styleId.totalResult"
                 :layouts="[
                   'PrevPage',
                   'JumpNumber',
@@ -303,6 +294,10 @@ export default {
       styleId: {
         style: "1",
         own: "1",
+        offset: 1,
+        limit: 10,
+        totalResult: 0,
+        keyword: "",
       },
       page1: {
         style: "1",
@@ -310,41 +305,13 @@ export default {
         limit: 10,
         totalResult: 0,
       },
-      seatch: {
-        keyword: "",
-      },
       allAlign: null,
       tableData: [],
-      page2: {
-        style: "1",
-        offset: 1,
-        limit: 10,
-        totalResult: 0,
-      },
-      // //置顶
-      // Topids: [],
-      // TopidsL: {
-      //   forum_id: "",
-      //   is_top: "1",
-      // },
-      // //选中时将对象保存到arrs中
-      // Toparrs: [],
-      // ToparrsValue: [],
-      // Top: {
-      //   forum_id: "",
-      //   is_top: "1",
-      // },
-      // //精华
-      // Essids: [],
-      // EssidsL: {
-      //   forum_id: "",
-      //   is_ess: "1",
-      // },
-      // //选中时将对象保存到arrs中
-      // EssarrsValue: [],
-      // Ess: {
-      //   forum_id: "",
-      //   is_ess: "1",
+      // page2: {
+      //   style: "1",
+      //   offset: 1,
+      //   limit: 10,
+      //   totalResult: 0,
       // },
       // 删除
       DeletePostValue: {
@@ -405,24 +372,29 @@ export default {
     Mystroll() {
       postD(CircleGetForumApi(), this.styleId).then((res) => {
         this.tableData = res.list;
-        this.page2.totalResult = res.count;
+        this.styleId.totalResult = res.count;
       });
     },
     handlePageChangeActivityTwo({ currentPage, pageSize }) {
-      this.page2.offset = currentPage;
-      this.page2.limit = pageSize;
-      postD(CircleGetForumApi(), this.page2).then((res) => {
+      this.styleId.offset = currentPage;
+      this.styleId.limit = pageSize;
+      postD(CircleGetForumApi(), this.styleId).then((res) => {
         this.tableData = res.list;
-        this.page2.totalResult = res.count;
+        this.styleId.totalResult = res.count;
       });
     },
     SeatchValue() {
-      postD(CircleGetForumApi(), this.seatch).then((res) => {
+      postD(CircleGetForumApi(), this.styleId).then((res) => {
         this.tableData = res.list;
-        this.page2.totalResult = res.count;
+        this.styleId.totalResult = res.count;
       });
     },
     Refresh() {
+      this.styleId.style ="1"
+      this.styleId.own ="1"
+      this.styleId.offset =1
+      this.styleId.limit =10
+      this.styleId.keyword =""
       this.Mystroll();
     },
     // 批量获取

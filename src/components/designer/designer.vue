@@ -3,15 +3,20 @@
     <div class="crumbsStyle">
       <crumbs></crumbs>
       <div class="sjs">
-        <div class="vip"><img src="@/assets/imgers/vip.png" alt="" /></div>
+        <div class="vip">
+          <img src="@/assets/imgers/vip.png" alt="" @click="goaddvip" />
+        </div>
         <div class="Open" @click="goaddvip"><span>开通设计师专区VIP</span></div>
-        <div class="bd" @click="gophb"><img src="@/assets/imgers/榜单.png" alt="" /></div>
+
+        <div class="bd" @click="gophb">
+          <img src="@/assets/imgers/榜单.png" alt="" />
+        </div>
         <div class="sx" @click="screen" :v-model="direction">
           <img src="@/assets/imgers/筛选.png" alt="" />
         </div>
 
-        <div class="seatch" @click="seatchiinput"><img src="@/assets/imgers/搜索.png" alt="" />
-        
+        <div class="seatch" @click="seatchiinput">
+          <img src="@/assets/imgers/搜索.png" alt="" />
         </div>
       </div>
     </div>
@@ -30,10 +35,18 @@
     </el-drawer>
     <el-drawer :visible.sync="drawers" :direction="direction">
       <div class="drawwer">
-        <el-input v-model="keyword" placeholder="请输入内容" @keyup.enter.native="searchbutton"></el-input>
+        <el-input
+          v-model="keyword"
+          placeholder="请输入内容"
+          @keyup.enter.native="searchbutton"
+        ></el-input>
       </div>
     </el-drawer>
-    <router-view to="'/'+value.name +" :ListValue= "seatchid.product_type_id" :seatcher="seatchid.keyword"/>
+    <router-view
+      to="'/'+value.name +"
+      :ListValue="seatchid.product_type_id"
+      :seatcher="seatchid.keyword"
+    />
   </div>
 </template>
 <script>
@@ -51,31 +64,61 @@ export default {
       drawerValue: [],
       seatchid: {
         product_type_id: "",
-        keyword:""
+        keyword: "",
       },
-      keyword:""
+      keyword: "",
     };
   },
   methods: {
     screen() {
       this.drawer = true;
-      postD("https://weisou.chengduziyi.com/designer/product_type/getList").then(
-        (res) => {
-          this.drawerValue = res.list;
-        }
-      );
+      postD(
+        "https://weisou.chengduziyi.com/designer/product_type/getList"
+      ).then((res) => {
+        this.drawerValue = res.list;
+      });
     },
     seatchiinput() {
       this.drawers = true;
     },
     searchbutton() {
-      this.seatchid.keyword = this.keyword 
+      this.seatchid.keyword = this.keyword;
     },
-    goaddvip () {
-      this.$router.push("/orders/addVip")
+    goaddvip() {
+      this.$router.push("/orders/addVip");
+      const open = document.querySelector(".Open");
+      const vip = document.querySelector(".vip");
+      open.style.transform = "scale(1.1)";
+      vip.style.transform = "scale(1.1)";
+      var times = 1;
+      let time = setInterval(() => {
+        if (times == 1) {
+          open.style.transform = "scale(1.1)";
+          vip.style.transform = "scale(1.1)";
+          times--;
+        }
+        if (times == 0) {
+          open.style.transform = "scale(1)";
+          vip.style.transform = "scale(1)";
+          clearInterval(time);
+        }
+      }, 100);
     },
     gophb() {
-      this.$router.push("/Ranking")
+      this.$router.push("/Ranking");
+      const bd = document.querySelector(".bd");
+      bd.style.transform = "scale(1.1)";
+      var times = 1;
+      let time = setInterval(() => {
+        if (times == 1) {
+          bd.style.transform = "scale(1.1)";
+          times--;
+        }
+        if (times == 0) {
+          bd.style.transform = "scale(1)";
+          clearInterval(time);
+        }
+      }, 100);
     },
   },
 };
@@ -145,5 +188,4 @@ export default {
     width: 160px;
   }
 }
-
 </style>

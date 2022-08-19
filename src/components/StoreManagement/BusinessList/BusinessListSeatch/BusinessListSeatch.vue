@@ -53,7 +53,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .storeBlock {
-  margin: 10px;
+  width: 100%;
   background-color: white;
   .storeBlockPadding {
     padding: 20px;

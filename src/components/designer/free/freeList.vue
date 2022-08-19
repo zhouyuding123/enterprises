@@ -1,8 +1,8 @@
 <template>
-  <div style="width:1600px;margin:20px auto">
+  <div style="width: 1600px; margin: 20px auto">
     <div>
       <div class="Opens">
-        <div v-for="item in freeListValue" :key="item.id">
+        <div v-for="(item,index) in freeListValue" :key="index">
           <div class="freeValue">
             <div @click="goDesigner(item.id)">
               <img
@@ -31,20 +31,33 @@
                   </div>
                 </div>
                 <div class="options">
-                  <div class="ax">
-                    <img src="@/assets/strollimg/爱心.png" alt="" /><span
-                      >123</span
-                    >
+                  <div class="ax dzup" @click="dzup">
+                    <img
+                      src="@/assets/strollimg/爱心.png"
+                      alt=""
+                      v-if="dzshow === false"
+                    />
+                    <img
+                      src="@/assets/imgers/红色点赞.png"
+                      alt=""
+                      v-if="dzshow === true"
+                    /><span>123</span>
                   </div>
                   <div class="ax">
                     <img src="@/assets/strollimg/评论.png" alt="" /><span
                       >123</span
                     >
                   </div>
-                  <div class="ax">
-                    <img src="@/assets/strollimg/收藏.png" alt="" /><span
-                      >123</span
-                    >
+                  <div class="ax scup" @click="scup">
+                    <img
+                      src="@/assets/strollimg/收藏.png"
+                      alt=""
+                      v-if="scshow == false"
+                    /><img
+                      src="@/assets/imgers/黄色收藏.png"
+                      alt=""
+                      v-if="scshow == true"
+                    /><span>123</span>
                   </div>
                 </div>
               </div>
@@ -60,8 +73,8 @@
                   "
                 />
               </div>
-              <div class="informationImgJ">
-                <img src="@/assets/strollimg/加.png" alt="" />
+              <div class="informationImgJ gzup" @click="gzup(index)">
+                <img src="@/assets/strollimg/加.png" class="informationImgJimg"   alt="" />
               </div>
             </div>
           </div>
@@ -70,20 +83,20 @@
     </div>
     <div class="pagers" v-if="page1.totalResult > 10">
       <vxe-pager
-      :current-page="page1.offset"
-      :page-size="page1.limit"
-      :total="page1.totalResult"
-      :layouts="[
-        'PrevPage',
-        'JumpNumber',
-        'NextPage',
-        'FullJump',
-        'Sizes',
-        'Total',
-      ]"
-      @page-change="handlePageChangeActivity"
-      align="center"
-    ></vxe-pager>
+        :current-page="page1.offset"
+        :page-size="page1.limit"
+        :total="page1.totalResult"
+        :layouts="[
+          'PrevPage',
+          'JumpNumber',
+          'NextPage',
+          'FullJump',
+          'Sizes',
+          'Total',
+        ]"
+        @page-change="handlePageChangeActivity"
+        align="center"
+      ></vxe-pager>
     </div>
   </div>
 </template>
@@ -115,6 +128,8 @@ export default {
         limit: 10,
         totalResult: 0,
       },
+      dzshow: false,
+      scshow: false,
     };
   },
   watch: {
@@ -139,6 +154,57 @@ export default {
     this.freeList();
   },
   methods: {
+    gzup(val) {
+      console.log(val);
+      const informationImgJ = document.getElementsByClassName("informationImgJimg");
+      let rotateTimes=1
+        informationImgJ[val].style.transform = 'rotateY('+360*rotateTimes+'deg)';
+      let times = 1;
+      let time = setInterval(() => {
+        if (times == 1) {
+           informationImgJ[val].style.transform = 'rotateY('+360*rotateTimes+'deg)';
+          times--;
+          rotateTimes++
+        }
+        if (times == 0) {
+          informationImgJ[val].style.display = "none";
+          clearInterval(time);
+        }
+      }, 2500);
+    },
+    scup() {
+      const scup = document.querySelector(".scup");
+      console.log(scup);
+      scup.style.transform = "scale(1.1)";
+      let times = 1;
+      let time = setInterval(() => {
+        if (times == 1) {
+          scup.style.transform = "scale(1.1)";
+          this.scshow = true;
+          times--;
+        }
+        if (times == 0) {
+          scup.style.transform = "scale(1)";
+          clearInterval(time);
+        }
+      }, 100);
+    },
+    dzup() {
+      const dzup = document.querySelector(".dzup");
+      dzup.style.transform = "scale(1.1)";
+      let times = 1;
+      let time = setInterval(() => {
+        if (times == 1) {
+          dzup.style.transform = "scale(1.1)";
+          this.dzshow = true;
+          times--;
+        }
+        if (times == 0) {
+          dzup.style.transform = "scale(1)";
+          clearInterval(time);
+        }
+      }, 100);
+    },
     freeList() {
       postD(designer_worksGetListApi(), this.freeId).then((res) => {
         this.imagesValue = imgUrl();
@@ -149,7 +215,7 @@ export default {
     goDesigner(value) {
       this.$router.replace("/designer_works/getListMF/freeDetil" + value);
     },
-     handlePageChangeActivity({ currentPage, pageSize }) {
+    handlePageChangeActivity({ currentPage, pageSize }) {
       this.page1.offset = currentPage;
       this.page1.limit = pageSize;
       postD(designer_worksGetListApi(), this.page1).then((res) => {

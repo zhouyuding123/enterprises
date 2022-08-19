@@ -18,7 +18,11 @@
           <el-input v-model="editruleForm.tel"></el-input>
         </el-form-item>
         <el-form-item label="主营项目">
-          <el-select v-model="editruleForm.company_main" placeholder="请选择">
+          <el-select
+            v-model="editruleForm.company_main"
+            multiple
+            placeholder="请选择"
+          >
             <el-option
               v-for="item in companymain"
               :key="item.id"
@@ -90,7 +94,11 @@
             :before-upload="beforeAvatarUpload"
             :data="{ fileType: this.fileType }"
           >
-            <img v-if="description.qualifications" :src="imagesValue+description.qualifications" class="avatar" />
+            <img
+              v-if="description.qualifications"
+              :src="imagesValue + description.qualifications"
+              class="avatar"
+            />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -166,11 +174,19 @@ export default {
     };
   },
   created() {
-    this.getInfo();
     this.getListvalue();
+    
     this.imagesValue = imgUrl();
   },
   methods: {
+    getListvalue() {
+      postD(
+        "https://weisou.chengduziyi.com/designer/product_type/getList"
+      ).then((res) => {
+        this.companymain = res.list;
+        this.getInfo();
+      });
+    },
     getInfo() {
       var name = {
         username: localStorage.getItem("use"),
@@ -178,10 +194,25 @@ export default {
       postD(getInfoApi(), name).then((res) => {
         this.editruleForm.nickname = res.data.nickname || "";
         this.editruleForm.tel = res.data.tel || "";
-        this.editruleForm.company_main = res.data.company_main || "";
         this.editruleForm.detail = res.data.detail || "";
+        if (res.data.company_main == null) {
+          this.editruleForm.company_main = "";
+        } else if (res.data.company_main.split(",").length >= 1) {
+          this.companymain.forEach((item, i) => {
+            res.data.company_main.split(",").forEach((items, is) => {
+              if (items == item.title) {
+                this.editruleForm.company_main.push(item.id);
+              }
+            });
+          });
+        } else {
+          res.data.company_main.forEach((items, is) => {
+            if (items == item.title) {
+              this.editruleForm.company_main.push(item.id);
+            }
+          });
+        }
         let info = JSON.parse(res.data.description);
-        console.log(info);
         if (info.photo != "" && info.photo != null) {
           info.photo.forEach((item, i) => {
             if (info.photo.indexOf(",") > -1) {
@@ -203,8 +234,6 @@ export default {
         }
         this.description.introduce = info.introduce;
         this.description.qualifications = info.qualifications;
-        
-        console.log(info);
         let video = info.video;
         if (video != "") {
           if (video.indexOf("moves") > -1) {
@@ -214,18 +243,8 @@ export default {
         }
       });
     },
-    getListvalue() {
-      postD(
-        "https://weisou.chengduziyi.com/designer/product_type/getList"
-      ).then((res) => {
-        console.log(res);
-        this.companymain = res.list;
-      });
-    },
     // 上传图片
     handleAvatarSuccess(res, file, fileList) {
-      // this.imageUrl = URL.createObjectURL(file.raw);
-      // this.description.photo = res.url;
       this.imageList2 = fileList;
     },
     handleAvatarSuccesstwo(res, file) {
@@ -269,20 +288,22 @@ export default {
       var imgslist = [];
       this.imageList2.forEach((item, i) => {
         imgslist.push(item.response.url);
-        console.log(item.response.url);
       });
-      console.log(imgslist);
+   
+      this.editruleForm.company_main =
+        this.editruleForm.company_main.toString();
       this.description.photo = imgslist;
+      this.description.video = this.videosrc1
       this.editruleForm.description = JSON.stringify(this.description);
-      console.log(this.description);
-      // postD(editInfoApi(), this.editruleForm).then((res) => {
-      //   if (res.code == "200") {
-      //     this.$message.success("编辑基本信息成功");
-      //     this.reload();
-      //   } else {
-      //     this.$message.error("编辑基本信息失败");
-      //   }
-      // });
+
+      postD(editInfoApi(), this.editruleForm).then((res) => {
+        if (res.code == "200") {
+          this.$message.success("编辑基本信息成功");
+          this.reload();
+        } else {
+          this.$message.error("编辑基本信息失败");
+        }
+      });
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;

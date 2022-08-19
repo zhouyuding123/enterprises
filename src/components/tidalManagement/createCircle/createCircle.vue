@@ -123,14 +123,14 @@ export default {
         headimg: [
           {
             required: true,
-            message: "请输入圈子头像,不超50KB的jpg图",
+            message: "请输入圈子头像",
             tirgger: "blur",
           },
         ],
         thumb: [
           {
             required: true,
-            message: "请输入背景图片,不超50KB的jpg图",
+            message: "请输入背景图片",
             tirgger: "blur",
           },
         ],
@@ -162,17 +162,11 @@ export default {
            if (!v) return;
         postD(CircleCreateCircleApi(),this.ruleForm)
         .then(res =>　{
-          console.log(res);
             if (res.code == "200") {
-            this.$message.success("状态修改成功");
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("未登陆");
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
+            this.$message.success(res.msg);
+            this.$router.push("/Circle/listCircle")
           } else {
-            this.$message.error("注册失败，账号已存在");
+            this.$message.error(res.msg);
           }
         })
        })

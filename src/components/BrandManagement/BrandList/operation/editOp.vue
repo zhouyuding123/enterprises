@@ -18,7 +18,15 @@
           <el-input v-model="ruleForm.content"></el-input>
         </el-form-item>
         <el-form-item label="品牌类型" prop="style">
-          <el-input v-model="ruleForm.style"></el-input>
+          <el-select v-model="ruleForm.style" multiple placeholder="请选择">
+            <el-option
+              v-for="item in companymain"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="LOGO" prop="thumb">
           <el-upload
@@ -30,12 +38,10 @@
             :data="{ fileType: this.fileType }"
           >
             <img
-              v-if="imageUrl"
-              :src="imageUrl"
+              v-if="ruleForm.qualification"
+              :src="imagesValue + ruleForm.qualification"
               class="avatar"
-              :v-model="imageUrl"
             />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="相关资料" prop="qualification">
@@ -48,42 +54,48 @@
             :data="{ fileType: this.fileType }"
           >
             <img
-              v-if="imageUrlqualification"
-              :src="imageUrlqualification"
+              v-if="ruleForm.thumb"
+              :src="imagesValue + ruleForm.thumb"
               class="avatar"
-              :v-model="imageUrlqualification"
             />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
       </el-form>
       <span>
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addEdit"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="addEdit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { beforeAvatar } from "@/assets/js/modifyStyle.js";
+import { beforeAvatar, imgUrl } from "@/assets/js/modifyStyle.js";
 import { postD } from "@/api";
-import { brandShowApi,brandEditApi } from "./addUrl.js";
+import { brandShowApi, brandEditApi } from "./addUrl.js";
 export default {
   props: ["OperationEdit"],
-  inject:["brandListValue"],
+  inject: ["brandListValue"],
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("不能为空"));
+      } else {
+        callback();
+      }
+    };
     return {
+      imagesValue: "",
       EditId: {
         id: "",
       },
       ruleForm: {
+        id: "",
         title: "",
         content: "",
         thumb: "",
         qualification: "",
+        style: [],
       },
       dialogVisible: false,
       //   图片
@@ -105,13 +117,7 @@ export default {
             tirgger: "blur",
           },
         ],
-        style: [
-          {
-            required: true,
-            message: "请输入活动标题",
-            tirgger: "blur",
-          },
-        ],
+        style: [{ validator: validatePass, trigger: "blur" }],
         thumb: [
           {
             required: true,
@@ -127,25 +133,55 @@ export default {
           },
         ],
       },
+      companymain: [],
     };
+  },
+  created() {
+    this.imagesValue = imgUrl();
   },
   methods: {
     EditShow() {
-      this.dialogVisible = true;
-      this.EditId.id = this.OperationEdit.id;
-      postD(brandShowApi(), this.EditId).then((res) => {
-        this.ruleForm = res.data;
+      postD(
+        "https://weisou.chengduziyi.com/designer/product_type/getList"
+      ).then((res) => {
+        this.companymain = res.list;
+        this.dialogVisible = true;
+        this.EditId.id = this.OperationEdit.id;
+        if (this.ruleForm.style == "") {
+          postD(brandShowApi(), this.EditId).then((res) => {
+            this.ruleForm.id = res.data.id;
+            this.ruleForm.title = res.data.title;
+            this.ruleForm.content = res.data.content;
+            this.ruleForm.qualification = res.data.qualification;
+            this.ruleForm.thumb = res.data.thumb;
+            if (res.data.style == null || res.data.style == "") {
+              this.ruleForm.style = "";
+            } else if (res.data.style.split(",").length >= 1) {
+              this.companymain.forEach((item, i) => {
+                res.data.style.split(",").forEach((items, is) => {
+                  if (items == item.title) {
+                    this.ruleForm.style.push(item.id);
+                  }
+                });
+              });
+            } else {
+              res.data.style.forEach((items, is) => {
+                if (items == item.title) {
+                  this.ruleForm.style.push(item.id);
+                }
+              });
+            }
+          });
+        }
       });
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
       this.ruleForm.thumb = res.url;
     },
     beforeAvatarUpload(file) {
       beforeAvatar(file);
     },
     handleAvatarSuccessqualification(res, file) {
-      this.imageUrlqualification = URL.createObjectURL(file.raw);
       this.ruleForm.qualification = res.url;
     },
     beforeAvatarUploadqualification(file) {
@@ -153,24 +189,28 @@ export default {
     },
     addEdit() {
       this.dialogVisible = false;
+      this.ruleForm.style = this.ruleForm.style.toString();
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;
-        postD(brandEditApi(),this.ruleForm).then(res=> {
+        postD(brandEditApi(), this.ruleForm).then((res) => {
           if (res.code == "200") {
             this.$message.success("状态修改成功");
             this.brandListValue();
-          } else if (res.code == "-200") {
-            this.$message.error("参数错误，或暂无数据");
-          } else if (res.code == "-201") {
-            this.$message.error("未登陆");
-          } else if (res.code == "-203") {
-            this.$message.error("对不起，你没有此操作权限");
+            var style = [];
+            this.companymain.forEach((item, i) => {
+              this.ruleForm.style.split(",").forEach((items, is) => {
+                if (items == item.title) {
+                  style.push(item.title);
+                }
+              });
+            });
+            this.ruleForm.style = style;
           } else {
-            this.$message.error("注册失败，账号已存在");
+            this.$message.error(res.msg);
           }
-        })
-      })
-    }
+        });
+      });
+    },
   },
 };
 </script>
@@ -187,8 +227,11 @@ export default {
     font-size: 14px;
     font-family: PingFang SC-Regular, PingFang SC;
     font-weight: 400;
-    color: #0177D5;
+    color: #0177d5;
     line-height: 19px;
   }
+}
+.el-select {
+  width: 100%;
 }
 </style>

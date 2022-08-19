@@ -589,7 +589,7 @@ export default {
       naberone: [],
       nabertwo: [],
       naberthree: [],
-      prices: [],
+      // prices: [],
       pricelist: [],
       countValuenums: [],
       countValues: [],
@@ -601,15 +601,16 @@ export default {
       }
     };
   },
-  watch: {
-    prices(newval) {
-      var mapva = [];
-      newval.forEach((item, i) => {
-        mapva.push(...this.publicityValueList.splice(0, item.amount));
-      });
-      this.pricelist = mapva;
-    },
-  },
+  // watch: {
+  //   prices(newval) {
+  //     var mapva = [];
+  //     newval.forEach((item, i) => {
+  //       console.log(item);
+  //       mapva.push(...this.publicityValueList.splice(0, item.amount));
+  //     });
+  //     this.pricelist = mapva;
+  //   },
+  // },
   created() {
     this.detialValue();
     this.worksValue();

@@ -15,7 +15,15 @@
           <el-input v-model="ruleForm.content"></el-input>
         </el-form-item>
         <el-form-item label="品牌类型" prop="style">
-          <el-input v-model="ruleForm.style"></el-input>
+          <el-select v-model="ruleForm.style" multiple placeholder="请选择">
+            <el-option
+              v-for="item in companymain"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="LOGO" prop="thumb">
           <el-upload
@@ -67,12 +75,21 @@ import { postD } from "@/api";
 import { brandAddApi } from "./addUrl";
 export default {
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("不能为空"));
+      } else {
+        callback();
+      }
+    };
     return {
+      companymain: [],
       ruleForm: {
         title: "",
         content: "",
         thumb: "",
         qualification: "",
+        style: [],
       },
       //   图片
       imageUrl: "",
@@ -93,13 +110,7 @@ export default {
             tirgger: "blur",
           },
         ],
-        style: [
-          {
-            required: true,
-            message: "请输入活动标题",
-            tirgger: "blur",
-          },
-        ],
+        style: [{ validator: validatePass, trigger: "blur" }],
         thumb: [
           {
             required: true,
@@ -117,7 +128,17 @@ export default {
       },
     };
   },
+  created() {
+    this.getListvalue();
+  },
   methods: {
+    getListvalue() {
+      postD(
+        "https://weisou.chengduziyi.com/designer/product_type/getList"
+      ).then((res) => {
+        this.companymain = res.list;
+      });
+    },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       this.ruleForm.thumb = res.url;
@@ -133,6 +154,17 @@ export default {
       beforeAvatar(file);
     },
     zxc() {
+      // this.companymain.forEach((v) => {
+      //   this.ruleForm.style.forEach((vs) => {
+      //     if ((vs = v.title)) {
+      //       this.ruleForm.style_id.push(v.id);
+      //     }
+      //   });
+      // });
+      this.ruleForm.style = this.ruleForm.style.toString();
+      // this.ruleForm.style_id = [...new Set(this.ruleForm.style_id)].toString();
+      console.log(this.ruleForm);
+
       this.$refs.ruleFormRef.validate((v) => {
         if (!v) return;
         postD(brandAddApi(), this.ruleForm).then((res) => {
@@ -189,5 +221,8 @@ export default {
 }
 /deep/.el-input__inner {
   background: #f5f5f5;
+}
+/deep/.el-select {
+  width: 100%;
 }
 </style>

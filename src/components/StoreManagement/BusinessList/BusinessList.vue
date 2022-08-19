@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 1700px; margin: 0 auto">
     <add-busubess class="Release" />
     <div class="storeBody">
       <business-list-seatch @BusinseeSeatch="costPlannedAmountChange" />
@@ -92,7 +92,9 @@
           align="center"
         ></vxe-column>
         <vxe-column title="操作" align="center">
-          <template v-slot="scoped"><business-list-del :delValue="scoped.row" /></template>
+          <template v-slot="scoped"
+            ><business-list-del :delValue="scoped.row"
+          /></template>
         </vxe-column>
       </vxe-table>
       <vxe-pager
@@ -186,8 +188,8 @@ export default {
         return "已认证";
       } else if (val == 2) {
         return "审核通过";
-      } else if( val ===3 ) {
-        return "驳回"
+      } else if (val === 3) {
+        return "驳回";
       }
     },
     statusChaged(data) {

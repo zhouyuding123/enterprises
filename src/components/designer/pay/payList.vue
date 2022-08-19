@@ -1,7 +1,7 @@
 <template>
   <div style="width:1600px;margin:20px auto">
     <div class="Opens">
-      <div v-for="item in freeListValue" :key="item.id">
+      <div v-for="(item,index) in freeListValue" :key="index">
         <div class="freeValue" v-if="item.is_pay != 0">
           <div @click="goDesigner(item.id)">
             <img
@@ -30,22 +30,35 @@
                 </div>
               </div>
               <div class="options">
-                <div class="ax">
-                  <img src="@/assets/strollimg/爱心.png" alt="" /><span
-                    >123</span
-                  >
+                  <div class="ax dzup" @click="dzup">
+                    <img
+                      src="@/assets/strollimg/爱心.png"
+                      alt=""
+                      v-if="dzshow === false"
+                    />
+                    <img
+                      src="@/assets/imgers/红色点赞.png"
+                      alt=""
+                      v-if="dzshow === true"
+                    /><span>123</span>
+                  </div>
+                  <div class="ax">
+                    <img src="@/assets/strollimg/评论.png" alt="" /><span
+                      >123</span
+                    >
+                  </div>
+                  <div class="ax scup" @click="scup">
+                    <img
+                      src="@/assets/strollimg/收藏.png"
+                      alt=""
+                      v-if="scshow == false"
+                    /><img
+                      src="@/assets/imgers/黄色收藏.png"
+                      alt=""
+                      v-if="scshow == true"
+                    /><span>123</span>
+                  </div>
                 </div>
-                <div class="ax">
-                  <img src="@/assets/strollimg/评论.png" alt="" /><span
-                    >123</span
-                  >
-                </div>
-                <div class="ax">
-                  <img src="@/assets/strollimg/收藏.png" alt="" /><span
-                    >123</span
-                  >
-                </div>
-              </div>
             </div>
             <div class="informationImg">
               <img
@@ -59,9 +72,9 @@
                 "
               />
             </div>
-            <div class="informationImgJ">
-              <img src="@/assets/strollimg/加.png" alt="" />
-            </div>
+            <div class="informationImgJ gzup" @click="gzup(index)">
+                <img src="@/assets/strollimg/加.png" class="informationImgJimg"   alt="" />
+              </div>
           </div>
         </div>
         <div class="freeValue" v-if="item.is_pay == 0">
@@ -90,22 +103,35 @@
                 </div>
               </div>
               <div class="options">
-                <div class="ax">
-                  <img src="@/assets/strollimg/爱心.png" alt="" /><span
-                    >123</span
-                  >
+                  <div class="ax dzup" @click="dzup">
+                    <img
+                      src="@/assets/strollimg/爱心.png"
+                      alt=""
+                      v-if="dzshow === false"
+                    />
+                    <img
+                      src="@/assets/imgers/红色点赞.png"
+                      alt=""
+                      v-if="dzshow === true"
+                    /><span>123</span>
+                  </div>
+                  <div class="ax">
+                    <img src="@/assets/strollimg/评论.png" alt="" /><span
+                      >123</span
+                    >
+                  </div>
+                  <div class="ax scup" @click="scup">
+                    <img
+                      src="@/assets/strollimg/收藏.png"
+                      alt=""
+                      v-if="scshow == false"
+                    /><img
+                      src="@/assets/imgers/黄色收藏.png"
+                      alt=""
+                      v-if="scshow == true"
+                    /><span>123</span>
+                  </div>
                 </div>
-                <div class="ax">
-                  <img src="@/assets/strollimg/评论.png" alt="" /><span
-                    >123</span
-                  >
-                </div>
-                <div class="ax">
-                  <img src="@/assets/strollimg/收藏.png" alt="" /><span
-                    >123</span
-                  >
-                </div>
-              </div>
             </div>
             <div class="informationImg">
               <img
@@ -119,9 +145,9 @@
                 "
               />
             </div>
-            <div class="informationImgJ">
-              <img src="@/assets/strollimg/加.png" alt="" />
-            </div>
+            <div class="informationImgJ gzup" @click="gzup(index)">
+                <img src="@/assets/strollimg/加.png" class="informationImgJimg"   alt="" />
+              </div>
           </div>
         </div>
       </div>
@@ -256,6 +282,8 @@ export default {
       },
       times: 60,
       paymore: "",
+      dzshow:false,
+      scshow:false
     };
   },
   watch: {
@@ -282,6 +310,57 @@ export default {
     this.freeList();
   },
   methods: {
+    gzup(val) {
+      console.log(val);
+      const informationImgJ = document.getElementsByClassName("informationImgJimg");
+      let rotateTimes=1
+        informationImgJ[val].style.transform = 'rotateY('+360*rotateTimes+'deg)';
+      let times = 1;
+      let time = setInterval(() => {
+        if (times == 1) {
+           informationImgJ[val].style.transform = 'rotateY('+360*rotateTimes+'deg)';
+          times--;
+          rotateTimes++
+        }
+        if (times == 0) {
+          informationImgJ[val].style.display = "none";
+          clearInterval(time);
+        }
+      }, 2500);
+    },
+     scup() {
+      const scup = document.querySelector(".scup");
+      console.log(scup);
+      scup.style.transform = "scale(1.1)";
+      let times = 1;
+      let time = setInterval(() => {
+        if (times == 1) {
+          scup.style.transform = "scale(1.1)";
+          this.scshow = true;
+          times--;
+        }
+        if (times == 0) {
+          scup.style.transform = "scale(1)";
+          clearInterval(time);
+        }
+      }, 100);
+    },
+    dzup() {
+      const dzup = document.querySelector(".dzup");
+      dzup.style.transform = "scale(1.1)";
+      let times = 1;
+      let time = setInterval(() => {
+        if (times == 1) {
+          dzup.style.transform = "scale(1.1)";
+          this.dzshow = true;
+          times--;
+        }
+        if (times == 0) {
+          dzup.style.transform = "scale(1)";
+          clearInterval(time);
+        }
+      }, 100);
+    },
     freeList() {
       postD(designer_worksGetListApi(), this.freeId).then((res) => {
         this.freeListValue = res.list;

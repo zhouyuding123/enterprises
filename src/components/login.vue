@@ -120,7 +120,6 @@ export default {
       this.$router.replace("/register");
     },
     loginer() {
-      
       this.$refs.loginRef.validate((valid) => {
         if (!valid) return;
         postD(users_companyLoginPWApi(), this.loginFrom)

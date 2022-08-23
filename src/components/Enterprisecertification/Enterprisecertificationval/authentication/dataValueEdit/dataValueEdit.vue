@@ -214,7 +214,7 @@ export default {
         }
         let info = JSON.parse(res.data.description);
         if (info.photo != "" && info.photo != null) {
-          info.photo.forEach((item, i) => {
+          info.photo.split(',').forEach((item, i) => {
             if (info.photo.indexOf(",") > -1) {
               this.imageList2.push({
                 response: {
@@ -246,6 +246,7 @@ export default {
     // 上传图片
     handleAvatarSuccess(res, file, fileList) {
       this.imageList2 = fileList;
+      console.log(this.imageList2);
     },
     handleAvatarSuccesstwo(res, file) {
       this.imageUrls = URL.createObjectURL(file.raw);
@@ -292,7 +293,7 @@ export default {
    
       this.editruleForm.company_main =
         this.editruleForm.company_main.toString();
-      this.description.photo = imgslist;
+      this.description.photo = imgslist.toString();
       this.description.video = this.videosrc1
       this.editruleForm.description = JSON.stringify(this.description);
 

@@ -3,9 +3,9 @@
     <el-container>
       <el-header style="height: 60px">
         <div class="logoImg">
-          <img src="@/assets/imgers/logo.png" alt="" />
+          <img :src="headerimg" alt="" />
         </div>
-        <a href=""><img src="../../assets/imgers/tx.png" alt="" /></a>
+        <a href="#"><img :src="imagesValue+headerimg" alt="" /></a>
         <p class="headerP">{{ useNames }}</p>
         <el-dropdown>
           <img src="../../assets/imgers/点点.png" alt="" />
@@ -87,17 +87,22 @@
 <script>
 import { postD } from "../../api/index.js";
 import { users_companyListRuleApi } from "./usersCompany.js";
+import {getInfoApi} from "@/urls/wsUrl.js"
+import { imgUrl } from '@/assets/js/modifyStyle.js';
 export default {
   data() {
     return {
       leftNavigationValue: "",
       icons: "",
       useNames: "",
+      headerimg:"",
+      imagesValue:""
     };
   },
   created() {
     this.usersList();
     this.useName();
+    this.imagesValue = imgUrl()
   },
   methods: {
     usersList() {
@@ -118,6 +123,13 @@ export default {
     },
     useName() {
       this.useNames = localStorage.use;
+      var name={
+        username:localStorage.use
+      }
+      postD(getInfoApi(),name).then(res=>{
+        this.headerimg = res.data.headimage
+        console.log(res);
+      })
     },
     // 退出功能
     signOut() {
@@ -146,7 +158,7 @@ export default {
       background: #0c032e;
       text-align: right;
       .el-dropdown {
-        top: -42px;
+        top: 10px;
       }
       a {
         width: 40px;

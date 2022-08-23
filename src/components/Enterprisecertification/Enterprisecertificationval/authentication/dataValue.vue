@@ -162,11 +162,12 @@ export default {
         this.infoValue = res.data;
         var des = res.data.description;
         var desjs = JSON.parse(des);
+        console.log(desjs);
         this.des = desjs;
         if (desjs.photo == "" || desjs.photo == null) {
           this.desphoto = "";
         } else if (desjs.photo.length >= 1) {
-          this.desphoto = desjs.photo;
+          this.desphoto = desjs.photo.split(',');
           this.desphoto.forEach((v) => {
             this.desphotos.push(this.imagesValue + v);
           });

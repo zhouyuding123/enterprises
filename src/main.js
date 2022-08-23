@@ -30,7 +30,8 @@ VueAMap.initAMapApiLoader({
 window._AMapSecurityConfig = {
 	securityJsCode: '2cea2f6fc6bd30a516c9f1d5ea38c9b0',
 }
-
+import {Base64} from 'js-base64'
+Vue.use(Base64);
 Vue.use(VueAMap);
 Vue.use(VXETable)
 Vue.use(elementui)

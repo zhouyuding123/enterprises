@@ -45,7 +45,7 @@
           <el-form-item label="企业名称" prop="nickname">
             <el-input v-model="ruleForm.nickname"></el-input>
           </el-form-item>
-          <div class="dis ws">
+          <!-- <div class="dis ws">
             <el-form-item label="联系电话" prop="tel">
             <div class="dis">
               <el-input v-model="ruleForm.tel"></el-input>
@@ -54,10 +54,30 @@
           <el-form-item label="验证码" prop="tel">
             <div class="yzm">
               <el-input v-model="ruleForm.yzm"></el-input>
-              <el-button type="primary">获取验证码</el-button>
+              <el-button type="primary" >获取验证码</el-button>
               
             </div>
           </el-form-item>
+          </div> -->
+          <div class="ssss">
+            <el-form-item label="电话" prop="tel">
+              <div class="dis">
+                <el-input v-model="ruleForm.tel"></el-input>
+              </div>
+            </el-form-item>
+            <div class="dis yzms">
+              <el-form-item label="验证码" prop="sms_code">
+                <div class="dis">
+                  <el-input v-model="ruleForm.sms_code"></el-input>
+                </div>
+              </el-form-item>
+            </div>
+            <div class="yzm">
+              <el-button type="primary" @click="hqyzm" v-if="showyzm == true"
+                >获取验证码</el-button
+              >
+              <el-button type="primary" v-else>{{ times }}s后重试</el-button>
+            </div>
           </div>
           <el-form-item label="邀请码" prop="code">
             <el-input v-model="ruleForm.code"></el-input>
@@ -88,13 +108,18 @@ import {
   users_companyRegisterApi,
 } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
+import CryptoJS from "crypto-js";
+import { Base64 } from "js-base64";
 export default {
   data() {
     var usernameV = (rule, value, callback) => {
+      console.log(this.rules);
       if (value === "") {
         callback(new Error("请输入账号"));
-      } else if (this.rules == true) {
-        callback(new Error("账号已存在"));
+      } 
+      else if (/[\u4E00-\u9FA5]/g.test(value)) {
+        callback(new Error("不能包含中文!"));
+        this.$message.error("不能包含中文");
       }
       callback();
     };
@@ -171,6 +196,33 @@ export default {
       }
       callback();
     };
+    var sms_codeV = (rule, value, callback) => {
+      function des_encrypt(message) {
+        var pw = "接口加密的密文，定期更新";
+        var key = CryptoJS.MD5(pw).toString();
+        key = CryptoJS.MD5(key).toString();
+        key = key.substr(4, 8);
+        var iv = "";
+        var crypto_key = CryptoJS.enc.Utf8.parse(key);
+        var crypto_iv = CryptoJS.enc.Utf8.parse(iv.substr(0, 8));
+
+        var encode_str = CryptoJS.TripleDES.encrypt(message, crypto_key, {
+          iv: crypto_iv,
+          mode: CryptoJS.mode.CBC,
+          padding: CryptoJS.pad.Pkcs7,
+        });
+        var en_val = encode_str.toString();
+        return Base64.encode(en_val);
+      }
+
+      if (des_encrypt(value) === "") {
+        callback(new Error("请获取或输入验证码"));
+      }
+      if (des_encrypt(value) != this.jkyzm) {
+        callback(new Error("验证码输入有误"));
+      }
+      callback();
+    };
 
     return {
       ruleForm: {
@@ -180,7 +232,7 @@ export default {
         tel: "",
         code: "",
         passwords: "",
-        yzm: "",
+        sms_code: "",
       },
       username: "",
       ruleFormrules: {
@@ -226,6 +278,12 @@ export default {
             trigger: "blur",
           },
         ],
+         sms_code: [
+          {
+            validator: sms_codeV,
+            trigger: "blur",
+          },
+        ],
       },
       level: [],
       rule: false,
@@ -233,6 +291,9 @@ export default {
       checked: false,
       dialogVisible: false,
       Privacy: false,
+      showyzm: true,
+      jkyzm: "",
+      times: 60,
     };
   },
   watch: {
@@ -240,21 +301,10 @@ export default {
       handler: function (val) {
         this.ruleForm.username = val;
         postD(users_companyVerifyUsersApi(), this.ruleForm).then((res) => {
-          var user = val.split("");
-          if (res.code == "200" && user.length > 5 && user.length < 20) {
-            this.rule = true;
-            this.rules = false;
-          } else if (
-            res.code == "-202" ||
-            user.length < 6 ||
-            user.length > 20
-          ) {
-            this.rule = false;
-            this.rules = true;
-          } else {
-            this.rule = false;
-            this.rules = false;
-          }
+          if (res.code !==200) {
+            this.$message.error(res.msg);
+          } 
+          
         });
       },
     },
@@ -281,6 +331,24 @@ export default {
     },
     reg() {
       this.$router.push("/login");
+    },
+    hqyzm() {
+      var tel = {
+        tel: this.ruleForm.tel,
+      };
+      if (tel.tel != "") {
+        postD("https://weisou.chengduziyi.com/designer/users_designer/getCode", tel).then((res) => {
+          this.jkyzm = res.data;
+          let mine = setInterval(() => {
+            this.times--;
+            this.showyzm =false
+            if (this.times == 0) {
+              clearInterval(mine);
+               this.showyzm =true
+            }
+          }, 1000);
+        });
+      }
     },
   },
 };

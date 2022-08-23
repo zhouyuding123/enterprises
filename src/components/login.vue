@@ -130,6 +130,7 @@ export default {
             localStorage.setItem("token", res.token);
             localStorage.setItem("use", res.data.username);
             localStorage.setItem("work", this.loginFrom.password);
+            localStorage.setItem("data", JSON.stringify(res.data));
             this.$router.push("/home");
             if (this.checked == true) {
               //存入cookie

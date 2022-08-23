@@ -201,6 +201,3 @@ export const addWorksApi =() => {
 export const loginPWApi =() => {
     return "users_company/loginPW"
 }
-
-
-

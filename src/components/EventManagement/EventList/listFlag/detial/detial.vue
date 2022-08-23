@@ -211,7 +211,7 @@
         </div>
       </div>
     </div>
-    <div class="" v-if="Nowtimes > votostarttime && Nowtimes < exhstarttime">
+    <div class="" v-if="Nowtimes > votostarttime && Nowtimes < votoEndtime">
       <div class="titleline1">
         <div class="countSstyle">
           <div class="numbervalue">
@@ -308,150 +308,8 @@
         </div>
       </div>
     </div>
-    <div v-if="detialValueList.access !== false && Nowtimes > exhstarttime">
-      <div class="titleline1">
-        <div class="countSstyle">
-          <div class="numbervalue">
-            <span>{{ workvalues.accept_count }}</span>
-          </div>
-          <div class="numbervalue2"><span>参与选手</span></div>
-        </div>
-        <div class="vertical"></div>
-        <div class="countSstyle">
-          <div class="numbervalue">
-            <span>{{ workvalues.voto_count }}</span>
-          </div>
-          <div class="numbervalue2"><span>积累投票</span></div>
-        </div>
-        <div class="vertical"></div>
-        <div class="countSstyle">
-          <div class="numbervalue">
-            <span>{{ workvalues.browse }}</span>
-          </div>
-          <div class="numbervalue2"><span>访问量</span></div>
-        </div>
-      </div>
-      <div class="titleline2">
-        <div class="listPadding">
-          <div class="seatch_list">
-            <i
-              class="el-icon-search"
-              style="position: absolute; margin: 12px 0 0 20px; color: #dddddd"
-            ></i>
-            <el-input
-              v-model="seatchs.keyword"
-              placeholder="请输入内容"
-            ></el-input>
-            <div class="buttom_seatch">
-              <span> 搜索 </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ext">
-        <div class="extList" v-for="(item, index) in pricelist" :key="index">
-          <div class="RankStyle" v-if="countValuenums[0] == index + 1">
-            {{ countValues[0] }}
-          </div>
-          <div
-            class="RankStyle"
-            v-else-if="countValuenums[1] >= index + 1 - countValuenums[0]"
-          >
-            {{ countValues[1] }}
-          </div>
-          <div
-            class="RankStyle"
-            v-else-if="countValuenums[2] >= index + 1 - countValuenums[2]"
-          >
-            {{ countValues[2] }}
-          </div>
-          <div
-            class="RankStyle"
-            v-else-if="countValuenums[3] >= index + 1 - countValuenums[3]"
-          >
-            {{ countValues[3] }}
-          </div>
-          <div
-            class="RankStyle"
-            v-else-if="countValuenums[4] >= index + 1 - countValuenums[4]"
-          >
-            {{ countValues[4] }}
-          </div>
-          <div class="pubimg">
-            <img :src="imagesValue + item.thumb" alt="" />
-          </div>
-          <div class="pubtitle">
-            <div class="pubtitle1">
-              <div>{{ item.title }}</div>
-              <div class="pubtitle1line1">
-                <div class="pubtitle1line1img">
-                  <img :src="imagesValue + item.headimage" alt="" />
-                </div>
-                <div class="pubtitle1line1name">
-                  <span>{{ item.nickname }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="pubtitle2">
-              <div class="piao">
-                <span>{{ item.voto_count }}票</span>
-              </div>
-              <div class="order" @click="addOrder(item)">
-                <span>发起预购</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- <div class="extList" v-for="item in nabertwo" :key="item.works_id">
-          <div class="RankStyle">第二名</div>
-          <div class="pubimg">
-            <img :src="imagesValue + item.thumb" alt="" />
-          </div>
-          <div class="pubtitle">
-            <div class="pubtitle1">
-              <div>{{ item.title }}</div>
-              <div class="pubtitle1line1">
-                <div class="pubtitle1line1img">
-                  <img :src="imagesValue + item.headimage" alt="" />
-                </div>
-                <div class="pubtitle1line1name">
-                  <span>{{ item.nickname }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="pubtitle2">
-              <div>
-                <span>{{ item.voto_count }}票</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="extList" v-for="item in naberthree" :key="item.works_id">
-          <div class="RankStyle">第三名</div>
-          <div class="pubimg">
-            <img :src="imagesValue + item.thumb" alt="" />
-          </div>
-          <div class="pubtitle">
-            <div class="pubtitle1">
-              <div>{{ item.title }}</div>
-              <div class="pubtitle1line1">
-                <div class="pubtitle1line1img">
-                  <img :src="imagesValue + item.headimage" alt="" />
-                </div>
-                <div class="pubtitle1line1name">
-                  <span>{{ item.nickname }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="pubtitle2">
-              <div>
-                <span>{{ item.voto_count }}票</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
-      </div>
-      <div></div>
+    <div v-if="Nowtimes>exhstarttime && Nowtimes<exhendtime">
+      <exh :prices="this.prices" />
     </div>
     <el-dialog title="申请冠名商资格" :visible.sync="dialogVisible" width="30%">
       <div class="textLine"></div>
@@ -512,7 +370,9 @@ import {
 } from "@/urls/wsUrl.js";
 import { postD } from "@/api";
 import { imgUrl } from "@/assets/js/modifyStyle";
+import exh from "./exh.vue"
 export default {
+  components: { exh },
   data() {
     return {
       // 搜索
@@ -589,7 +449,7 @@ export default {
       naberone: [],
       nabertwo: [],
       naberthree: [],
-      // prices: [],
+      prices: [],
       pricelist: [],
       countValuenums: [],
       countValues: [],
@@ -601,20 +461,9 @@ export default {
       }
     };
   },
-  // watch: {
-  //   prices(newval) {
-  //     var mapva = [];
-  //     newval.forEach((item, i) => {
-  //       console.log(item);
-  //       mapva.push(...this.publicityValueList.splice(0, item.amount));
-  //     });
-  //     this.pricelist = mapva;
-  //   },
-  // },
   created() {
     this.detialValue();
     this.worksValue();
-    this.publicityValue();
   },
   methods: {
     judgmentb() {
@@ -632,7 +481,6 @@ export default {
       this.detialId.id = this.$route.params.id;
       postD(matchShowMatchApi(), this.detialId).then((res) => {
         this.prices = res.data.prize;
-
         var countValue = [];
         var countValuenum = [];
         res.data.prize.forEach((v) => {
@@ -644,6 +492,7 @@ export default {
         this.detialValueList = res.data;
         this.imagesValue = imgUrl();
         this.Nowtimes = new Date().valueOf();
+        console.log(this.Nowtimes);
         this.signendtime =
           Date.parse(this.detialValueList.sign_end_time) ;
         this.signstarttime =
@@ -660,7 +509,6 @@ export default {
     },
     worksValue() {
       postD(MatchWorksApi(), this.detialId).then((res) => {
-        console.log(res);
         this.workvalues = res;
         this.workvalue = res.list.reverse();
         this.detialId.totalResult = res.accept_count;
@@ -736,11 +584,7 @@ export default {
       });
     },
     // 公示
-    publicityValue() {
-      postD(MatchWorksListApi(), this.detialId).then((res) => {
-        this.publicityValueList = res.list;
-      });
-    },
+    
     ManuscriptScreening() {
       this.ScreeningId.id = this.$route.params.id;
       this.$router.push("/Match/works" + this.ScreeningId.id);

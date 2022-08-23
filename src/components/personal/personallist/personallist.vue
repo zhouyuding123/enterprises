@@ -158,10 +158,7 @@ export default {
       localSearch: "",
       textTip: "",
       isshowTip: false,
-      jwd: {
-        lng: JSON.parse(localStorage.getItem("data")).lng,
-        lat: JSON.parse(localStorage.getItem("data")).lat,
-      },
+      jwd: JSON.parse(localStorage.getItem("data")),
     };
   },
   created() {
@@ -247,7 +244,7 @@ export default {
       localStorage.removeItem("_AMap_cvector");
     },
     myUser() {
-      this.pass.username = localStorage.use;
+      this.pass.username = localStorage.getItem("use");
       postD(getInfoApi(), this.pass).then((res) => {
         this.valueData.headimage = res.data.headimage;
         this.valueData.nickname = res.data.nickname;
